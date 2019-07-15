@@ -1,0 +1,200 @@
+ext {
+
+    android = [
+            compileSdkVersion                      : 28,
+            buildToolsVersion                      : "27.0.0",
+
+            applicationId                          : "com.ys.mllbon",
+            minSdkVersion                          : 21,
+            targetSdkVersion                       : 28,
+            versionCode                            : 1,
+            versionName                            : "1.0",
+            androidSupportSdkVersion               : "27.1.1",
+            multiDexEnabled                        : true,
+
+            butterknifeSdkVersion                  : "8.8.1",
+            retrofitSdkVersion                     : "2.4.0",
+            okhttpSdkVersion                       : "2.5.0",
+            okhttp3SdkVersion                      : "3.10.0",
+            eventbusSdkVersion                     : "3.1.1",
+            gsonSdkVersion                         : "2.8.4",
+            glideSdkVersion                        : "4.7.1",
+            greendaoSdkVersion                     : "3.2.2",
+            BaseRecyclerViewAdapterHelperSdkVersion: "2.9.30",
+            SmartRefreshLayoutSdkVersion           : "1.1.0-alpha-24",
+            rxjavaSdkVersion                       : "1.1.0",
+            rxjava2SdkVersion                      : "2.1.13",
+            rxandroidSdkVersion                    : "1.1.0",
+            rxandroid2SdkVersion                   : "2.0.2",
+            rxpermissionsSdkVersion                : "0.9.5@aar",
+            rxbindingSdkVersion                    : "3.0.0-alpha2",
+            rxlifecycleSdkVersion                  : "2.2.1",
+            dagger2SdkVersion                      : "2.8",
+            espressoSdkVersion                     : "2.2.2",
+    ]
+
+    dependencies = [
+            "junit"                          : "junit:junit:4.12",
+            "support-v4"                     : "com.android.support:support-v4:${android["androidSupportSdkVersion"]}",
+            "appcompat-v7"                   : "com.android.support:appcompat-v7:${android["androidSupportSdkVersion"]}",
+            "design"                         : "com.android.support:design:${android["androidSupportSdkVersion"]}",
+            "cardview-v7"                    : "com.android.support:cardview-v7:${android["androidSupportSdkVersion"]}",
+            "annotations"                    : "com.android.support:support-annotations:${android["androidSupportSdkVersion"]}",
+            "recyclerview-v7"                : "com.android.support:recyclerview-v7:${android["androidSupportSdkVersion"]}",
+            "percent"                        : "com.android.support:percent:${android["androidSupportSdkVersion"]}",
+            "constraint-layout"              : "com.android.support.constraint:constraint-layout:1.1.0",
+            "multidex"                       : "com.android.support:multidex:1.0.1",//突破65536个方法数
+
+            "okhttp"                         : "com.squareup.okhttp:okhttp:${android["okhttpSdkVersion"]}",
+            "okhttp3"                        : "com.squareup.okhttp3:okhttp:${android["okhttp3SdkVersion"]}",
+            "okhttp3-logging-interceptor"    : "com.squareup.okhttp3:logging-interceptor:${android["okhttp3SdkVersion"]}",
+            "retrofit"                       : "com.squareup.retrofit2:retrofit:${android["retrofitSdkVersion"]}",
+            "retrofit-converter-gson"        : "com.squareup.retrofit2:converter-gson:${android["retrofitSdkVersion"]}",
+            "retrofit-adapter-rxjava"        : "com.squareup.retrofit2:adapter-rxjava:${android["retrofitSdkVersion"]}",
+            "retrofit-adapter-rxjava2"       : "com.squareup.retrofit2:adapter-rxjava2:${android["retrofitSdkVersion"]}",
+            "okgo"                           : 'com.lzy.net:okgo:+',
+
+            "butterknife"                    : "com.jakewharton:butterknife:${android["butterknifeSdkVersion"]}",
+            "butterknife-annotationProcessor": "com.jakewharton:butterknife-compiler:${android["butterknifeSdkVersion"]}",
+            "eventbus"                       : "org.greenrobot:eventbus:${android["eventbusSdkVersion"]}",
+            "gson"                           : "com.google.code.gson:gson:${android["gsonSdkVersion"]}",
+            "glide"                          : "com.github.bumptech.glide:glide:${android["glideSdkVersion"]}",
+            "glide-annotationProcessor"      : "com.github.bumptech.glide:compiler:${android["glideSdkVersion"]}",
+            "glide-transformations"          : "jp.wasabeef:glide-transformations:3.3.0",
+            "greendao"                       : "org.greenrobot:greendao:${android["greendaoSdkVersion"]}",//数据库
+
+            "BaseRecyclerViewAdapterHelper"  : "com.github.CymChad:BaseRecyclerViewAdapterHelper:${android["BaseRecyclerViewAdapterHelperSdkVersion"]}",//
+            "SmartRefreshLayout"             : "com.scwang.smartrefresh:SmartRefreshLayout:${android["SmartRefreshLayoutSdkVersion"]}",//刷新库
+            "SmartRefreshLayout-Header"      : "com.scwang.smartrefresh:SmartRefreshLayout:${android["SmartRefreshLayoutSdkVersion"]}",//没有使用特殊Header，可以不加这行
+
+            "rxjava"                         : "io.reactivex:rxjava:${android["rxjavaSdkVersion"]}",
+            "rxjava2"                        : "io.reactivex.rxjava2:rxjava:${android["rxjava2SdkVersion"]}",
+            "rxandroid"                      : "io.reactivex:rxandroid:${android["rxandroidSdkVersion"]}",
+            "rxandroid2"                     : "io.reactivex.rxjava2:rxandroid:${android["rxandroid2SdkVersion"]}",
+            "rxpermissions"                  : "com.tbruyelle.rxpermissions:rxpermissions:${android["rxpermissionsSdkVersion"]}",//权限
+            "rxpermissions2"                 : "com.tbruyelle.rxpermissions2:rxpermissions:${android["rxpermissionsSdkVersion"]}",//权限
+            "rxbinding"                      : "com.jakewharton.rxbinding3:rxbinding:${android["rxbindingSdkVersion"]}",//
+            "rxbinding-recyclerview-v7"      : "com.jakewharton.rxbinding3:rxbinding-recyclerview:${android["rxbindingSdkVersion"]}",
+            "rxlifecycle"                    : "com.trello.rxlifecycle2:rxlifecycle:${android["rxlifecycleSdkVersion"]}",//生命周期管理
+            "rxlifecycle-android"            : "com.trello.rxlifecycle2:rxlifecycle-android:${android["rxlifecycleSdkVersion"]}",
+            "rxlifecycle-components"         : "com.trello.rxlifecycle2:rxlifecycle-components:${android["rxlifecycleSdkVersion"]}",
+            "rxcache"                        : "com.github.VictorAlbertos.RxCache:runtime:1.6.2",//基于Retrofit的缓存
+            "rxcache-jolyglot-gson"          : "com.github.VictorAlbertos.Jolyglot:gson:0.0.3",
+
+            "dagger2"                        : "com.google.dagger:dagger:${android["dagger2SdkVersion"]}",
+            "dagger2-annotationProcessor"    : "com.google.dagger:dagger-compiler:${android["dagger2SdkVersion"]}",
+
+            "autolayout"                     : "com.zhy:autolayout:1.4.5",//适配
+            "base-rvadapter"                 : 'com.zhy:base-rvadapter:3.0.3',//RecyerView万能适配器
+            "flowlayout"                     : "com.zhy:flowlayout-lib:1.0.3",//流式布局
+            "percent-extends"                : 'com.zhy:percent-support-extends:1.1.1',//百分比布局扩展
+
+            "alertview"                      : 'com.bigkoo:alertview:1.0.3',//对话框
+            "pickerview"                     : 'com.bigkoo:pickerview:2.1.1',//日期时间选择、三级联动
+            "Android-PickerView"             : 'com.contrarywind:Android-PickerView:3.2.5',//日期时间选择、三级联动
+            "convenientbanner"               : 'com.bigkoo:convenientbanner:2.0.5',//banner图
+            "view-pager-transforms"          : 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar',//banner动画
+            "kprogresshud"                   : 'com.kaopiz:kprogresshud:1.0.5',//加载框
+            "numberprogressbar"              : "com.daimajia.numberprogressbar:library:1.2@aar",//水平进度条
+            "circular-progress-button"       : "com.github.dmytrodanylyk.circular-progress-button:library:1.1.3",//圆形进度条
+            "bottom-navigation-bar"          : "com.ashokvarma.android:bottom-navigation-bar:1.4.1",//底部菜单栏
+            "gif-drawable"                   : "pl.droidsonroids.gif:android-gif-drawable:1.2.8",//加载Gif图
+
+            "statusbarlibrary"               : 'com.jaeger.statusbaruitl:library:1.2.5',//状态栏一体化
+            "photoview"                      : "com.github.chrisbanes:PhotoView:2.0.0",//图片放大缩小
+            "form-edittext"                  : 'com.andreabaccega:android-form-edittext:1.3.+',//表单验证
+            "checkversionlib"                : 'com.allenliu:checkversionlib:1.0.1',//版本更新
+            "takephoto_library"              : 'com.jph.takephoto:takephoto_library:3.0.1',//拍照或相册选择或文件选择并裁剪
+            "fragmentation"                  : 'me.yokeyword:fragmentation:0.9.4',//解决Fragment存在bug及懒加载
+            "zhihu-matisse"                  : 'com.zhihu.android:matisse:0.4.3',//图片选择库(多选)
+
+            "GSYVideoPlayer"                 : "com.github.CarGuo:GSYVideoPlayer:v1.6.0",//视频播放
+            "jiecaovideoplayer"              : "fm.jiecao:jiecaovideoplayer:5.5.4",//视频播放
+            "jiaozivideoplayer"              : "cn.jzvd:jiaozivideoplayer:6.4.3",//视频播放
+            "SwipeDelMenuLayout"             : 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.2.5',//滑动删除
+            "observablescrollview"           : 'com.github.ksoichiro:android-observablescrollview:1.6.0',//带动画交互效果的scrollview
+            "Recyclerview-animators"         : 'jp.wasabeef:recyclerview-animators:2.2.6',//RecyclerView动画
+
+            "wechat-sdk"                     : 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:1.0.2',
+            "sinaWeiBo-sdk"                  : 'com.sina.weibo.sdk:core:4.2.7:openDefaultRelease@aar',//新浪微博
+            "jpush-sdk"                      : 'cn.jiguang.sdk:jpush:3.1.1',  // JPush
+            "jpush-core"                     : 'cn.jiguang.sdk:jcore:1.1.9',
+            //以下都是Ping++平台的
+            "pingpp"                         : 'com.pingxx:pingpp-core:2.1.17', // Ping++必须添加
+            "pingpp-wechat"                  : 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+', // 使用微信支付时添加,具体版本参考微信官方文档
+            "pingpp-alipay"                  : 'com.pingxx:pingpp-alipay:2.1.17', // 使用支付宝时添加
+            "pingpp-upacp"                   : 'com.pingxx:pingpp-upacp:2.1.17', // 使用银联支付时添加
+            "pingpp-qpay"                    : 'com.pingxx:pingpp-qpay:2.1.17', // 使用QQ钱包时添加
+            "pingpp-cmbwallet"               : 'com.pingxx:pingpp-cmbwallet:2.1.17', // 使用招行一网通时添加
+
+            "zhugeio-integration"            : "com.zhuge.analysis:zhugeio:latest.integration",//诸葛ioSDK
+            "mob_kefu"                       : 'com.hyphenate:kefu-easeui-android:latest.release', //环信客服SDK
+            "umeng-common"                   : "com.umeng.sdk:common:latest.integration",//统计的基础服务包
+            "umeng-analytics"                : "com.umeng.sdk:analytics:latest.integration",//统计包
+            "mtj-sdk"                        : 'com.baidu.mobstat:mtj-sdk:latest.integration',//百度标准统计SDK
+            "bugtags-debug"                  : 'com.bugtags.library:bugtags-lib:latest.integration',//Bugtags-Debug
+            "bugtags-release"                : 'com.bugtags.metrics:bugtags-lib:latest.integration',//Bugtags-release
+
+            "picasso"                        : "com.squareup.picasso:picasso:2.5.2",//图片加载
+            "nineoldandroids"                : "com.nineoldandroids:library:2.4.0",//动画(兼容Android 3.0以下)
+            "okhttp-urlconnection"           : "com.squareup.okhttp:okhttp-urlconnection:2.0.0",
+            "otto"                           : "com.squareup:otto:1.3.8",//通信(与EventBus类似)
+            "paginate"                       : "com.github.markomilos:paginate:0.5.1",//分页下拉加载库，
+            "jsoup"                          : "org.jsoup:jsoup:1.11.2",//Html解析
+
+            /*--------------------------------- test ---------------------------------*/
+            "runner"                         : 'com.android.support.test:runner:0.5',
+            "espresso-core"                  : "com.android.support.test.espresso:espresso-core:${android["espressoSdkVersion"]}",
+            "espresso-contrib"               : ("com.android.support.test.espresso:espresso-contrib:${android["espressoSdkVersion"]}"),
+            "espresso-intents"               : "com.android.support.test.espresso:espresso-intents:${android["espressoSdkVersion"]}",
+            "mockito-core"                   : "org.mockito:mockito-core:1.+",
+            "timber"                         : "com.jakewharton.timber:timber:4.1.2",//Log工具
+            "canary-debug"                   : "com.squareup.leakcanary:leakcanary-android:1.5",
+            "canary-release"                 : "com.squareup.leakcanary:leakcanary-android-no-op:1.5",
+            "canary-test"                    : "com.squareup.leakcanary:leakcanary-android-no-op:1.5",
+            "stetho"                         : "com.facebook.stetho:stetho:1.4.2",
+            "blockcanary"                    : "com.github.markzhai:blockcanary-android:1.5.0'",//检查程序反应慢卡顿的问题
+    ]
+
+    ndk = [
+            "armeabi"    : 'armeabi',
+            "armeabi-v7a": 'armeabi-v7a',
+            "armeabi-v8a": 'armeabi-v8a',
+            "arm64_v8a"  : 'arm64-v8a',
+            "mips"       : 'mips',
+            "mips64"     : 'mips64',
+            "x86"        : 'x86',
+            "x86_64"     : 'x86_64',
+    ]
+
+    greendao = [
+            schemaVersion: 1, //数据库版本号
+            daoPackage   : "${android["applicationId"]}.db.greendaogen", //自动生成的工具类的包名
+            targetGenDir : "src/main/java", //路径
+    ]
+
+    signconfig = [
+            storeFile    : "../mllbon.jks",//签名文件路径
+            storePassword: "mllbon123456",
+            keyAlias     : "mllbon",
+            keyPassword  : "mllbon123456",
+            fileName     : "mllbon_v${android["versionName"]}.apk"// 输出apk名称为mllbon_v1.0.apk
+    ]
+
+    jpush = [
+            JPUSH_APPKEY : "a624af118cf9d0cbada216a0", //JPush上注册的包名对应的appkey.
+            JPUSH_CHANNEL: "盛时网", //暂时填写默认值即可.
+    ]
+
+    bugtags = [
+            //自动上传符号表功能配置，如果需要根据 build varint 配置，请参考帮助中心->符号表->Android 符号表->配置自动上传符号表
+            appKey_debug          : "fef4541a51ad5eee99987a6f732aff66",  //这里是你的 appKey
+            appSecret_debug       : "26d6266afabed9f2583971231bfc585f",  //这里是你的 appSecret，管理员在设置页可以查看
+            appKey_release        : "59dfcaa9e058711e4c3b6f4419b1bf04",  //这里是你的 appKey
+            appSecret_release     : "2054c07406a86ba82735e79b4e8d2945",  //这里是你的 appSecret，管理员在设置页可以查看
+            mappingUploadEnabled  : true,
+
+            //网络跟踪功能配置(企业版)
+            trackingNetworkEnabled: true
+    ]
+}

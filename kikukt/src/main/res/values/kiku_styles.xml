@@ -1,0 +1,138 @@
+<resources>
+
+    <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:actionBarSize">@dimen/dp_46</item>
+        <item name="android:editTextStyle">@style/EditTextStyle</item>
+    </style>
+
+    <!--设置splash主题(处理启动时白屏问题-设置背景为启动图片)-->
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@null</item>
+    </style>
+
+    <!--设置引导页主题(处理启动时白屏问题-设置背景为启动图片)-->
+    <style name="GuideTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <!--全屏加透明-->
+    <style name="TranslucentFullScreenTheme" parent="FullScreenTheme">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+    <!--全屏-->
+    <style name="FullScreenTheme" parent="BaseTheme">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    <!--透明，有任务栏电量时间等-->
+    <style name="NoTitleTranslucentTheme" parent="BaseTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <!--TabLayout字体样式-->
+    <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/c_333333</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="TabTextAppearance_store" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/c_333333</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="TabTextAppearance_productDetail" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="EditTextStyle" parent="EditTextStyleBase">
+        <item name="android:background">@null</item>
+        <item name="android:textColor">@color/c_333333</item>
+        <item name="android:textColorHint">@color/c_888888</item>
+        <item name="android:lines">1</item>
+        <item name="android:imeOptions">actionNext</item>
+        <item name="android:inputType">text</item>
+    </style>
+
+    <style name="EditTextStyleBase" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@null</item>
+        <item name="android:textColor">@color/c_333333</item>
+        <item name="android:textColorHint">@color/c_888888</item>
+    </style>
+
+    <style name="EditTextStyleComplete" parent="EditTextStyleBase">
+        <item name="android:background">@null</item>
+        <item name="android:textColor">@color/c_333333</item>
+        <item name="android:textColorHint">@color/c_888888</item>
+        <item name="android:lines">1</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:inputType">text</item>
+    </style>
+
+    <style name="TextViewStyle" parent="TextViewStyleBase">
+        <item name="android:lines">1</item>
+    </style>
+
+    <style name="TextViewStyleBase" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@null</item>
+        <item name="android:textColor">@color/c_333333</item>
+        <item name="android:textColorHint">@color/c_888888</item>
+    </style>
+
+    <style name="TextViewStyleLarge" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/c_333333</item>
+        <item name="android:textSize">@dimen/sp_18</item>
+    </style>
+
+    <style name="TextViewStyleMiddle" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/c_ABABAB</item>
+        <item name="android:textSize">@dimen/sp_16</item>
+    </style>
+
+    <style name="TextViewStyleSmall" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/c_ABABAB</item>
+        <item name="android:textSize">@dimen/sp_14</item>
+    </style>
+
+    <style name="ImageViewStyle">
+        <item name="android:background">@color/c_FFFFFF</item>
+    </style>
+
+    <style name="match_parent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="wrap_content">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="weight_horizontal">
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="weight_vertical">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dip</item>
+    </style>
+
+</resources>

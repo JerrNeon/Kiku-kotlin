@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_exitNoticeMessage">再按一次退出程序</string>
+    <!--版本更新-->
+    <string name="versionUpdate_downloadStart">开始下载</string>
+    <string name="versionUpdate_downloadProgress" formatted="false">下载进度:%d%%/100%%</string>
+    <string name="versionUpdate_downloadComplete">下载完成</string>
+    <string name="versionUpdate_downloadFailure">下载失败</string>
+    <string name="versionupdate_title">更新提示</string>
+    <string name="versionupdate_cancel">稍后再说</string>
+    <string name="versionupdate_submit">版本更新</string>
+    <!--Token失效-->
+    <string name="token_invalid_msg">您的账号已在其他设备上登录</string>
+    <string name="token_invalid_commit">确定</string>
+    <!--地图导航-->
+    <string name="map_title">请选择地图</string>
+    <string name="map_googleTitle">用Android自带地图导航</string>
+    <string name="map_baiduMapTitle">用百度地图导航</string>
+    <string name="map_autoNaviTitle">用高德地图导航</string>
+    <string name="map_cancelTitle">取消</string>
+    <!--图片选择-->
+    <string name="image_takePhoto">相机</string>
+    <string name="image_album">相册</string>
+    <string name="image_cancel">取消</string>
+</resources>

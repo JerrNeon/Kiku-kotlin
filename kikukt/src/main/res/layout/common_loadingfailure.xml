@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center"
+              android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/iv_commonLoadingFailure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:adjustViewBounds="true"
+        android:maxHeight="@dimen/dp_50"
+        android:maxWidth="@dimen/dp_50"
+        android:src="@drawable/ic_kiku_nonet"/>
+
+    <TextView
+        android:id="@+id/tv_commonLoadingFailure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp_10"
+        android:text="@string/kiku_load_failure"
+        android:textColor="@color/c_CBCBCB"
+        android:textSize="@dimen/sp_12"/>
+
+</LinearLayout>

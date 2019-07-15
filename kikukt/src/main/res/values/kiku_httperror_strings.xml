@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 网络请求 -->
+    <string name="no_internet">无网络连接~</string>
+    <string name="generic_server_down">连接服务器失败~</string>
+    <string name="generic_error">网络异常,请稍后再试~</string>
+    <string name="connect_time_out">连接超时,请稍后再试~</string>
+    <string name="json_paser_error">解析出错~</string>
+    <string name="json_paser_null">解析空json~</string>
+    <string name="user_cancel">用户取消请求~</string>
+    <!--加载-->
+    <string name="kiku_load_failure">页面加载失败，轻触屏幕重新加载</string>
+    <string name="kiku_load_nonet">网络情况不太好，轻触屏幕重新加载</string>
+    <string name="kiku_load_nodata">暂无数据~</string>
+</resources>
