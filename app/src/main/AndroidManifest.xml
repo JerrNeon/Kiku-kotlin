@@ -4,6 +4,7 @@
         package="com.jn.examplekotlin">
 
     <application
+            android:name=".BaseApplication"
             android:allowBackup="false"
             android:appComponentFactory="kikukotlin"
             android:icon="@mipmap/ic_launcher"

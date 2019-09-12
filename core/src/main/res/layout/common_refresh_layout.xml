@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.scwang.smartrefresh.layout.SmartRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/srl_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.jn.kikukt.activity.RootRvActivity">
+
+    <com.scwang.smartrefresh.layout.header.ClassicsHeader
+        android:id="@+id/srlH_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <FrameLayout
+        android:id="@+id/fl_rootContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+        android:id="@+id/srlF_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</com.scwang.smartrefresh.layout.SmartRefreshLayout>
