@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import com.jn.kikukt.R
 import com.jn.kikukt.annonation.*
-import com.jn.kikukt.common.Config
 import com.jn.kikukt.common.api.IRefreshView
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
@@ -20,16 +19,16 @@ import kotlinx.android.synthetic.main.common_refresh_layout.view.*
  */
 abstract class RootRefreshFragment : RootFragment(), IRefreshView, OnRefreshLoadMoreListener {
 
-    protected var mPageIndex: Int = 0//page info
-    protected var mPageSize: Int = 0//page info
-    protected var mTotalSize: Int = 0//page info
-    protected var mTotalPage: Int = 0//page info
+    override var mPageIndex: Int = 0//page info
+    override var mPageSize: Int = 0//page info
+    override var mTotalSize: Int = 0//page info
+    override var mTotalPage: Int = 0//page info
     @RefreshOperateType
-    protected var mRefreshOperateType: Int = 0//operate type
-    protected var mSmartRefreshLayout: SmartRefreshLayout? = null//root layout
-    protected var mClassicsHeader: ClassicsHeader? = null//refresh layout
-    protected var mClassicsFooter: ClassicsFooter? = null//load more layout
-    protected var mFlRootContainer: FrameLayout? = null//show content layout
+    override var mRefreshOperateType: Int = 0//operate type
+    override var mSmartRefreshLayout: SmartRefreshLayout? = null//root layout
+    override var mClassicsHeader: ClassicsHeader? = null//refresh layout
+    override var mClassicsFooter: ClassicsFooter? = null//load more layout
+    override var mFlRootContainer: FrameLayout? = null//show content layout
 
     override fun getLayoutResourceId(): Int {
         return R.layout.common_refresh_layout
@@ -68,30 +67,6 @@ abstract class RootRefreshFragment : RootFragment(), IRefreshView, OnRefreshLoad
         }
     }
 
-    override fun getInitPageIndex(): Int {
-        return Config.PAGE_INDEX
-    }
-
-    override fun getInitPageSize(): Int {
-        return Config.PAGE_SIZE
-    }
-
-    override fun getPageIndex(): Int {
-        return mPageIndex
-    }
-
-    override fun getPageSize(): Int {
-        return mPageSize
-    }
-
-    override fun getTotalSize(): Int {
-        return mTotalSize
-    }
-
-    override fun getTotalPage(): Int {
-        return mTotalPage
-    }
-
     override fun initRefreshView() {
         mPageIndex = getInitPageIndex()
         mPageSize = getInitPageSize()
@@ -103,7 +78,10 @@ abstract class RootRefreshFragment : RootFragment(), IRefreshView, OnRefreshLoad
         if (getLayoutItemResourceId() != 0) {
             mFlRootContainer?.addView(
                 LayoutInflater.from(mContext).inflate(getLayoutItemResourceId(), null, false),
-                FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
+                FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.MATCH_PARENT
+                )
             )
         }
 
@@ -131,19 +109,4 @@ abstract class RootRefreshFragment : RootFragment(), IRefreshView, OnRefreshLoad
         mSmartRefreshLayout?.setEnableFooterFollowWhenNoMoreData(true)//SmartRefreshLayout Api
     }
 
-    override fun getRefreshViewType(): Int {
-        return ALL
-    }
-
-    override fun setRefreshOperateType(operateType: Int) {
-        mRefreshOperateType = operateType
-    }
-
-    override fun getLoadMoreEnableType(): Int {
-        return EMPTY
-    }
-
-    override fun isLoadMoreEnable(): Boolean {
-        return true
-    }
 }

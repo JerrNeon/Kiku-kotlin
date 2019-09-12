@@ -32,7 +32,7 @@ object IntentManager {
      */
     fun startActivity(fragment: Fragment, cls: Class<*>, param: Any?) {
         val intent = getIntent(cls.simpleName, param)
-        intent.setClass(Objects.requireNonNull(fragment.activity), cls)
+        intent.setClass(fragment.context!!, cls)
         fragment.startActivity(intent)
     }
 
@@ -65,7 +65,7 @@ object IntentManager {
         if (requestCode != null) {
             if (requestCode is Int) {
                 val intent = getIntent(cls.simpleName, param)
-                intent.setClass(Objects.requireNonNull(fragment.activity), cls)
+                intent.setClass(fragment.context!!, cls)
                 fragment.startActivityForResult(intent, requestCode)
             } else
                 throw IllegalArgumentException("requestCode no support other type,only Integer")
@@ -98,7 +98,7 @@ object IntentManager {
     @Throws(ClassNotFoundException::class)
     fun startActivity(fragment: Fragment, targetPackageName: String, bundle: Bundle?) {
         val intent = getIntent(targetPackageName, bundle)
-        intent.setClass(Objects.requireNonNull(fragment.activity), Class.forName(targetPackageName))
+        intent.setClass(fragment.context!!, Class.forName(targetPackageName))
         fragment.startActivity(intent)
     }
 

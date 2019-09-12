@@ -68,13 +68,15 @@ class GuidePagerAdapter(activity: Activity) : BasePagerAdapter<GuidePageVO>(acti
 
     override fun getView(view: View?, position: Int, bean: GuidePageVO?) {
         val iv = view?.findViewById<ImageView>(R.id.iv_rootGuide)
-        if (bean?.imgType == 0)
-            iv?.displayImage(getImageContext()!!, bean.imgUrl!!)
-        else
-            iv?.setImageResource(bean?.imgRes!!)
-        iv?.setOnClickListener {
-            if (bean?.isLast!! && onClickListener != null) {
-                onClickListener?.onClick(it)
+        bean?.let { it ->
+            if (it.imgType == 0)
+                iv?.displayImage(getImageContext()!!, it.imgUrl!!)
+            else
+                iv?.setImageResource(it.imgRes)
+            iv?.setOnClickListener {
+                if (bean.isLast && onClickListener != null) {
+                    onClickListener?.onClick(it)
+                }
             }
         }
     }

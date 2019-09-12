@@ -10,7 +10,7 @@ import com.jn.kikukt.utils.glide.GlideUtil
  */
 class GlideOnScrollListener(val context: Context) : RecyclerView.OnScrollListener() {
 
-    override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
         super.onScrollStateChanged(recyclerView, newState)
         if (newState == RecyclerView.SCROLL_STATE_IDLE) {
             GlideUtil.resumeRequests(context)

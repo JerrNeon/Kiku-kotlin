@@ -1,6 +1,7 @@
 package com.jn.kikukt.fragment
 
-import android.content.Context
+import android.os.Bundle
+import com.jn.kikukt.common.api.IMvpView
 import com.jn.kikukt.mvp.IBPresenter
 import com.jn.kikukt.mvp.IBView
 
@@ -8,22 +9,21 @@ import com.jn.kikukt.mvp.IBView
  * Author：Stevie.Chen Time：2019/7/11
  * Class Comment：
  */
-abstract class RootRvPresenterFragment<P : IBPresenter<V, *>, V : IBView, T> : RootRvFragment<T>() {
+abstract class RootRvPresenterFragment<P : IBPresenter<V, *>, V : IBView, T> : RootRvFragment<T>(),
+    IMvpView<P> {
 
-    protected var mPresenter: P? = null
+    override var mPresenter: P? = null
 
-    protected abstract fun createPresenter(): P
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        mPresenter = createPresenter()
-        @Suppress("UNCHECKED_CAST")
-        mPresenter?.attachView(this as? V)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initPresenter()
     }
 
-    override fun onDestroyView() {
-        mPresenter?.detachView()
-        mPresenter = null
-        super.onDestroyView()
+    override fun initPresenter() {
+        super.initPresenter()
+        mPresenter?.let {
+            it.attachView(this as? IBView)
+            lifecycle.addObserver(it)
+        }
     }
 }

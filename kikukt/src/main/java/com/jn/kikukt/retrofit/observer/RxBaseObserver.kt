@@ -3,6 +3,7 @@ package com.jn.kikukt.retrofit.observer
 import android.content.Context
 import android.support.annotation.IntDef
 import com.jn.kikukt.retrofit.exception.OkHttpErrorHelper
+import com.jn.kikukt.utils.ContextUtils
 import com.jn.kikukt.utils.showToast
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
@@ -11,7 +12,7 @@ import io.reactivex.disposables.Disposable
  * Author：Stevie.Chen Time：2019/7/15
  * Class Comment：
  */
-abstract class RxBaseObserver<T, V> : Observer<T> {
+abstract class RxBaseObserver<T, V>(@ErrorType private val mErrorType: Int) : Observer<T> {
 
     companion object {
         /**
@@ -31,16 +32,6 @@ abstract class RxBaseObserver<T, V> : Observer<T> {
     @IntDef(NONE, EXCEPTION, ALL)
     @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
     internal annotation class ErrorType
-
-    @ErrorType
-    protected var mErrorType: Int = 0
-
-    /**
-     * @param errorType toast显示的错误类型
-     */
-    constructor(@ErrorType errorType: Int) {
-        mErrorType = errorType
-    }
 
     override fun onSubscribe(d: Disposable) {}
 
@@ -66,7 +57,13 @@ abstract class RxBaseObserver<T, V> : Observer<T> {
      */
     abstract fun onSuccess(v: V)
 
-    abstract fun getContext(): Context
+    fun onResponse(t: T) {
+
+    }
+
+    protected fun getContext(): Context {
+        return ContextUtils.getContext()
+    }
 
     /**
      * 请求失败

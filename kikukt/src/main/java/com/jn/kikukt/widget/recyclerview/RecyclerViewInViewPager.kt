@@ -15,9 +15,9 @@ class RecyclerViewInViewPager : RecyclerView {
     private var lastX = -1
     private var lastY = -1
 
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {

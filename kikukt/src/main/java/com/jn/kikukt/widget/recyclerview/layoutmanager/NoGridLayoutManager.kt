@@ -42,8 +42,8 @@ class NoGridLayoutManager : GridLayoutManager {
     }
 
     override fun onMeasure(
-        recycler: RecyclerView.Recycler?,
-        state: RecyclerView.State?,
+        recycler: RecyclerView.Recycler,
+        state: RecyclerView.State,
         widthSpec: Int,
         heightSpec: Int
     ) {
@@ -100,21 +100,19 @@ class NoGridLayoutManager : GridLayoutManager {
         if (position < itemCount) {
             try {
                 val view = recycler!!.getViewForPosition(0)//fix 动态添加时报IndexOutOfBoundsException
-                if (view != null) {
-                    val p = view.layoutParams as RecyclerView.LayoutParams
-                    val childWidthSpec = ViewGroup.getChildMeasureSpec(
-                        widthSpec,
-                        paddingLeft + paddingRight, p.width
-                    )
-                    val childHeightSpec = ViewGroup.getChildMeasureSpec(
-                        heightSpec,
-                        paddingTop + paddingBottom, p.height
-                    )
-                    view.measure(childWidthSpec, childHeightSpec)
-                    measuredDimension[0] = view.measuredWidth + p.leftMargin + p.rightMargin
-                    measuredDimension[1] = view.measuredHeight + p.bottomMargin + p.topMargin
-                    recycler.recycleView(view)
-                }
+                val p = view.layoutParams as RecyclerView.LayoutParams
+                val childWidthSpec = ViewGroup.getChildMeasureSpec(
+                    widthSpec,
+                    paddingLeft + paddingRight, p.width
+                )
+                val childHeightSpec = ViewGroup.getChildMeasureSpec(
+                    heightSpec,
+                    paddingTop + paddingBottom, p.height
+                )
+                view.measure(childWidthSpec, childHeightSpec)
+                measuredDimension[0] = view.measuredWidth + p.leftMargin + p.rightMargin
+                measuredDimension[1] = view.measuredHeight + p.bottomMargin + p.topMargin
+                recycler.recycleView(view)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

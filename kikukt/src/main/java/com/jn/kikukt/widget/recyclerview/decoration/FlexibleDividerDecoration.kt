@@ -59,7 +59,10 @@ abstract class FlexibleDividerDecoration : RecyclerView.ItemDecoration {
                     val divider = a.getDrawable(0)
                     a.recycle()
                     mDrawableProvider = object : DrawableProvider {
-                        override fun drawableProvider(position: Int, parent: RecyclerView): Drawable {
+                        override fun drawableProvider(
+                            position: Int,
+                            parent: RecyclerView
+                        ): Drawable {
                             return divider!!
                         }
                     }
@@ -88,7 +91,7 @@ abstract class FlexibleDividerDecoration : RecyclerView.ItemDecoration {
         }
     }
 
-    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State?) {
+    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         val adapter = parent.adapter ?: return
 
         val itemCount = adapter.itemCount
@@ -152,7 +155,8 @@ abstract class FlexibleDividerDecoration : RecyclerView.ItemDecoration {
                 }
                 DividerType.COLOR -> {
                     mPaint?.color = mColorProvider?.dividerColor(groupIndex, parent) ?: 0
-                    mPaint?.strokeWidth = mSizeProvider?.dividerSize(groupIndex, parent)?.toFloat() ?: 0f
+                    mPaint?.strokeWidth =
+                        mSizeProvider?.dividerSize(groupIndex, parent)?.toFloat() ?: 0f
                     c.drawLine(
                         bounds.left.toFloat(),
                         bounds.top.toFloat(),
@@ -165,10 +169,15 @@ abstract class FlexibleDividerDecoration : RecyclerView.ItemDecoration {
         }
     }
 
-    override fun getItemOffsets(rect: Rect, v: View, parent: RecyclerView, state: RecyclerView.State?) {
+    override fun getItemOffsets(
+        rect: Rect,
+        v: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
         val position = parent.getChildAdapterPosition(v)
         //Log.i("test", ">>>>>>>>>>" + position);
-        val itemCount = parent.adapter.itemCount
+        val itemCount = parent.adapter?.itemCount ?: 0
         //如果是XRecyclerView需要特殊处理，XRecyclerView支持添加头和尾
         //        if (parent instanceof XRecyclerView) {
         //            XRecyclerView xRecyclerView = ((XRecyclerView) parent);
@@ -233,7 +242,7 @@ abstract class FlexibleDividerDecoration : RecyclerView.ItemDecoration {
             val layoutManager = parent.layoutManager as GridLayoutManager
             val spanSizeLookup = layoutManager.spanSizeLookup
             val spanCount = layoutManager.spanCount
-            val itemCount = parent.adapter.itemCount
+            val itemCount = parent.adapter?.itemCount ?: 0
             for (i in itemCount - 1 downTo 0) {
                 if (spanSizeLookup.getSpanIndex(i, spanCount) == 0) {
                     return itemCount - i

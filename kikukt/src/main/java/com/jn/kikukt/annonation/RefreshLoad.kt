@@ -15,7 +15,9 @@ const val ON_RELOAD = 4//加载失败或重新加载
  * RecyclerView界面操作类型
  */
 @IntDef(ON_CREATE, ON_REFRESH, ON_ONLOADMORE, ON_RELOAD)
-@Target(AnnotationTarget.FIELD, AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FUNCTION)
+@Target(AnnotationTarget.FIELD, AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FUNCTION,
+    AnnotationTarget.PROPERTY
+)
 @Retention(AnnotationRetention.SOURCE)
 annotation class RefreshOperateType
 

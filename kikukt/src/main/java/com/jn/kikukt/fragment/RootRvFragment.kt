@@ -20,15 +20,16 @@ import kotlinx.android.synthetic.main.common_rv.view.*
  * Author：Stevie.Chen Time：2019/7/11
  * Class Comment：
  */
-abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T>, BaseQuickAdapter.OnItemClickListener,
+abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T>,
+    BaseQuickAdapter.OnItemClickListener,
     BaseQuickAdapter.OnItemLongClickListener, BaseQuickAdapter.OnItemChildClickListener,
     BaseQuickAdapter.OnItemChildLongClickListener {
 
-    protected var mRecyclerView: RecyclerView? = null//RecyclerView
-    protected var mEmptyView: View? = null//empty or failure view
-    protected var mIvLoadingFailure: ImageView? = null//empty or failure icon
-    protected var mTvLoadingFailure: TextView? = null//empty or failure hint text
-    protected var mAdapter: BaseRvAdapter<T>? = null//adapter
+    override var mRecyclerView: RecyclerView? = null//RecyclerView
+    override var mEmptyView: View? = null//empty or failure view
+    override var mIvLoadingFailure: ImageView? = null//empty or failure icon
+    override var mTvLoadingFailure: TextView? = null//empty or failure hint text
+    override var mAdapter: BaseRvAdapter<T>? = null//adapter
 
     override fun getLayoutItemResourceId(): Int {
         return R.layout.common_rv
@@ -71,7 +72,8 @@ abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T>, BaseQuickA
         mRecyclerView?.adapter = mAdapter
 
         mAdapter?.bindToRecyclerView(mRecyclerView)
-        mEmptyView = LayoutInflater.from(mContext).inflate(R.layout.common_loadingfailure, mFlRootContainer, false)
+        mEmptyView = LayoutInflater.from(mContext)
+            .inflate(R.layout.common_loadingfailure, mFlRootContainer, false)
         mIvLoadingFailure = mEmptyView?.findViewById(R.id.iv_commonLoadingFailure)
         mTvLoadingFailure = mEmptyView?.findViewById(R.id.tv_commonLoadingFailure)
         mEmptyView?.setOnClickListener { view -> onClickLoadFailure(view) }
@@ -163,7 +165,11 @@ abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T>, BaseQuickA
         onItemClick(adapter!!, view!!, mAdapter?.getItem(position)!!)
     }
 
-    override fun onItemLongClick(adapter: BaseQuickAdapter<*, *>?, view: View?, position: Int): Boolean {
+    override fun onItemLongClick(
+        adapter: BaseQuickAdapter<*, *>?,
+        view: View?,
+        position: Int
+    ): Boolean {
         return onItemLongClick(adapter!!, view!!, mAdapter?.getItem(position)!!)
     }
 
@@ -171,7 +177,11 @@ abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T>, BaseQuickA
         onItemChildClick(adapter!!, view!!, mAdapter?.getItem(position)!!)
     }
 
-    override fun onItemChildLongClick(adapter: BaseQuickAdapter<*, *>?, view: View?, position: Int): Boolean {
+    override fun onItemChildLongClick(
+        adapter: BaseQuickAdapter<*, *>?,
+        view: View?,
+        position: Int
+    ): Boolean {
         return onItemChildLongClick(adapter!!, view!!, mAdapter?.getItem(position)!!)
     }
 
@@ -185,7 +195,11 @@ abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T>, BaseQuickA
     override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>, view: View, item: T) {
     }
 
-    override fun onItemChildLongClick(adapter: BaseQuickAdapter<*, *>, view: View, item: T): Boolean {
+    override fun onItemChildLongClick(
+        adapter: BaseQuickAdapter<*, *>,
+        view: View,
+        item: T
+    ): Boolean {
         return false
     }
 }

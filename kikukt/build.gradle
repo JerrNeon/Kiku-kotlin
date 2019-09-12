@@ -5,13 +5,13 @@ apply plugin: 'kotlin-android'
 def dep = rootProject.ext.dependencies // dep
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -31,14 +31,19 @@ android {
     //system cancel check.9 image
     aaptOptions.cruncherEnabled = false
     aaptOptions.useNewCruncher = false
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    testImplementation dep["junit"]
+    androidTestImplementation dep["runner"]
+    androidTestImplementation dep["espresso-core"]
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     api dep["multidex"]
@@ -70,5 +75,9 @@ dependencies {
 
     //jsoup parse Html
     api dep["jsoup"]
+
+    //android自带生命周期组件
+    api dep["lifecycle"]
+    api dep["lifecycle-java8"]
 }
 

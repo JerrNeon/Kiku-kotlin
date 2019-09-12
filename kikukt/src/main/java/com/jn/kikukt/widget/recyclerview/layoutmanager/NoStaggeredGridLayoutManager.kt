@@ -18,7 +18,12 @@ class NoStaggeredGridLayoutManager : StaggeredGridLayoutManager {
 
     private val mMeasuredDimension = IntArray(2)
 
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(
+    constructor(
+        context: Context?,
+        attrs: AttributeSet?,
+        defStyleAttr: Int,
+        defStyleRes: Int
+    ) : super(
         context,
         attrs,
         defStyleAttr,
@@ -44,8 +49,8 @@ class NoStaggeredGridLayoutManager : StaggeredGridLayoutManager {
     }
 
     override fun onMeasure(
-        recycler: RecyclerView.Recycler?,
-        state: RecyclerView.State?,
+        recycler: RecyclerView.Recycler,
+        state: RecyclerView.State,
         widthSpec: Int,
         heightSpec: Int
     ) {

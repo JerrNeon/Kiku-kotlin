@@ -60,7 +60,7 @@ class DividerItemDecoration : RecyclerView.ItemDecoration {
 
     override fun getItemOffsets(
         outRect: Rect, view: View,
-        parent: RecyclerView, state: RecyclerView.State?
+        parent: RecyclerView, state: RecyclerView.State
     ) {
         if (parent.layoutManager != null) {
             if (parent.layoutManager is LinearLayoutManager && parent.layoutManager !is GridLayoutManager) {
@@ -76,7 +76,7 @@ class DividerItemDecoration : RecyclerView.ItemDecoration {
 
     }
 
-    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State?) {
+    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDraw(c, parent, state)
         if (parent.layoutManager != null) {
             if (parent.layoutManager is LinearLayoutManager && parent.layoutManager !is GridLayoutManager) {

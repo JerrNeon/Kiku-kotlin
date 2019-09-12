@@ -1,5 +1,6 @@
 package com.jn.kikukt.common.api
 
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
 
@@ -9,7 +10,16 @@ import io.reactivex.disposables.Disposable
  */
 interface IDisposableView {
 
-    fun addDisposable(disposable: Disposable)
+    var mCompositeDisposable: CompositeDisposable?
 
-    fun dispose()
+    fun addDisposable(disposable: Disposable) {
+        if (mCompositeDisposable == null)
+            mCompositeDisposable = CompositeDisposable()
+        mCompositeDisposable?.add(disposable)
+    }
+
+    fun dispose() {
+        if (!mCompositeDisposable!!.isDisposed)
+            mCompositeDisposable!!.dispose()
+    }
 }

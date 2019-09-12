@@ -32,8 +32,8 @@ class NoLinearLayoutManager :LinearLayoutManager {
 
 
     override fun onMeasure(
-        recycler: RecyclerView.Recycler?,
-        state: RecyclerView.State?,
+        recycler: RecyclerView.Recycler,
+        state: RecyclerView.State,
         widthSpec: Int,
         heightSpec: Int
     ) {

@@ -4,6 +4,8 @@ import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.jn.kikukt.adapter.BaseRvAdapter
 import com.jn.kikukt.annonation.LoadCompleteType
@@ -13,6 +15,12 @@ import com.jn.kikukt.annonation.LoadCompleteType
  * Class Comment：
  */
 interface IRvView<T> {
+
+    var mRecyclerView: RecyclerView?//RecyclerView
+    var mEmptyView: View?//empty or failure view
+    var mIvLoadingFailure: ImageView?//empty or failure icon
+    var mTvLoadingFailure: TextView?//empty or failure hint text
+    var mAdapter: BaseRvAdapter<T>?//adapter
 
     /**
      * 获取适配器

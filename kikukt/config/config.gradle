@@ -1,16 +1,17 @@
 ext {
 
-    android = [
-            compileSdkVersion                      : 28,
-            buildToolsVersion                      : "27.0.0",
+    compileSdkVersion = 29
+    buildToolsVersion = "29.0.2"
 
-            applicationId                          : "com.ys.mllbon",
-            minSdkVersion                          : 21,
-            targetSdkVersion                       : 28,
-            versionCode                            : 1,
-            versionName                            : "1.0",
-            androidSupportSdkVersion               : "27.1.1",
-            multiDexEnabled                        : true,
+    applicationId = "com.jn.examplekotlin"
+    minSdkVersion = 21
+    targetSdkVersion = 28
+    versionCode = 1
+    versionName = "1.0"
+    multiDexEnabled = true
+
+    android = [
+            androidSupportSdkVersion               : "28.0.0",
 
             butterknifeSdkVersion                  : "8.8.1",
             retrofitSdkVersion                     : "2.4.0",
@@ -31,6 +32,7 @@ ext {
             rxlifecycleSdkVersion                  : "2.2.1",
             dagger2SdkVersion                      : "2.8",
             espressoSdkVersion                     : "2.2.2",
+            archSdkVersion                         : "1.1.1",
     ]
 
     dependencies = [
@@ -42,8 +44,10 @@ ext {
             "annotations"                    : "com.android.support:support-annotations:${android["androidSupportSdkVersion"]}",
             "recyclerview-v7"                : "com.android.support:recyclerview-v7:${android["androidSupportSdkVersion"]}",
             "percent"                        : "com.android.support:percent:${android["androidSupportSdkVersion"]}",
-            "constraint-layout"              : "com.android.support.constraint:constraint-layout:1.1.0",
+            "constraint-layout"              : "com.android.support.constraint:constraint-layout:1.1.3",
             "multidex"                       : "com.android.support:multidex:1.0.1",//突破65536个方法数
+            "lifecycle"                      : "android.arch.lifecycle:extensions:${android["archSdkVersion"]}",
+            "lifecycle-java8"                : "android.arch.lifecycle:common-java8:${android["archSdkVersion"]}",
 
             "okhttp"                         : "com.squareup.okhttp:okhttp:${android["okhttpSdkVersion"]}",
             "okhttp3"                        : "com.squareup.okhttp3:okhttp:${android["okhttp3SdkVersion"]}",

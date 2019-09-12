@@ -1,18 +1,21 @@
 package com.jn.kikukt.mvp
 
-import io.reactivex.subjects.BehaviorSubject
+import android.arch.lifecycle.DefaultLifecycleObserver
+import android.arch.lifecycle.LifecycleOwner
+import com.jn.kikukt.common.api.IDisposableView
 
 /**
  * Author：Stevie.Chen Time：2019/7/11
  * Class Comment：
  */
-interface IBPresenter<V : IBView, M : IBModel> {
+interface IBPresenter<V : IBView, M : IBModel> : IDisposableView, DefaultLifecycleObserver {
 
     var mView: V?
     var mModel: M?
 
-    fun attachView(view: V?) {
-        mView = view
+    @Suppress("UNCHECKED_CAST")
+    fun attachView(view: IBView?) {
+        mView = view as? V
     }
 
     fun detachView() {
@@ -21,5 +24,8 @@ interface IBPresenter<V : IBView, M : IBModel> {
 
     fun getModel(): M
 
-    fun setLifecycleBehaviorSubject(subject: BehaviorSubject<*>)
+    override fun onDestroy(owner: LifecycleOwner) {
+        dispose()
+        detachView()
+    }
 }
