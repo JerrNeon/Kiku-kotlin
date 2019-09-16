@@ -1,9 +1,13 @@
 package com.jn.kikukt.net.retrofit.body
 
-import com.jn.kikukt.common.utils.gson.JsonUtils
-import okhttp3.MediaType
+import kotlinx.serialization.ImplicitReflectionSerializer
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.stringify
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
 /**
@@ -20,7 +24,7 @@ object RetrofitBodyHelp {
      * @return RequestBody
      */
     fun getFileUploadRequestBody(fileKey: String, file: File): MultipartBody.Part {
-        val requestBody = RequestBody.create(MultipartBody.FORM, file)
+        val requestBody = file.asRequestBody(MultipartBody.FORM)
         return MultipartBody.Part.createFormData(fileKey, file.name, requestBody)
     }
 
@@ -36,7 +40,7 @@ object RetrofitBodyHelp {
             .setType(MultipartBody.FORM)
         if (fileParams.isNotEmpty()) {
             for ((key, value) in fileParams) {
-                val requestBody = RequestBody.create(MultipartBody.FORM, value)
+                val requestBody = value.asRequestBody(MultipartBody.FORM)
                 build.addFormDataPart(key, value.name, requestBody)
             }
         }
@@ -54,10 +58,9 @@ object RetrofitBodyHelp {
      * @param object 请求参数对象
      * @return RequestBody
      */
+    @ImplicitReflectionSerializer
     fun getJsonRequestBody(`object`: Any?): RequestBody? {
-        return if (`object` != null) RequestBody.create(
-            MediaType.parse(MediaTypeConstants.JSON),
-            JsonUtils.instance.toJson(`object`)!!
-        ) else null
+        return if (`object` != null) Json.stringify(`object`)
+            .toRequestBody(MediaTypeConstants.JSON.toMediaTypeOrNull()) else null
     }
 }

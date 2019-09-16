@@ -2,8 +2,8 @@ package com.jn.kikukt.dialog
 
 import android.app.Activity
 import android.content.Context
-import android.support.annotation.LayoutRes
-import android.support.v4.app.Fragment
+import androidx.annotation.LayoutRes
+import androidx.fragment.app.Fragment
 import android.view.*
 import android.widget.PopupWindow
 import com.jn.kikukt.common.utils.getScreenWidth

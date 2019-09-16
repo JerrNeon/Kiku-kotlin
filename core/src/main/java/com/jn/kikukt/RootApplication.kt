@@ -3,7 +3,7 @@ package com.jn.kikukt
 import android.app.Application
 import android.content.ComponentCallbacks2
 import android.content.Context
-import android.support.multidex.MultiDex
+import androidx.multidex.MultiDex
 import com.jn.kikukt.common.ActivityManager
 import com.jn.kikukt.common.UtilsManager
 import com.jn.kikukt.common.exception.CrashHandler

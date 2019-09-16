@@ -2,7 +2,7 @@ package com.jn.kikukt.dialog
 
 import android.content.Intent
 import android.os.Build
-import android.support.v4.app.FragmentManager
+import androidx.fragment.app.FragmentManager
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager

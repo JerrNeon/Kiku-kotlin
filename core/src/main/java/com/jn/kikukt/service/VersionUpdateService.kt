@@ -5,16 +5,16 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
-import android.support.annotation.RequiresApi
-import android.support.v4.app.NotificationCompat
+import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
 import com.jn.kikukt.R
-import com.jn.kikukt.entiy.VersionUpdateVO
-import com.jn.kikukt.receiver.VersionUpdateReceiver
-import com.jn.kikukt.net.RetrofitManage
-import com.jn.kikukt.net.retrofit.callback.ProgressListener
 import com.jn.kikukt.common.utils.file.FileIOUtils
 import com.jn.kikukt.common.utils.file.FileUtils
 import com.jn.kikukt.common.utils.getInstallIntent
+import com.jn.kikukt.entiy.VersionUpdateVO
+import com.jn.kikukt.net.RetrofitManage
+import com.jn.kikukt.net.retrofit.callback.ProgressListener
+import com.jn.kikukt.receiver.VersionUpdateReceiver
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -41,7 +41,7 @@ class VersionUpdateService : Service() {
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         val versionUpdateVO = intent.getParcelableExtra<VersionUpdateVO>(VersionUpdateVO::class.java.simpleName)
-        downloadFile(versionUpdateVO)
+        downloadFile(versionUpdateVO!!)
         return super.onStartCommand(intent, flags, startId)
     }
 
@@ -102,7 +102,7 @@ class VersionUpdateService : Service() {
             .observeOn(Schedulers.io())
             .map { responseBody ->
                 val mimeType =
-                    responseBody.contentType()!!.type() + File.separator + responseBody.contentType()!!.subtype()
+                    responseBody.contentType()!!.type + File.separator + responseBody.contentType()!!.subtype
                 val fileSuffix = FileUtils.getFileSuffix(mimeType)//文件后缀名
                 val filePath =
                     FileUtils.getFileCacheFile().absolutePath + File.separator + downLoadFileName + "." + fileSuffix

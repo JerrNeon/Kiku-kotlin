@@ -8,7 +8,7 @@ import android.graphics.Canvas
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.os.Environment
-import android.support.annotation.ColorInt
+import androidx.annotation.ColorInt
 import android.widget.ScrollView
 import com.jn.kikukt.common.utils.ContextUtils
 import java.io.*

@@ -3,7 +3,7 @@ package com.jn.kikukt.utils
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.jn.kikukt.R
 import com.jn.kikukt.annonation.*
 import com.jn.kikukt.common.utils.checkLocationSereviceOPenInM

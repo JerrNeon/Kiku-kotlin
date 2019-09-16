@@ -5,14 +5,14 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
-import android.support.annotation.ColorInt
-import android.support.design.widget.CoordinatorLayout
-import android.support.v4.widget.DrawerLayout
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import android.widget.LinearLayout
+import androidx.annotation.ColorInt
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.drawerlayout.widget.DrawerLayout
 import com.jn.common.R
 
 /**

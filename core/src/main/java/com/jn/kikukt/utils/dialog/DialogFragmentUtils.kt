@@ -1,7 +1,7 @@
 package com.jn.kikukt.utils.dialog
 
 import android.content.Context
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.jn.kikukt.dialog.TokenInvalidDialogFragment
 import java.lang.ref.WeakReference
 

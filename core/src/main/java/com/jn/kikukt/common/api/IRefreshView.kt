@@ -1,6 +1,6 @@
 package com.jn.kikukt.common.api
 
-import android.support.annotation.LayoutRes
+import androidx.annotation.LayoutRes
 import android.widget.FrameLayout
 import com.jn.kikukt.annonation.*
 import com.jn.kikukt.common.Config

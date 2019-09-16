@@ -14,7 +14,7 @@ class RetrofitDownloadManager(base_url: String, val listener: ProgressListener?)
         return Interceptor { chain ->
             val originalResponse = chain.proceed(chain.request())
             originalResponse.newBuilder()
-                .body(DownloadResponseBody(originalResponse.body()!!, getProgressListener()!!))
+                .body(DownloadResponseBody(originalResponse.body!!, getProgressListener()!!))
                 .build()
         }
     }

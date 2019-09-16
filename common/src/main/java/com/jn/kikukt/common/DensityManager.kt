@@ -4,7 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.content.ComponentCallbacks
 import android.content.res.Configuration
-import android.support.annotation.IntDef
+import androidx.annotation.IntDef
 import android.util.DisplayMetrics
 import java.text.DecimalFormat
 

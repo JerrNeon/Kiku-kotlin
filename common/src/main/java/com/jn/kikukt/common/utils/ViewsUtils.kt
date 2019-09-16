@@ -1,12 +1,12 @@
 package com.jn.kikukt.common.utils
 
 import android.content.Context
-import android.support.design.widget.TabLayout
-import android.support.v4.widget.NestedScrollView
-import android.support.v7.widget.*
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.LinearLayout
+import androidx.core.widget.NestedScrollView
+import androidx.recyclerview.widget.*
+import com.google.android.material.tabs.TabLayout
 import java.lang.reflect.Field
 import kotlin.math.min
 

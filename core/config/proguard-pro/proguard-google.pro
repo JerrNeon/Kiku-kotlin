@@ -7,7 +7,7 @@
 
 # CoordinatorLayout.Behavior
 # CoordinatorLayout resolves the behaviors of its child components with reflection.
--keep class * extends android.support.design.widget.CoordinatorLayout$Behavior {
+-keep class * extends androidx.coordinatorlayout.widget.CoordinatorLayout$Behavior {
     public <init>(android.content.Context, android.util.AttributeSet);
     public <init>();
 }
@@ -58,10 +58,10 @@
 # 手动启用support keep注解
 -dontskipnonpubliclibraryclassmembers
 -printconfiguration
--keep,allowobfuscation @interface android.support.annotation.Keep
--keep @android.support.annotation.Keep class *
+-keep,allowobfuscation @interface androidx.annotation.Keep
+-keep @androidx.annotation.Keep class *
 -keepclassmembers class * {
-    @android.support.annotation.Keep *;
+    @androidx.annotation.Keep *;
 }
 # ------------------------------- AndroidAnnotations end -------------------------------
 

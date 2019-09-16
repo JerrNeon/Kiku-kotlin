@@ -2,8 +2,8 @@ package com.jn.kikukt.widget.imageview
 
 import android.content.Context
 import android.graphics.Canvas
-import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
+import androidx.appcompat.widget.AppCompatImageView
 import com.jn.kikukt.R
 
 /**

@@ -1,10 +1,10 @@
 package com.jn.kikukt.common.api
 
-import android.support.annotation.ColorRes
-import android.support.annotation.DrawableRes
-import android.support.annotation.IntRange
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentTransaction
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
+import androidx.annotation.IntRange
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 
 /**
  * Author：Stevie.Chen Time：2019/7/11

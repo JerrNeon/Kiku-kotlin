@@ -1,6 +1,6 @@
 package com.jn.kikukt.annonation
 
-import android.support.annotation.IntDef
+import androidx.annotation.IntDef
 
 /**
  * Author：Stevie.Chen Time：2019/7/10

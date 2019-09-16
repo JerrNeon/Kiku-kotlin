@@ -1,7 +1,7 @@
 package com.jn.kikukt.utils.glide
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * Author：Stevie.Chen Time：2019/7/15

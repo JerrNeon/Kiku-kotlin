@@ -1,7 +1,7 @@
 package com.jn.kikukt.mvp
 
-import android.arch.lifecycle.DefaultLifecycleObserver
-import android.arch.lifecycle.LifecycleOwner
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import com.jn.kikukt.common.api.IDisposableView
 
 /**

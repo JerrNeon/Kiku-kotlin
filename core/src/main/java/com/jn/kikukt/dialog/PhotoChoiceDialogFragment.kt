@@ -1,6 +1,6 @@
 package com.jn.kikukt.dialog
 
-import android.support.v4.app.FragmentManager
+import androidx.fragment.app.FragmentManager
 import android.view.View
 import android.view.WindowManager
 import com.jn.kikukt.R

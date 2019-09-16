@@ -11,7 +11,7 @@ import com.jn.kikukt.net.retrofit.callback.ProgressListener
 import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -42,7 +42,7 @@ open class RetrofitRequestManager(val base_url: String) : IRetrofitManage {
             builder.client(okHttpClientBuilder.build())
         builder.addConverterFactory(
             Json.nonstrict.asConverterFactory(
-                MediaType.get(MediaTypeConstants.JSON)
+                MediaTypeConstants.JSON.toMediaType()
             )
         )
         return builder
@@ -89,7 +89,12 @@ open class RetrofitRequestManager(val base_url: String) : IRetrofitManage {
 
     override fun createHttpLoggingInterceptor(): Interceptor? {
         val httpLoggingInterceptor =
-            HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { message -> Log.d(TAG, message) })
+            HttpLoggingInterceptor(object :
+                HttpLoggingInterceptor.Logger {
+                override fun log(message: String) {
+                    Log.d(TAG, message)
+                }
+            })
         //Debug环境下才打印日志
         httpLoggingInterceptor.level =
             if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE

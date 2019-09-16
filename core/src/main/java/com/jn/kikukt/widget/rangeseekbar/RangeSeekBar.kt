@@ -7,13 +7,13 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Parcelable
-import android.support.annotation.ColorRes
-import android.support.v7.widget.AppCompatImageView
+import androidx.annotation.ColorRes
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
+import androidx.appcompat.widget.AppCompatImageView
 import com.jn.kikukt.R
 import com.jn.kikukt.common.utils.NumberUtils
 import com.jn.kikukt.common.utils.dp2px

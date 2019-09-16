@@ -2,8 +2,8 @@ package com.jn.kikukt.net.retrofit.observer
 
 import android.app.Activity
 import android.content.Context
-import android.support.annotation.IntDef
-import android.support.v7.app.AppCompatActivity
+import androidx.annotation.IntDef
+import androidx.appcompat.app.AppCompatActivity
 import com.jn.kikukt.common.utils.showToast
 import com.jn.kikukt.net.retrofit.exception.OkHttpErrorHelper
 import io.reactivex.Observer

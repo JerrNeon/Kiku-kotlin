@@ -16,7 +16,7 @@ class RetrofitUploadManager(base_url: String, val listener: ProgressListener?) :
             chain.proceed(
                 originalRequest
                     .newBuilder()
-                    .post(UploadRequestBody(originalRequest.body()!!, getProgressListener()))
+                    .post(UploadRequestBody(originalRequest.body!!, getProgressListener()))
                     .build()
             )
         }

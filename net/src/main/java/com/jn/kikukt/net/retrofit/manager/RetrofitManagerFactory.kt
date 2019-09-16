@@ -1,6 +1,6 @@
 package com.jn.kikukt.net.retrofit.manager
 
-import android.support.annotation.IntDef
+import androidx.annotation.IntDef
 import com.jn.kikukt.net.retrofit.callback.ProgressListener
 
 /**

@@ -2,9 +2,9 @@ package com.jn.kikukt.adapter
 
 import android.app.Activity
 import android.content.Context
-import android.support.annotation.LayoutRes
-import android.support.v4.app.Fragment
-import android.support.v4.view.PagerAdapter
+import androidx.annotation.LayoutRes
+import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.PagerAdapter
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View

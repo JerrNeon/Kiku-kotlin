@@ -23,7 +23,7 @@ class UploadRequestBody(val requestBody: RequestBody, val progressListener: Prog
 
     @Throws(IOException::class)
     override fun writeTo(sink: BufferedSink) {
-        val bufferedSink = Okio.buffer(sink(sink))
+        val bufferedSink = sink(sink).buffer()
         //写入
         requestBody.writeTo(bufferedSink)
         //必须调用flush，否则最后一部分数据可能不会被写入
@@ -32,7 +32,7 @@ class UploadRequestBody(val requestBody: RequestBody, val progressListener: Prog
 
     private fun sink(delegate: Sink): ForwardingSink {
         return object : ForwardingSink(delegate) {
-            internal var totalBytesWrite = 0L
+            var totalBytesWrite = 0L
 
             @Throws(IOException::class)
             override fun write(source: Buffer, byteCount: Long) {

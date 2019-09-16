@@ -1,8 +1,8 @@
 package com.jn.kikukt.adapter
 
 import android.app.Activity
-import android.support.annotation.LayoutRes
-import android.support.v4.app.Fragment
+import androidx.annotation.LayoutRes
+import androidx.fragment.app.Fragment
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.entity.MultiItemEntity
 

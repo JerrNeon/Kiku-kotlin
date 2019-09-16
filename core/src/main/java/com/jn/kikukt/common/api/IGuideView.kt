@@ -1,6 +1,6 @@
 package com.jn.kikukt.common.api
 
-import android.support.annotation.DrawableRes
+import androidx.annotation.DrawableRes
 
 /**
  * Author：Stevie.Chen Time：2019/7/10

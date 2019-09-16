@@ -2,7 +2,7 @@ package com.jn.kikukt.entiy
 
 import android.os.Parcel
 import android.os.Parcelable
-import android.support.annotation.DrawableRes
+import androidx.annotation.DrawableRes
 
 /**
  * Author：Stevie.Chen Time：2019/7/10

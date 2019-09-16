@@ -5,13 +5,13 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
-import android.support.annotation.DrawableRes
-import android.support.v4.app.DialogFragment
-import android.support.v4.app.FragmentManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.annotation.DrawableRes
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import com.jn.kikukt.R
 import com.jn.kikukt.widget.imageview.SpinBlackView
 
@@ -35,7 +35,7 @@ class ProgressDialogFragment : DialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        val view = LayoutInflater.from(context).inflate(R.layout.dialog_progress, null, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.dialog_progress, container, false)
         mSpinBlackProgressView = view.findViewById(R.id.sbv_progressDialog)
         return view
     }

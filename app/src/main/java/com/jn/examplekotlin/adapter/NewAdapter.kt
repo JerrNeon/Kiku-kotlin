@@ -14,9 +14,10 @@ class NewAdapter(activity: Activity) : BaseRvAdapter<NewsVO>(activity) {
 
     override fun getLayoutResourceId(): Int = R.layout.item_news
 
-    override fun convert(helper: BaseAdapterViewHolder?, item: NewsVO?) {
+    override fun convert(helper: BaseAdapterViewHolder, item: NewsVO?) {
         item?.let {
-            helper?.displayImage(R.id.iv_news, it.thumbnail)?.setText(R.id.tv_news, it.text)
+            helper.displayImage(R.id.iv_news, it.thumbnail)
+                .setText(R.id.tv_news, it.text)
         }
     }
 }

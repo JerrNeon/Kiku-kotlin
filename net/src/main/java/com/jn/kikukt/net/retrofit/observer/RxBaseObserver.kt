@@ -1,7 +1,7 @@
 package com.jn.kikukt.net.retrofit.observer
 
 import android.content.Context
-import android.support.annotation.IntDef
+import androidx.annotation.IntDef
 import com.jn.kikukt.common.utils.ContextUtils
 import com.jn.kikukt.common.utils.showToast
 import com.jn.kikukt.net.retrofit.exception.OkHttpErrorHelper

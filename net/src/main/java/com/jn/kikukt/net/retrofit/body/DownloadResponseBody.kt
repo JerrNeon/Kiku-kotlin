@@ -24,14 +24,14 @@ class DownloadResponseBody(val responseBody: ResponseBody, val listener: Progres
 
     override fun source(): BufferedSource {
         if (null == bufferedSource) {
-            bufferedSource = Okio.buffer(source(responseBody.source()))
+            bufferedSource = source(responseBody.source()).buffer()
         }
         return bufferedSource!!
     }
 
     private fun source(source: Source): Source {
         return object : ForwardingSource(source) {
-            internal var totalBytesRead = 0L
+            var totalBytesRead = 0L
 
             @Throws(IOException::class)
             override fun read(sink: Buffer, byteCount: Long): Long {

@@ -1,9 +1,9 @@
 package com.jn.kikukt.dialog
 
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView

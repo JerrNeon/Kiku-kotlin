@@ -1,6 +1,6 @@
 package com.jn.kikukt.common.api
 
-import android.support.annotation.ColorRes
+import androidx.annotation.ColorRes
 
 /**
  * Author：Stevie.Chen Time：2019/7/11

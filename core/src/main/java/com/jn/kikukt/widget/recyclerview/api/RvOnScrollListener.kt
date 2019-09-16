@@ -1,6 +1,6 @@
 package com.jn.kikukt.widget.recyclerview.api
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import com.jn.kikukt.common.utils.isSlideToBottom
 
 /**

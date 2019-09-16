@@ -1,8 +1,8 @@
 package com.jn.kikukt.common.api
 
-import android.support.annotation.DrawableRes
-import android.support.annotation.StringRes
-import android.support.v7.widget.RecyclerView
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView

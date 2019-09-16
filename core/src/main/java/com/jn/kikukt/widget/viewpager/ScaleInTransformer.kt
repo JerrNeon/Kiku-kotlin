@@ -2,7 +2,7 @@ package com.jn.kikukt.widget.viewpager
 
 import android.annotation.TargetApi
 import android.os.Build
-import android.support.v4.view.ViewPager
+import androidx.viewpager.widget.ViewPager
 import android.view.View
 
 /**

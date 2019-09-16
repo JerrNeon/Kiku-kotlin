@@ -1,9 +1,9 @@
 package com.jn.kikukt.activity
 
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.content.ContextCompat
-import android.support.v4.view.PagerAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.core.content.ContextCompat
+import androidx.viewpager.widget.PagerAdapter
 import com.jn.kikukt.R
 import com.jn.kikukt.adapter.BaseFragmentPagerAdapter
 import com.jn.kikukt.adapter.BaseFragmentStatePagerAdapter
