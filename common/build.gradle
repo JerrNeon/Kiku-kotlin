@@ -1,8 +1,11 @@
 apply plugin: 'com.android.library'
+
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlinx-serialization'
 
 def dep = rootProject.ext.dependencies // dep
+def depKt = rootProject.ext.dependenciesKt // dep
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -54,7 +57,8 @@ dependencies {
     testImplementation dep["junit"]
     androidTestImplementation dep["runner"]
     androidTestImplementation dep["espresso-core"]
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    api depKt["kotlin"]
+    api depKt["kotlinx-serialization"]
 
     api dep["appcompat-v7"]
     api dep["recyclerview-v7"]

@@ -16,7 +16,7 @@ class NewAdapter(activity: Activity) : BaseRvAdapter<NewsVO>(activity) {
 
     override fun convert(helper: BaseAdapterViewHolder?, item: NewsVO?) {
         item?.let {
-            helper?.displayImage(R.id.iv_news, it.text)?.setText(R.id.tv_news, it.thumbnail)
+            helper?.displayImage(R.id.iv_news, it.thumbnail)?.setText(R.id.tv_news, it.text)
         }
     }
 }

@@ -8,6 +8,7 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import com.jn.kikukt.net.BuildConfig
 import com.jn.kikukt.net.retrofit.body.MediaTypeConstants
 import com.jn.kikukt.net.retrofit.callback.ProgressListener
+import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.MediaType
@@ -26,10 +27,12 @@ open class RetrofitRequestManager(val base_url: String) : IRetrofitManage {
 
     private val TAG = Retrofit::class.java.simpleName
 
+    @UnstableDefault
     override fun createRetrofit(): Retrofit {
         return createRetrofitBuilder().build()
     }
 
+    @UnstableDefault
     override fun createRetrofitBuilder(): Retrofit.Builder {
         val builder = Retrofit.Builder()
             .baseUrl(base_url)
@@ -37,7 +40,11 @@ open class RetrofitRequestManager(val base_url: String) : IRetrofitManage {
         val okHttpClientBuilder = createOkHttpClient()
         if (okHttpClientBuilder != null)
             builder.client(okHttpClientBuilder.build())
-        builder.addConverterFactory(Json.asConverterFactory(MediaType.get(MediaTypeConstants.JSON)))
+        builder.addConverterFactory(
+            Json.nonstrict.asConverterFactory(
+                MediaType.get(MediaTypeConstants.JSON)
+            )
+        )
         return builder
     }
 

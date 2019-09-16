@@ -19,7 +19,10 @@ interface IDisposableView {
     }
 
     fun dispose() {
-        if (!mCompositeDisposable!!.isDisposed)
-            mCompositeDisposable!!.dispose()
+        mCompositeDisposable?.let {
+            if (!it.isDisposed)
+                it.dispose()
+        }
     }
+
 }

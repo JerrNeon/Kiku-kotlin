@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlinx-serialization'
 
 def dep = rootProject.ext.dependencies //dep
 
@@ -44,7 +45,6 @@ dependencies {
     testImplementation dep["junit"]
     androidTestImplementation dep["runner"]
     androidTestImplementation dep["espresso-core"]
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation project(':core')
 
