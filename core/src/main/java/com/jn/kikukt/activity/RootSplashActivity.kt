@@ -4,9 +4,10 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import com.jn.kikukt.R
-import com.jn.kikukt.common.api.ISplashView
-import com.jn.kikukt.utils.RxPermissionsManager
 import com.jn.kikukt.common.SPManage
+import com.jn.kikukt.common.api.ISplashView
+import com.jn.kikukt.common.utils.statusbar.StatusBarUtils
+import com.jn.kikukt.utils.RxPermissionsManager
 import io.reactivex.functions.Consumer
 
 /**
@@ -24,10 +25,15 @@ abstract class RootSplashActivity : RootActivity(), ISplashView, Handler.Callbac
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setStatusBar()
         setTheme(R.style.SplashTheme)
         if (getImgResourceId() != 0)
             window.decorView.setBackgroundResource(getImgResourceId())
         initView()
+    }
+
+    override fun setStatusBar() {
+        StatusBarUtils.setTransparent(this)
     }
 
     override fun initView() {
