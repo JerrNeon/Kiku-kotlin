@@ -45,7 +45,7 @@ object UriUtils {
         try {
             var uri: Uri? = null
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                uri = FileProvider.getUriForFile(context, "$application_id.fileProvider", File(filePath))
+                uri = FileProvider.getUriForFile(context, "$application_id.fileprovider", File(filePath))
             } else
                 uri = Uri.fromFile(File(filePath))
             return uri
