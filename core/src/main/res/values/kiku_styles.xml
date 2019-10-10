@@ -10,7 +10,7 @@
     </style>
 
     <!--设置splash主题(处理启动时白屏问题-设置背景为启动图片)-->
-    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="BaseSplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>

@@ -1,20 +1,10 @@
 package com.jn.kikukt.common.api
 
-import androidx.annotation.DrawableRes
-
 /**
  * Author：Stevie.Chen Time：2019/7/11
  * Class Comment：引导页
  */
 interface ISplashView {
-
-    /**
-     * 获取引导页图片资源
-     *
-     * @return
-     */
-    @DrawableRes
-    fun getImgResourceId(): Int
 
     /**
      * 获取所有需要用到的权限
