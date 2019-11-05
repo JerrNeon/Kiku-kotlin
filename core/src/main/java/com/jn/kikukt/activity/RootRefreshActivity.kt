@@ -48,7 +48,7 @@ abstract class RootRefreshActivity : RootTbActivity(), IRefreshView, OnRefreshLo
     override fun onRefresh(refreshLayout: RefreshLayout) {
         setRefreshOperateType(ON_REFRESH)
         mSmartRefreshLayout?.resetNoMoreData()//reset no more data origin status
-        mPageIndex = getPageIndex()
+        mPageIndex = getInitPageIndex()
         sendRequest()
     }
 

@@ -48,7 +48,7 @@ abstract class RootRefreshFragment : RootFragment(), IRefreshView, OnRefreshLoad
     override fun onRefresh(refreshLayout: RefreshLayout) {
         setRefreshOperateType(ON_REFRESH)
         mSmartRefreshLayout?.resetNoMoreData()//reset no more data origin status
-        mPageIndex = getPageIndex()
+        mPageIndex = getInitPageIndex()
         sendRequest()
     }
 
