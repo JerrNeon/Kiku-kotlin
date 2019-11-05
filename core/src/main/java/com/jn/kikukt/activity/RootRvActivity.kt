@@ -1,12 +1,12 @@
 package com.jn.kikukt.activity
 
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.jn.kikukt.R
 import com.jn.kikukt.adapter.BaseRvAdapter
@@ -55,7 +55,7 @@ abstract class RootRvActivity<T> : RootRefreshActivity(), IRvView<T>,
         if (getLoadMoreEnableType() == TOTAL)
             return mAdapter?.itemCount ?: 0 < getTotalSize()
         else if (getLoadMoreEnableType() == PAGE)
-            return getPageSize() < getTotalPage()
+            return getPageIndex() < getTotalPage()
         return super.isLoadMoreEnable()
     }
 
