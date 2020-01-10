@@ -54,8 +54,8 @@ dependencies {
 
     implementation project(':common')
     api dep["retrofit"]
-    //api dep["retrofit-converter-gson"]
-    api (depKt["retrofit-converter-gson-kotlinx"])
+    api dep["retrofit-converter-gson"]
+    //api (depKt["retrofit-converter-gson-kotlinx"])
     api dep["retrofit-adapter-rxjava2"]
     api dep["okhttp3"]
     api dep["okhttp3-logging-interceptor"]

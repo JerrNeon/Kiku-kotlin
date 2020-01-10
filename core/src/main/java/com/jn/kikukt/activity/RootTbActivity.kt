@@ -1,8 +1,6 @@
 package com.jn.kikukt.activity
 
 import android.os.Bundle
-import androidx.annotation.IntDef
-import androidx.annotation.LayoutRes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewStub
@@ -10,6 +8,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.annotation.IntDef
+import androidx.annotation.LayoutRes
 import com.jn.kikukt.R
 
 /**
@@ -206,19 +206,10 @@ abstract class RootTbActivity : RootActivity() {
     /**
      * set title
      *
-     * @param titleText title content
-     */
-    protected fun setTitleText(titleText: String) {
-        setTitleText(titleText, true)
-    }
-
-    /**
-     * set title
-     *
      * @param titleText     title content
      * @param isShowDivider is or not show divider
      */
-    protected fun setTitleText(titleText: String, isShowDivider: Boolean) {
+    protected fun setTitleText(titleText: String, isShowDivider: Boolean = true) {
         setTitleBarView(TV_TITLE, RESOURCE_TEXT, titleText)
         setTitleBarView(
             VIEW_DIVIDER,

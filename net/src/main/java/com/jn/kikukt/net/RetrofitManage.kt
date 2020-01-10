@@ -50,7 +50,8 @@ class RetrofitManage {
         if (mBaseUrl == null)
             throw NullPointerException("BaseUrl is empty,please initRetrofit in Application")
         if (mRetrofit == null) {
-            val iRetrofitManage = RetrofitManagerFactory.create(RetrofitManagerFactory.REQUEST, mBaseUrl!!, null)
+            val iRetrofitManage =
+                RetrofitManagerFactory.create(RetrofitManagerFactory.REQUEST, mBaseUrl!!, null)
             mRetrofit = iRetrofitManage?.createRetrofit()
         }
         return mRetrofit!!.create(service)
@@ -71,7 +72,8 @@ class RetrofitManage {
     fun <T> createDownload(service: Class<T>, listener: ProgressListener): T {
         if (mBaseUrl == null)
             throw NullPointerException("BaseUrl is empty,please initRetrofit in Application")
-        val iRetrofitManage = RetrofitManagerFactory.create(RetrofitManagerFactory.DOWNLOAD, mBaseUrl!!, listener)
+        val iRetrofitManage =
+            RetrofitManagerFactory.create(RetrofitManagerFactory.DOWNLOAD, mBaseUrl!!, listener)
         val retrofit = iRetrofitManage?.createRetrofit()
         return retrofit!!.create(service)
     }
@@ -91,7 +93,8 @@ class RetrofitManage {
     fun <T> createUpload(service: Class<T>, listener: ProgressListener): T {
         if (mBaseUrl == null)
             throw NullPointerException("BaseUrl is empty,please initRetrofit in Application")
-        val iRetrofitManage = RetrofitManagerFactory.create(RetrofitManagerFactory.UPLOAD, mBaseUrl!!, listener)
+        val iRetrofitManage =
+            RetrofitManagerFactory.create(RetrofitManagerFactory.UPLOAD, mBaseUrl!!, listener)
         val retrofit = iRetrofitManage?.createRetrofit()
         return retrofit!!.create(service)
     }
@@ -109,17 +112,6 @@ class RetrofitManage {
     }
 
     /**
-     * 获取上传单张图片的Observable
-     *
-     * @param url        上传地址
-     * @param fileParams 文件参数信息
-     * @return Observable
-     */
-    fun getUploadObservable(url: String, fileParams: Map<String, File>): Observable<ResponseBody> {
-        return getUploadObservable(url, fileParams, null)
-    }
-
-    /**
      * 获取上传多张图片的Observable
      *
      * @param url
@@ -130,7 +122,7 @@ class RetrofitManage {
     fun getUploadObservable(
         url: String,
         fileParams: Map<String, File>,
-        params: Map<String, String>?
+        params: Map<String, String>? = null
     ): Observable<ResponseBody> {
         val requestBody = RetrofitBodyHelp.getFileUploadRequestBody(fileParams, params)
         val apiService = create(RetrofitApiService::class.java)
