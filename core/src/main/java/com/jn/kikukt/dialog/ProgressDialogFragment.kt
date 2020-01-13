@@ -33,7 +33,11 @@ class ProgressDialogFragment : DialogFragment() {
         fun newInstance(): ProgressDialogFragment = ProgressDialogFragment()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         val view = LayoutInflater.from(context).inflate(R.layout.dialog_progress, container, false)
         mSpinBlackProgressView = view.findViewById(R.id.sbv_progressDialog)
@@ -43,21 +47,23 @@ class ProgressDialogFragment : DialogFragment() {
     @SuppressLint("ResourceType")
     override fun onStart() {
         super.onStart()
-        if (dialog.window != null) {
-            val window = dialog.window
-            val lp = window!!.attributes
-            lp.width = WindowManager.LayoutParams.WRAP_CONTENT
-            lp.height = WindowManager.LayoutParams.WRAP_CONTENT
-            //去掉背景色
-            lp.dimAmount = 0f
-            lp.flags = lp.flags or WindowManager.LayoutParams.FLAG_DIM_BEHIND
-            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            window.attributes = lp
-            dialog.setCancelable(true)//点击外部区域隐藏对话框
+        dialog?.let {
+            val window = it.window
+            if (window != null) {
+                val lp = window.attributes
+                lp.width = WindowManager.LayoutParams.WRAP_CONTENT
+                lp.height = WindowManager.LayoutParams.WRAP_CONTENT
+                //去掉背景色
+                lp.dimAmount = 0f
+                lp.flags = lp.flags or WindowManager.LayoutParams.FLAG_DIM_BEHIND
+                window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                window.attributes = lp
+                it.setCancelable(true)//点击外部区域隐藏对话框
+            }
         }
     }
 
-    override fun show(fm: FragmentManager, tag: String) {
+    override fun show(fm: FragmentManager, tag: String?) {
         mStartMillisecond = System.currentTimeMillis()
         startedShowing = false
         mStopMillisecond = java.lang.Long.MAX_VALUE
@@ -69,7 +75,7 @@ class ProgressDialogFragment : DialogFragment() {
         }, DELAY_MILLISECOND.toLong())
     }
 
-    private fun showDialogAfterDelay(fm: FragmentManager, tag: String) {
+    private fun showDialogAfterDelay(fm: FragmentManager, tag: String?) {
         startedShowing = true
         val ft = fm.beginTransaction()
         ft.add(this, tag)

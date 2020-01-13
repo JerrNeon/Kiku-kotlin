@@ -13,20 +13,20 @@ ext {
     android = [
             androidXSdkVersion                     : "1.0.0",
             roomSdkVersion                         : "2.1.0",
-            lifecycleSdkVersion                    : "2.0.0",
+            lifecycleSdkVersion                    : "2.1.0",
 
             butterknifeSdkVersion                  : "10.1.0",
-            retrofitSdkVersion                     : "2.6.1",
+            retrofitSdkVersion                     : "2.7.1",
             okhttpSdkVersion                       : "2.5.0",
-            okhttp3SdkVersion                      : "4.1.0",
+            okhttp3SdkVersion                      : "4.3.1",
             eventbusSdkVersion                     : "3.1.1",
-            gsonSdkVersion                         : "2.8.5",
-            glideSdkVersion                        : "4.9.0",
+            gsonSdkVersion                         : "2.8.6",
+            glideSdkVersion                        : "4.11.0",
             greendaoSdkVersion                     : "3.2.2",
             BaseRecyclerViewAdapterHelperSdkVersion: "2.9.47",
             SmartRefreshLayoutSdkVersion           : "1.1.0",
             rxjavaSdkVersion                       : "1.1.0",
-            rxjava2SdkVersion                      : "2.2.12",
+            rxjava2SdkVersion                      : "2.2.17",
             rxandroidSdkVersion                    : "1.1.0",
             rxandroid2SdkVersion                   : "2.1.1",
             rxpermissionsSdkVersion                : "0.9.5",
@@ -38,17 +38,18 @@ ext {
     ]
 
     dependencies = [
-            "junit"                          : "junit:junit:4.12",
+            "junit"                          : "junit:junit:4.13",
             "support-v4"                     : "androidx.legacy:legacy-support-v4:${android["androidXSdkVersion"]}",
             "design"                         : "com.google.android.material:material:${android["androidXSdkVersion"]}",
             "recyclerview-v7"                : "androidx.recyclerview:recyclerview:${android["androidXSdkVersion"]}",
             "cardview-v7"                    : "androidx.cardview:cardview:${android["androidXSdkVersion"]}",
-            "appcompat-v7"                   : "androidx.appcompat:appcompat:1.0.2",
+            "appcompat-v7"                   : "androidx.appcompat:appcompat:1.1.0",
             "constraint-layout"              : 'androidx.constraintlayout:constraintlayout:1.1.3',
             "room"                           : "androidx.room:room-runtime:${android["roomSdkVersion"]}",
             "room-annotationProcessor"       : "androidx.room:room-compiler:${android["roomSdkVersion"]}",
             "lifecycle"                      : "androidx.lifecycle:lifecycle-extensions:${android["lifecycleSdkVersion"]}",
             "lifecycle-java8"                : "androidx.lifecycle:lifecycle-common-java8:${android["lifecycleSdkVersion"]}",
+            "lifecycle-viewmodel"            : "androidx.lifecycle:lifecycle-viewmodel-ktx:${android["lifecycleSdkVersion"]}",
             "annotation"                     : 'androidx.annotation:annotation:1.1.0',
             "multidex"                       : 'androidx.multidex:multidex:2.0.1',//突破65536个方法数
             "viewpager2"                     : "androidx.viewpager2:viewpager2:1.0.0-beta03",
@@ -151,7 +152,7 @@ ext {
             "okhttp-urlconnection"           : "com.squareup.okhttp:okhttp-urlconnection:2.0.0",
             "otto"                           : "com.squareup:otto:1.3.8",//通信(与EventBus类似)
             "paginate"                       : "com.github.markomilos:paginate:0.5.1",//分页下拉加载库，
-            "jsoup"                          : "org.jsoup:jsoup:1.11.2",//Html解析
+            "jsoup"                          : "org.jsoup:jsoup:1.12.1",//Html解析
 
             /*--------------------------------- test ---------------------------------*/
             "runner"                         : 'androidx.test:runner:1.2.0',
@@ -195,8 +196,8 @@ ext {
     ]
 
     dependenciesKt = [
-            "kotlin"                         : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version",
-            "kotlinx-serialization"          : "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.13.0",
+            "kotlin"                         : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.61",
+            "kotlinx-serialization"          : "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.14.0",
             "retrofit-converter-gson-kotlinx": "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.4.0",
             "rxkotlin"                       : "io.reactivex:rxkotlin:2.4.0",
             "kotlinx-coroutines"             : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${android["kotlinxCoroutinesSdkVersion"]}",
