@@ -37,16 +37,18 @@ abstract class RootDialogFragment : AppCompatDialogFragment(), DialogInterface.O
     @CallSuper
     override fun onStart() {
         super.onStart()
-        mWindow = dialog.window
-        if (getLayoutParams() == null) {
-            val params = mWindow?.attributes
-            params?.gravity = Gravity.BOTTOM//底部显示
-            params?.width = WindowManager.LayoutParams.MATCH_PARENT//宽度为全屏
-            params?.height = WindowManager.LayoutParams.WRAP_CONTENT//宽度为全屏
-            mWindow?.attributes = params
-        } else
-            mWindow?.attributes = getLayoutParams()
-        mWindow?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))//设置半透明背景
+        dialog?.let {
+            mWindow = it.window
+            if (getLayoutParams() == null) {
+                val params = mWindow?.attributes
+                params?.gravity = Gravity.BOTTOM//底部显示
+                params?.width = WindowManager.LayoutParams.MATCH_PARENT//宽度为全屏
+                params?.height = WindowManager.LayoutParams.WRAP_CONTENT//宽度为全屏
+                mWindow?.attributes = params
+            } else
+                mWindow?.attributes = getLayoutParams()
+            mWindow?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))//设置半透明背景
+        }
     }
 
     override fun onCreateView(
@@ -55,10 +57,10 @@ abstract class RootDialogFragment : AppCompatDialogFragment(), DialogInterface.O
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)//去掉默认标题
-        dialog.setCanceledOnTouchOutside(!getCanceledOnTouchOutsideEnable())//点击边际是否可消失
+        dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)//去掉默认标题
+        dialog?.setCanceledOnTouchOutside(!getCanceledOnTouchOutsideEnable())//点击边际是否可消失
         if (getAnimationStyle() != 0)
-            dialog.window!!.attributes.windowAnimations = getAnimationStyle()
+            dialog?.window!!.attributes.windowAnimations = getAnimationStyle()
         mView = inflater.inflate(getLayoutResourceId(), container, false)
         mActivity = activity as Activity
         if (activity is AppCompatActivity)
@@ -80,7 +82,7 @@ abstract class RootDialogFragment : AppCompatDialogFragment(), DialogInterface.O
         return keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_SEARCH//不执行父类点击事件
     }
 
-    override fun show(manager: FragmentManager, tag: String) {
+    override fun show(manager: FragmentManager, tag: String?) {
         try {
             super.show(manager, tag)
         } catch (e: Exception) {
@@ -122,7 +124,7 @@ abstract class RootDialogFragment : AppCompatDialogFragment(), DialogInterface.O
      * 点击物理按键让对话框不消失
      */
     fun setCanceledOnBackPress() {
-        dialog.setOnKeyListener(this)
+        dialog?.setOnKeyListener(this)
     }
 
     /**
@@ -131,7 +133,7 @@ abstract class RootDialogFragment : AppCompatDialogFragment(), DialogInterface.O
      * @return
      */
     fun isShowing(): Boolean {
-        return if (dialog != null) dialog.isShowing else false
+        return if (dialog != null) dialog?.isShowing ?: false else false
     }
 
     override fun onClick(view: View) {
