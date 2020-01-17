@@ -29,8 +29,17 @@ class ProgressDialogFragment : DialogFragment() {
     companion object {
         private const val DELAY_MILLISECOND = 450
         private const val SHOW_MIN_MILLISECOND = 300
+        private const val KEY_TYPE = "type"
+        const val TYPE_BLACK = 0x01
+        const val TYPE_WHITE = 0x02
 
-        fun newInstance(): ProgressDialogFragment = ProgressDialogFragment()
+        fun newInstance(type: Int = TYPE_BLACK): ProgressDialogFragment {
+            return ProgressDialogFragment().apply {
+                val bundle = Bundle()
+                bundle.putInt(KEY_TYPE, type)
+                arguments = bundle
+            }
+        }
     }
 
     override fun onCreateView(
@@ -39,7 +48,12 @@ class ProgressDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        val view = LayoutInflater.from(context).inflate(R.layout.dialog_progress, container, false)
+        val type = arguments?.getInt(KEY_TYPE) ?: TYPE_BLACK
+        val view = LayoutInflater.from(context).inflate(
+            if (type == TYPE_BLACK) R.layout.dialog_progress else R.layout.dialog_progress_white,
+            container,
+            false
+        )
         mSpinBlackProgressView = view.findViewById(R.id.sbv_progressDialog)
         return view
     }

@@ -30,4 +30,29 @@ interface RetrofitApiService {
     @Streaming
     @GET
     fun downloadFile(@Url url: String): Observable<ResponseBody>
+
+    /**
+     * 上传文件
+     * <P>
+     *    协程
+     * </p>
+     *
+     * @param url         地址
+     * @param requestBody 请求体
+     * @return
+     */
+    @POST
+    suspend fun upload(@Url url: String, @Body requestBody: RequestBody): ResponseBody
+
+    /**
+     * 下载文件(带下载进度监听)
+     * <P>
+     *    协程
+     * </p>
+     * @param url
+     * @return
+     */
+    @Streaming
+    @GET
+    suspend fun download(@Url url: String): ResponseBody
 }

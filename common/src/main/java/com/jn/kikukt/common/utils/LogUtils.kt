@@ -57,3 +57,12 @@ fun String.logV(tag: String) {
     if (LOG_ENABLE)
         Log.d(tag, this)
 }
+
+fun Throwable.log() {
+    log(TAG)
+}
+
+fun Throwable.log(tag: String) {
+    if (LOG_ENABLE)
+        Log.e(tag, Log.getStackTraceString(this))
+}

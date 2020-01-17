@@ -61,4 +61,7 @@ dependencies {
     api dep["okhttp3-logging-interceptor"]
     api dep["rxjava2"]
     api dep["rxandroid2"]
+    api dep["lifecycle-viewmodel"]
+    api depKt["kotlinx-coroutines-core"]
+    api depKt["kotlinx-coroutines-android"]
 }

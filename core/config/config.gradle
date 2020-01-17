@@ -200,7 +200,8 @@ ext {
             "kotlinx-serialization"          : "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.14.0",
             "retrofit-converter-gson-kotlinx": "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.4.0",
             "rxkotlin"                       : "io.reactivex:rxkotlin:2.4.0",
-            "kotlinx-coroutines"             : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${android["kotlinxCoroutinesSdkVersion"]}",
+            "kotlinx-coroutines-core"        : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${android["kotlinxCoroutinesSdkVersion"]}",
+            "kotlinx-coroutines-android"     : "org.jetbrains.kotlinx:kotlinx-coroutines-android:${android["kotlinxCoroutinesSdkVersion"]}",
     ]
 
     ndk = [

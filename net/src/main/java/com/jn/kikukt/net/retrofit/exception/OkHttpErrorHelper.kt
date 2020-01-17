@@ -19,7 +19,6 @@ object OkHttpErrorHelper {
             return context.resources.getString(R.string.no_internet)
         } else if (error is OkHttpException) {
             return error.errorMsg ?: ""//服务器返回错误信息
-
         } else if (error is ConnectException) {
             return context.resources.getString(R.string.generic_server_down)   //可能是连接服务器失败
         } else if (error is SocketTimeoutException) {

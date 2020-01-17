@@ -19,4 +19,11 @@ interface Api {
         @Field("page") pageIndex: Int, @Field("count") pageSize: Int, @Field("type")
         type: String
     ): Observable<XaResult<List<NewsVO>>>
+
+    @FormUrlEncoded
+    @POST(ApiConfig.GET_NEW_LIST)
+    suspend fun getNewList2(
+        @Field("page") pageIndex: Int, @Field("count") pageSize: Int, @Field("type")
+        type: String
+    ): XaResult<List<NewsVO>>
 }
