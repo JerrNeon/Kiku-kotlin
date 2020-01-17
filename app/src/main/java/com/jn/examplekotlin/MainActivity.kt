@@ -18,7 +18,7 @@ class MainActivity : RootRvPresenterActivity<NewsContract.IPresenter, NewsVO>(),
 
     override fun createPresenter(): NewsContract.IPresenter? = NewsPresenter()
 
-    override fun getAdapter(): BaseRvAdapter<NewsVO> = NewAdapter(this)
+    override val mAdapter: BaseRvAdapter<NewsVO> = NewAdapter(this)
 
     override fun sendRequest() {
         super.sendRequest()

@@ -17,11 +17,16 @@ class NewsPresenter : BasePresenter<NewsContract.IView, NewsContract.IModel>(),
 
     override fun getNewList() {
         mModel.getNewList(
-            mView.getPageIndex(),
-            mView.getPageSize(),
+            mView.mPageIndex,
+            mView.mPageSize,
             object : RxObserver<List<NewsVO>>(this@NewsPresenter) {
                 override fun onSuccess(v: List<NewsVO>) {
                     mView.showLoadSuccessView(v)
+                }
+
+                override fun onFailure(e: Throwable, errorMsg: String?) {
+                    super.onFailure(e, errorMsg)
+                    mView.showLoadErrorView()
                 }
             })
     }

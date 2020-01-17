@@ -1,18 +1,18 @@
 package com.jn.kikukt.dialog
 
+import android.view.View
+import android.view.WindowManager
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.view.View
-import android.view.WindowManager
-import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.jn.kikukt.R
 import com.jn.kikukt.adapter.BaseAdapterViewHolder
 import com.jn.kikukt.adapter.BaseRvAdapter
-import com.jn.kikukt.entiy.ShareVO
 import com.jn.kikukt.common.utils.getScreenWidth
+import com.jn.kikukt.entiy.ShareVO
 
 /**
  * Author：Stevie.Chen Time：2019/7/15
@@ -24,28 +24,21 @@ class ShareDialogFragment : RootDialogFragment(), BaseQuickAdapter.OnItemClickLi
     private var mTvCancel: TextView? = null
 
     private var mOnItemClickListener: OnItemClickListener? = null
-    private var mOnShareResultListener: OnShareResultListener? = null//分享回调-个别情况特殊处理(微信登录、分享、支付都必须安装客户端)
+    private var mOnShareResultListener: OnShareResultListener? =
+        null//分享回调-个别情况特殊处理(微信登录、分享、支付都必须安装客户端)
 
     companion object {
         fun newInstance(): ShareDialogFragment = ShareDialogFragment()
     }
 
-    override fun getLayoutResourceId(): Int {
-        return R.layout.dialog_share
-    }
+    override val layoutResourceId: Int = R.layout.dialog_share
 
-    override fun getAnimationStyle(): Int {
-        return R.style.bottom_in_out
-    }
+    override val animationStyle: Int = R.style.bottom_in_out
 
-    override fun getCanceledOnTouchOutsideEnable(): Boolean {
-        return true
-    }
+    override val isCanceledOnTouchOutsideEnable: Boolean = true
 
-    override fun getLayoutParams(): WindowManager.LayoutParams? {
-        val params = mWindow!!.attributes
-        params.width = (mContext.getScreenWidth() * 0.94).toInt()//宽度为全屏
-        return params
+    override val layoutParams: WindowManager.LayoutParams? = mWindow?.attributes?.apply {
+        width = (mContext.getScreenWidth() * 0.94).toInt()//宽度
     }
 
     override fun initView() {

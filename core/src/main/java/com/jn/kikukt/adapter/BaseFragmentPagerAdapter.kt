@@ -11,13 +11,10 @@ import androidx.viewpager.widget.PagerAdapter
  */
 open class BaseFragmentPagerAdapter(
     fm: FragmentManager,
-    fragments: MutableList<Fragment>,
-    titles: MutableList<String>
+    private val mFragments: MutableList<Fragment>?,
+    private val mTitles: MutableList<String>?
 ) :
     FragmentPagerAdapter(fm) {
-
-    private val mFragments: MutableList<Fragment>? = fragments
-    private val mTitles: MutableList<String>? = titles
 
     override fun getItem(position: Int): Fragment {
         return mFragments?.get(position)!!

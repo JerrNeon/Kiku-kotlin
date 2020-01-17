@@ -1,14 +1,16 @@
 package com.jn.kikukt.common.api
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
-import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.jn.kikukt.adapter.BaseRvAdapter
 import com.jn.kikukt.annonation.LoadCompleteType
+import com.jn.kikukt.net.coroutines.HttpResponse
 
 /**
  * Author：Stevie.Chen Time：2019/7/10
@@ -20,22 +22,9 @@ interface IRvView<T> {
     var mEmptyView: View?//empty or failure view
     var mIvLoadingFailure: ImageView?//empty or failure icon
     var mTvLoadingFailure: TextView?//empty or failure hint text
-    var mAdapter: BaseRvAdapter<T>?//adapter
-
-    /**
-     * 获取适配器
-     *
-     * @return
-     */
-    fun getAdapter(): BaseRvAdapter<T>
-
-    /**
-     * 返回RecyclerView的LayoutManager
-     * 为空时默认为LinearLayoutManager
-     *
-     * @return LinearLayoutManager/GridLayoutManager/StaggeredGridLayoutManager
-     */
-    fun getLayoutManager(): RecyclerView.LayoutManager
+    val mAdapter: BaseRvAdapter<T>//adapter
+    val mLayoutManager: RecyclerView.LayoutManager//LayoutManager
+    val observer: Observer<HttpResponse>//Observer
 
     /**
      * 初始化刷新相关控件

@@ -4,9 +4,9 @@ import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import com.jn.kikukt.R
-import com.jn.kikukt.utils.dialog.DialogFragmentUtils
-import com.jn.kikukt.common.utils.getScreenWidth
 import com.jn.kikukt.common.SPManage
+import com.jn.kikukt.common.utils.getScreenWidth
+import com.jn.kikukt.utils.dialog.DialogFragmentUtils
 import kotlinx.android.synthetic.main.dialog_tokeninvalid.view.*
 
 /**
@@ -19,23 +19,11 @@ class TokenInvalidDialogFragment : RootDialogFragment() {
         fun newInstance(): TokenInvalidDialogFragment = TokenInvalidDialogFragment()
     }
 
-    override fun getLayoutResourceId(): Int {
-        return R.layout.dialog_tokeninvalid
-    }
+    override val layoutResourceId: Int = R.layout.dialog_tokeninvalid
 
-    override fun getAnimationStyle(): Int {
-        return 0
-    }
-
-    override fun getCanceledOnTouchOutsideEnable(): Boolean {
-        return false
-    }
-
-    override fun getLayoutParams(): WindowManager.LayoutParams? {
-        val params = mWindow!!.attributes
-        params.gravity = Gravity.CENTER//居中显示
-        params.width = (mContext.getScreenWidth() * 0.7).toInt()//宽度为全屏的70%
-        return params
+    override val layoutParams: WindowManager.LayoutParams? = mWindow?.attributes?.apply {
+        gravity = Gravity.CENTER//居中显示
+        width = (mContext.getScreenWidth() * 0.7).toInt()//宽度为全屏的70%
     }
 
     override fun initView() {

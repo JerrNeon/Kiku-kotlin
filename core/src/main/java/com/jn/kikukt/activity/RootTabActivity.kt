@@ -1,8 +1,8 @@
 package com.jn.kikukt.activity
 
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.PagerAdapter
 import com.jn.kikukt.R
 import com.jn.kikukt.adapter.BaseFragmentPagerAdapter
@@ -18,21 +18,18 @@ import kotlinx.android.synthetic.main.common_tab_layout.*
  */
 abstract class RootTabActivity : RootTbActivity(), ITabLayoutView {
 
-    private var fragments: MutableList<Fragment>? = null
+    abstract val fragments: MutableList<Fragment>
+    abstract val titles: MutableList<String>
     private var mAdapter: PagerAdapter
+    override val tabItemMargin: Int? by lazy {
+        mContext.getScreenWidth() / fragments.size / 10
+    }
 
     init {
-        mAdapter = BaseTabFragmentAdapter(supportFragmentManager, getFragments(), getTitles())
-        fragments = getFragments()
+        mAdapter = BaseTabFragmentAdapter(supportFragmentManager, fragments, titles)
     }
 
-    abstract fun getFragments(): MutableList<Fragment>
-
-    abstract fun getTitles(): MutableList<String>
-
-    override fun getLayoutResourceId(): Int {
-        return R.layout.common_tab_layout
-    }
+    override val layoutResourceId: Int = R.layout.common_tab_layout
 
     override fun initTabView() {
         viewpager_RootTab.adapter = mAdapter
@@ -40,39 +37,32 @@ abstract class RootTabActivity : RootTbActivity(), ITabLayoutView {
     }
 
     override fun setTabLayoutAttribute() {
-        //indicator color
-        tabLayout_RootTab.setSelectedTabIndicatorColor(ContextCompat.getColor(mContext, getTabIndicatorColorId()))
-        //text color
-        tabLayout_RootTab.setTabTextColors(
-            ContextCompat.getColor(mContext, getTabNormalTextColorId()),
-            ContextCompat.getColor(mContext, getTabSelectedTextColorId())
-        )
+        tabLayout_RootTab.run {
+            //indicator color
+            setSelectedTabIndicatorColor(
+                ContextCompat.getColor(
+                    mContext,
+                    tabIndicatorColorId
+                )
+            )
+            //text color
+            setTabTextColors(
+                ContextCompat.getColor(mContext, tabNormalTextColorId),
+                ContextCompat.getColor(mContext, tabSelectedTextColorId)
+            )
+            //
+            isTabIndicatorFullWidth = this@RootTabActivity.isTabIndicatorFullWidth
+        }
         //set TabLayout item marginLeft and marginRight
-        setTabLayoutIndicatorMargin(getTabItemMargin(), getTabItemMargin())
+        //setTabLayoutIndicatorMargin(tabItemMargin, tabItemMargin)
     }
 
     override fun setOffscreenPageLimit() {
-        fragments?.let { viewpager_RootTab.offscreenPageLimit = it.size }
+        fragments.let { viewpager_RootTab.offscreenPageLimit = it.size }
     }
 
     override fun setTabLayoutIndicatorMargin(marginLeft: Int?, marginRight: Int?) {
         tabLayout_RootTab.setTabLayoutIndicatorMargin(mContext, marginLeft!!, marginRight!!)
-    }
-
-    override fun getTabIndicatorColorId(): Int {
-        return R.color.colorPrimaryDark
-    }
-
-    override fun getTabNormalTextColorId(): Int {
-        return R.color.colorPrimary
-    }
-
-    override fun getTabSelectedTextColorId(): Int {
-        return R.color.colorPrimaryDark
-    }
-
-    override fun getTabItemMargin(): Int? {
-        return fragments?.let { mContext.getScreenWidth() / it.size / 10 }
     }
 }
 

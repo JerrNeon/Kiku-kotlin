@@ -2,15 +2,15 @@ package com.jn.kikukt.dialog
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.FragmentManager
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
 import com.jn.kikukt.R
+import com.jn.kikukt.common.utils.getScreenWidth
 import com.jn.kikukt.entiy.VersionUpdateVO
 import com.jn.kikukt.service.VersionUpdateService
-import com.jn.kikukt.common.utils.getScreenWidth
 
 /**
  * Author：Stevie.Chen Time：2019/7/15
@@ -35,24 +35,12 @@ class VersionUpdateDialog : RootDialogFragment() {
         }
     }
 
-    override fun getLayoutResourceId(): Int {
-        return R.layout.dialog_versionupdate
-    }
+    override val layoutResourceId: Int = R.layout.dialog_versionupdate
 
-    override fun getAnimationStyle(): Int {
-        return 0
-    }
-
-    override fun getCanceledOnTouchOutsideEnable(): Boolean {
-        return false
-    }
-
-    override fun getLayoutParams(): WindowManager.LayoutParams? {
-        val params = mWindow!!.attributes
-        params.gravity = Gravity.CENTER//居中显示
-        params.width = (mContext.getScreenWidth() * 0.8).toInt()//宽度为屏幕宽度的80%
-        params.height = (mContext.getScreenWidth() * 0.8).toInt()//高度为屏幕宽度的80%
-        return params
+    override val layoutParams: WindowManager.LayoutParams? = mWindow?.attributes?.apply {
+        gravity = Gravity.CENTER//居中显示
+        width = (mContext.getScreenWidth() * 0.8).toInt()//宽度为屏幕宽度的80%
+        height = (mContext.getScreenWidth() * 0.8).toInt()//高度为屏幕宽度的80%
     }
 
     override fun initView() {

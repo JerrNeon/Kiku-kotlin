@@ -19,9 +19,7 @@ open class RootWvActivity : RootTbActivity(), IWvView {
     private lateinit var mWebView: Any
     private var mWebViewHeight: Int = 0//WebView height
 
-    override fun getLayoutResourceId(): Int {
-        return R.layout.common_wv_tencent
-    }
+    override val layoutResourceId: Int = R.layout.common_wv_tencent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

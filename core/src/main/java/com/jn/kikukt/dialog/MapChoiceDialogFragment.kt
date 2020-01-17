@@ -2,7 +2,6 @@ package com.jn.kikukt.dialog
 
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
 import com.jn.kikukt.R
 import com.jn.kikukt.common.utils.LatLng
 import com.jn.kikukt.common.utils.MapUtils
@@ -38,21 +37,9 @@ class MapChoiceDialogFragment : RootDialogFragment() {
     private lateinit var originLl: LatLng//初始地
     private lateinit var destinationLl: LatLng//目的地
 
-    override fun getLayoutResourceId(): Int {
-        return R.layout.dialog_mapchoice
-    }
+    override val layoutResourceId: Int = R.layout.dialog_mapchoice
 
-    override fun getAnimationStyle(): Int {
-        return R.style.bottom_in_out
-    }
-
-    override fun getCanceledOnTouchOutsideEnable(): Boolean {
-        return false
-    }
-
-    override fun getLayoutParams(): WindowManager.LayoutParams? {
-        return null
-    }
+    override val animationStyle: Int = R.style.bottom_in_out
 
     override fun initView() {
         super.initView()

@@ -8,7 +8,6 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
 import androidx.annotation.CallSuper
-import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -39,14 +38,14 @@ abstract class RootBottomSheetDialogFragment : BottomSheetDialogFragment(),
         super.onStart()
         dialog?.let {
             mWindow = it.window
-            if (getLayoutParams() == null) {
+            if (layoutParams == null) {
                 val params = mWindow?.attributes
                 params?.gravity = Gravity.BOTTOM//底部显示
                 params?.width = WindowManager.LayoutParams.MATCH_PARENT//宽度为全屏
                 params?.height = WindowManager.LayoutParams.WRAP_CONTENT//宽度为全屏
                 mWindow?.attributes = params
             } else
-                mWindow?.attributes = getLayoutParams()
+                mWindow?.attributes = layoutParams
             mWindow?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))//设置半透明背景
         }
     }
@@ -58,10 +57,10 @@ abstract class RootBottomSheetDialogFragment : BottomSheetDialogFragment(),
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)//去掉默认标题
-        dialog?.setCanceledOnTouchOutside(!getCanceledOnTouchOutsideEnable())//点击边际是否可消失
-        if (getAnimationStyle() != 0)
-            dialog?.window!!.attributes.windowAnimations = getAnimationStyle()
-        mView = inflater.inflate(getLayoutResourceId(), container, false)
+        dialog?.setCanceledOnTouchOutside(!isCanceledOnTouchOutsideEnable)//点击边际是否可消失
+        if (animationStyle != 0)
+            dialog?.window!!.attributes.windowAnimations = animationStyle
+        mView = inflater.inflate(layoutResourceId, container, false)
         mActivity = activity as Activity
         if (activity is AppCompatActivity)
             mAppCompatActivity = activity as AppCompatActivity
@@ -91,49 +90,24 @@ abstract class RootBottomSheetDialogFragment : BottomSheetDialogFragment(),
 
     }
 
-    /**
-     * 布局资源
-     *
-     * @return
-     */
-    @LayoutRes
-    protected abstract fun getLayoutResourceId(): Int
+    abstract val layoutResourceId: Int//布局资源
+    //动画
+    open val animationStyle: Int
+        get() = 0
+    open val isCanceledOnTouchOutsideEnable: Boolean = false//点击边际是否可消失(false可消失)
+    abstract val layoutParams: WindowManager.LayoutParams?//对话框布局参数
 
-    /**
-     * 动画
-     *
-     * @return
-     */
-    protected abstract fun getAnimationStyle(): Int
-
-    /**
-     * 点击边际是否可消失
-     *
-     * @return false可消失
-     */
-    open fun getCanceledOnTouchOutsideEnable(): Boolean = false
-
-    /**
-     * 对话框布局参数
-     *
-     * @return
-     */
-    protected abstract fun getLayoutParams(): WindowManager.LayoutParams?
+    //对话框是否正在显示
+    val isShowing: Boolean
+        get() {
+            return if (dialog != null) dialog?.isShowing ?: false else false
+        }
 
     /**
      * 点击物理按键让对话框不消失
      */
     fun setCanceledOnBackPress() {
         dialog?.setOnKeyListener(this)
-    }
-
-    /**
-     * 对话框是否正在显示
-     *
-     * @return
-     */
-    fun isShowing(): Boolean {
-        return if (dialog != null) dialog?.isShowing ?: false else false
     }
 
     override fun onClick(view: View) {

@@ -1,12 +1,22 @@
 package com.jn.kikukt.common.api
 
-import androidx.annotation.ColorRes
+import com.jn.kikukt.R
 
 /**
  * Author：Stevie.Chen Time：2019/7/11
  * Class Comment：TabLayout
  */
 interface ITabLayoutView {
+
+    val tabIndicatorColorId: Int
+        get() = R.color.colorPrimaryDark//指示器颜色
+    val tabNormalTextColorId: Int
+        get() = R.color.colorPrimary//未选中文字颜色
+    val tabSelectedTextColorId: Int
+        get() = R.color.colorPrimaryDark//选中文字颜色
+    val tabItemMargin: Int?//子项左右margin
+    val isTabIndicatorFullWidth: Boolean
+        get() = false//Indicator是否是与Tab同宽度(false：与文字同宽度)
 
     /**
      * 初始化TabLayout相关控件
@@ -31,35 +41,4 @@ interface ITabLayoutView {
      * @param marginRight 右margin
      */
     fun setTabLayoutIndicatorMargin(marginLeft: Int?, marginRight: Int?)
-
-    /**
-     * 获取指示器颜色
-     *
-     * @return
-     */
-    @ColorRes
-    fun getTabIndicatorColorId(): Int
-
-    /**
-     * 获取未选中文字颜色
-     *
-     * @return
-     */
-    @ColorRes
-    fun getTabNormalTextColorId(): Int
-
-    /**
-     * 获取选中文字颜色
-     *
-     * @return
-     */
-    @ColorRes
-    fun getTabSelectedTextColorId(): Int
-
-    /**
-     * 获取子项左右margin
-     *
-     * @return
-     */
-    fun getTabItemMargin(): Int?
 }

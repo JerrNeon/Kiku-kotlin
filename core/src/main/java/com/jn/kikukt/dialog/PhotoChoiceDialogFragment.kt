@@ -1,8 +1,7 @@
 package com.jn.kikukt.dialog
 
-import androidx.fragment.app.FragmentManager
 import android.view.View
-import android.view.WindowManager
+import androidx.fragment.app.FragmentManager
 import com.jn.kikukt.R
 import kotlinx.android.synthetic.main.dialog_photochoicedialog.view.*
 
@@ -21,21 +20,9 @@ class PhotoChoiceDialogFragment : RootDialogFragment() {
         }
     }
 
-    override fun getLayoutResourceId(): Int {
-        return R.layout.dialog_photochoicedialog
-    }
+    override val layoutResourceId: Int = R.layout.dialog_photochoicedialog
 
-    override fun getAnimationStyle(): Int {
-        return R.style.bottom_in_out
-    }
-
-    override fun getCanceledOnTouchOutsideEnable(): Boolean {
-        return false
-    }
-
-    override fun getLayoutParams(): WindowManager.LayoutParams? {
-        return null
-    }
+    override val animationStyle: Int = R.style.bottom_in_out
 
     override fun initView() {
         super.initView()

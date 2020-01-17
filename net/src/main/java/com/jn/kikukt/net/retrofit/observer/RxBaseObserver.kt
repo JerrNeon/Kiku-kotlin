@@ -71,7 +71,7 @@ abstract class RxBaseObserver<T, V>(@ErrorType val mErrorType: Int) : Observer<T
      * @param e        异常信息
      * @param errorMsg 错误提示信息
      */
-    fun onFailure(e: Throwable, errorMsg: String?) {
+    open fun onFailure(e: Throwable, errorMsg: String?) {
         if (null != errorMsg && "" != errorMsg) {
             getContext().showToast(errorMsg)
         }

@@ -19,24 +19,21 @@ import kotlinx.android.synthetic.main.common_refresh_layout.*
  */
 abstract class RootRefreshActivity : RootTbActivity(), IRefreshView, OnRefreshLoadMoreListener {
 
-    override var mPageIndex: Int = 0//page info
-    override var mPageSize: Int = 0//page info
+    override var mPageIndex: Int = mInitPageIndex//page info
+    override var mPageSize: Int = mInitPageSize//page info
     override var mTotalSize: Int = 0//page info
     override var mTotalPage: Int = 0//page info
-    @RefreshOperateType
     override var mRefreshOperateType: Int = 0//operate type
     override var mSmartRefreshLayout: SmartRefreshLayout? = null//root layout
     override var mClassicsHeader: ClassicsHeader? = null//refresh layout
     override var mClassicsFooter: ClassicsFooter? = null//load more layout
     override var mFlRootContainer: FrameLayout? = null//show content layout
 
-    override fun getLayoutResourceId(): Int {
-        return R.layout.common_refresh_layout
-    }
+    override val layoutResourceId: Int = R.layout.common_refresh_layout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setRefreshOperateType(ON_CREATE)
+        mRefreshOperateType = ON_CREATE
         initRefreshView()
     }
 
@@ -46,19 +43,19 @@ abstract class RootRefreshActivity : RootTbActivity(), IRefreshView, OnRefreshLo
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
-        setRefreshOperateType(ON_REFRESH)
+        mRefreshOperateType = ON_REFRESH
         mSmartRefreshLayout?.resetNoMoreData()//reset no more data origin status
-        mPageIndex = getInitPageIndex()
+        mPageIndex = mInitPageIndex
         sendRequest()
     }
 
     override fun onLoadMore(refreshLayout: RefreshLayout) {
-        setRefreshOperateType(ON_ONLOADMORE)
-        if (getLoadMoreEnableType() == EMPTY) {
+        mRefreshOperateType = ON_ONLOADMORE
+        if (mLoadMoreEnableType == EMPTY) {
             mPageIndex++
             sendRequest()
         } else {
-            if (isLoadMoreEnable()) {
+            if (isLoadMoreEnable) {
                 mPageIndex++
                 sendRequest()
             } else {
@@ -68,16 +65,13 @@ abstract class RootRefreshActivity : RootTbActivity(), IRefreshView, OnRefreshLo
     }
 
     override fun initRefreshView() {
-        mPageIndex = getInitPageIndex()
-        mPageSize = getInitPageSize()
-
         mSmartRefreshLayout = srl_root
         mClassicsHeader = srlH_root
         mClassicsFooter = srlF_root
         mFlRootContainer = fl_rootContainer
-        if (getLayoutItemResourceId() != 0) {
+        if (layoutItemResourceId != 0) {
             mFlRootContainer?.addView(
-                LayoutInflater.from(mContext).inflate(getLayoutItemResourceId(), null, false),
+                LayoutInflater.from(mContext).inflate(layoutItemResourceId, null, false),
                 FrameLayout.LayoutParams(
                     FrameLayout.LayoutParams.MATCH_PARENT,
                     FrameLayout.LayoutParams.MATCH_PARENT
@@ -85,28 +79,30 @@ abstract class RootRefreshActivity : RootTbActivity(), IRefreshView, OnRefreshLo
             )
         }
 
-        when (getRefreshViewType()) {
-            ALL -> {
-                mSmartRefreshLayout?.setEnableRefresh(true)
-                mSmartRefreshLayout?.setEnableLoadMore(true)
+        mSmartRefreshLayout?.run {
+            when (mRefreshViewType) {
+                ALL -> {
+                    setEnableRefresh(true)
+                    setEnableLoadMore(true)
+                }
+                NONE -> {
+                    setEnableRefresh(false)
+                    setEnableLoadMore(false)
+                }
+                ONLY_REFRESH -> {
+                    setEnableRefresh(true)
+                    setEnableLoadMore(false)
+                }
+                else -> {
+                    setEnableRefresh(false)
+                    setEnableLoadMore(true)
+                }
             }
-            NONE -> {
-                mSmartRefreshLayout?.setEnableRefresh(false)
-                mSmartRefreshLayout?.setEnableLoadMore(false)
-            }
-            ONLY_REFRESH -> {
-                mSmartRefreshLayout?.setEnableRefresh(true)
-                mSmartRefreshLayout?.setEnableLoadMore(false)
-            }
-            else -> {
-                mSmartRefreshLayout?.setEnableRefresh(false)
-                mSmartRefreshLayout?.setEnableLoadMore(true)
-            }
+            setOnRefreshLoadMoreListener(this@RootRefreshActivity)//refresh and more listener
+            setEnableAutoLoadMore(true)//SmartRefreshLayout Api
+            setEnableScrollContentWhenLoaded(true)//SmartRefreshLayout Api
+            setEnableFooterFollowWhenNoMoreData(true)//SmartRefreshLayout Api
         }
-        mSmartRefreshLayout?.setOnRefreshLoadMoreListener(this)//refresh and more listener
-        mSmartRefreshLayout?.setEnableAutoLoadMore(true)//SmartRefreshLayout Api
-        mSmartRefreshLayout?.setEnableScrollContentWhenLoaded(true)//SmartRefreshLayout Api
-        mSmartRefreshLayout?.setEnableFooterFollowWhenNoMoreData(true)//SmartRefreshLayout Api
     }
 
 }

@@ -2,10 +2,10 @@ package com.jn.kikukt.dialog
 
 import android.content.Intent
 import android.os.Build
-import androidx.fragment.app.FragmentManager
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
+import androidx.fragment.app.FragmentManager
 import com.jn.kikukt.R
 import com.jn.kikukt.common.utils.checkLocationServiceOPen
 import com.jn.kikukt.common.utils.getScreenWidth
@@ -26,24 +26,14 @@ class LocationServiceDialogFragment : RootDialogFragment() {
         fun newInstance(): LocationServiceDialogFragment = LocationServiceDialogFragment()
     }
 
-    override fun getLayoutResourceId(): Int {
-        return R.layout.dialog_locationservice
-    }
+    override val layoutResourceId: Int = R.layout.dialog_locationservice
 
-    override fun getAnimationStyle(): Int {
-        return 0
-    }
+    override val isCanceledOnTouchOutsideEnable: Boolean = true
 
-    override fun getCanceledOnTouchOutsideEnable(): Boolean {
-        return true
-    }
-
-    override fun getLayoutParams(): WindowManager.LayoutParams? {
-        val params = mWindow!!.attributes
-        params.gravity = Gravity.CENTER//中间显示
-        params.width =
+    override val layoutParams: WindowManager.LayoutParams? = mWindow?.attributes?.apply {
+        gravity = Gravity.CENTER//中间显示
+        width =
             (mContext.getScreenWidth() * 0.9).toInt()//宽度为屏幕90%
-        return params
     }
 
     override fun initView() {
