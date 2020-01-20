@@ -2,13 +2,12 @@ package com.jn.kikukt.adapter
 
 import android.app.Activity
 import android.content.Context
-import androidx.annotation.LayoutRes
-import androidx.fragment.app.Fragment
-import androidx.viewpager.widget.PagerAdapter
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.PagerAdapter
 
 /**
  * Author：Stevie.Chen Time：2019/7/10
@@ -23,8 +22,7 @@ abstract class BasePagerAdapter<T> : PagerAdapter {
     var mOnItemClickListener: OnItemClickListener<T>? = null
     var mOnItemLongClickListener: OnItemLongClickListener<T>? = null
 
-    @LayoutRes
-    abstract fun getLayoutResourceId(): Int
+    abstract val layoutResourceId: Int
 
     abstract fun getView(view: View?, position: Int, bean: T?)
 
@@ -61,7 +59,7 @@ abstract class BasePagerAdapter<T> : PagerAdapter {
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         var view: View? = mViews?.get(position)
         if (view == null) {
-            view = LayoutInflater.from(mContext).inflate(getLayoutResourceId(), null, false)
+            view = LayoutInflater.from(mContext).inflate(layoutResourceId, null, false)
             mViews?.put(position, view)
         }
         getView(view, position, mList?.get(position))

@@ -10,10 +10,8 @@ import com.jn.kikukt.mvp.BasePresenter
  * Author：Stevie.Chen Time：2019/9/12
  * Class Comment：
  */
-class NewsPresenter : BasePresenter<NewsContract.IView, NewsContract.IModel>(),
+class NewsPresenter : BasePresenter<NewsContract.IView, NewsModel>(),
     NewsContract.IPresenter {
-
-    override fun getModel(): NewsContract.IModel = NewsModel()
 
     override fun getNewList() {
         mModel.getNewList(

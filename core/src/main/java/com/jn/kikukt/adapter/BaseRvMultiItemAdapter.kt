@@ -1,7 +1,6 @@
 package com.jn.kikukt.adapter
 
 import android.app.Activity
-import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.entity.MultiItemEntity
@@ -10,9 +9,13 @@ import com.chad.library.adapter.base.entity.MultiItemEntity
  * Author：Stevie.Chen Time：2019/7/11
  * Class Comment：
  */
-abstract class BaseRvMultiItemAdapter<T : MultiItemEntity> : BaseMultiItemQuickAdapter<T, BaseAdapterViewHolder> {
+abstract class BaseRvMultiItemAdapter<T : MultiItemEntity> :
+    BaseMultiItemQuickAdapter<T, BaseAdapterViewHolder> {
 
     private var mImageContext: Any? = null//用于显示图片的context对象
+
+    abstract val itemType: IntArray
+    abstract val layoutResourceId: IntArray
 
     init {
         setItemType()
@@ -26,9 +29,9 @@ abstract class BaseRvMultiItemAdapter<T : MultiItemEntity> : BaseMultiItemQuickA
         mImageContext = fragment
     }
 
-    fun setItemType() {
-        val itemTypeArray = getItemType()
-        val layoutResourceIdArray = getLayoutResourceId()
+    open fun setItemType() {
+        val itemTypeArray = itemType
+        val layoutResourceIdArray = layoutResourceId
         if (itemTypeArray.isEmpty())
             return
         if (layoutResourceIdArray.isEmpty())
@@ -40,8 +43,4 @@ abstract class BaseRvMultiItemAdapter<T : MultiItemEntity> : BaseMultiItemQuickA
         }
     }
 
-    abstract fun getItemType(): IntArray
-
-    @LayoutRes
-    abstract fun getLayoutResourceId(): IntArray
 }

@@ -1,5 +1,6 @@
 package com.jn.kikukt.mvp
 
+import com.jn.kikukt.common.utils.Clazz
 import io.reactivex.disposables.CompositeDisposable
 
 /**
@@ -9,18 +10,16 @@ import io.reactivex.disposables.CompositeDisposable
 abstract class BasePresenter<V : IBView, M : IBModel> : IBPresenter {
 
     protected lateinit var mView: V
-    protected lateinit var mModel: M
+    protected val mModel: M by lazy { Clazz.getClass<M>(this, argumentsPosition = 1).newInstance() }
     override var mCompositeDisposable: CompositeDisposable? = null
 
     @Suppress("UNCHECKED_CAST")
     override fun attachView(view: IBView?) {
         mView = view as V
-        mModel = getModel()
     }
 
     override fun detachView() {
 
     }
 
-    abstract fun getModel(): M
 }

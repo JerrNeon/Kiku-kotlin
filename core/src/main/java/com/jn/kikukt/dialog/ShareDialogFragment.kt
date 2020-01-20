@@ -23,12 +23,16 @@ class ShareDialogFragment : RootDialogFragment(), BaseQuickAdapter.OnItemClickLi
     private var mRecyclerView: RecyclerView? = null
     private var mTvCancel: TextView? = null
 
-    private var mOnItemClickListener: OnItemClickListener? = null
-    private var mOnShareResultListener: OnShareResultListener? =
+    private var mOnItemClickListener: ((position: Int) -> Unit)? = null
+    private var mOnShareTypeListener: ((type: ShareType) -> Unit)? =
         null//分享回调-个别情况特殊处理(微信登录、分享、支付都必须安装客户端)
 
     companion object {
         fun newInstance(): ShareDialogFragment = ShareDialogFragment()
+    }
+
+    enum class ShareType {
+        WeChat, WxCircle, Sina, QQ
     }
 
     override val layoutResourceId: Int = R.layout.dialog_share
@@ -42,9 +46,11 @@ class ShareDialogFragment : RootDialogFragment(), BaseQuickAdapter.OnItemClickLi
     }
 
     override fun initView() {
-        mRecyclerView = mView!!.findViewById(R.id.rv_share)
-        mTvCancel = mView!!.findViewById(R.id.tv_shareCancel)
-        mTvCancel!!.setOnClickListener(this)
+        mView?.run {
+            mRecyclerView = findViewById(R.id.rv_share)
+            mTvCancel = findViewById(R.id.tv_shareCancel)
+        }
+        mTvCancel?.setOnClickListener(this)
 
         val adapter = ShareAdapter(mFragment)
         adapter.addData(ShareVO(R.drawable.ic_kiku_wxcircle_logo, "朋友圈"))
@@ -52,8 +58,10 @@ class ShareDialogFragment : RootDialogFragment(), BaseQuickAdapter.OnItemClickLi
         adapter.addData(ShareVO(R.drawable.ic_kiku_sina_logo, "微博"))
         adapter.addData(ShareVO(R.drawable.ic_kiku_qq_logo, "QQ"))
         //adapter.add(new ShareVO(R.drawable.ic_qq_logo, "QQ空间"));
-        mRecyclerView!!.layoutManager = GridLayoutManager(mContext, 4)
-        mRecyclerView!!.adapter = adapter
+        mRecyclerView?.run {
+            layoutManager = GridLayoutManager(mContext, 4)
+            this.adapter = adapter
+        }
         adapter.onItemClickListener = this
     }
 
@@ -67,17 +75,17 @@ class ShareDialogFragment : RootDialogFragment(), BaseQuickAdapter.OnItemClickLi
      * @param manager               FragmentManager
      * @param tag                   tag标识
      * @param listener              监听器
-     * @param onShareResultListener 分享回调
+     * @param onShareTypeListener 分享回调
      */
     fun show(
         manager: FragmentManager,
         tag: String,
-        listener: OnItemClickListener,
-        onShareResultListener: OnShareResultListener
+        listener: ((position: Int) -> Unit)?,
+        onShareTypeListener: ((type: ShareType) -> Unit)?
     ) {
         this.show(manager, tag)
         mOnItemClickListener = listener
-        mOnShareResultListener = onShareResultListener
+        mOnShareTypeListener = onShareTypeListener
     }
 
     override fun onClick(view: View) {
@@ -96,38 +104,44 @@ class ShareDialogFragment : RootDialogFragment(), BaseQuickAdapter.OnItemClickLi
             else -> {
             }
         }
-        if (mOnItemClickListener != null)
-            mOnItemClickListener!!.onItemClick(position)
+        mOnItemClickListener?.run {
+            (position)
+        }
         this.dismiss()
     }
 
-    protected fun shareWithWeChat() {}
+    private fun shareWithWeChat() {
+        mOnShareTypeListener?.run {
+            (ShareType.WeChat)
+        }
+    }
 
-    protected fun shareWithWeChatCircle() {}
+    private fun shareWithWeChatCircle() {
+        mOnShareTypeListener?.run {
+            (ShareType.WxCircle)
+        }
+    }
 
-    protected fun shareWithSina() {}
+    private fun shareWithSina() {
+        mOnShareTypeListener?.run {
+            (ShareType.Sina)
+        }
+    }
 
-    protected fun shareWithQq() {
-
+    private fun shareWithQq() {
+        mOnShareTypeListener?.run {
+            (ShareType.QQ)
+        }
     }
 
     private inner class ShareAdapter(fragment: Fragment) : BaseRvAdapter<ShareVO>(fragment) {
 
-        override fun getLayoutResourceId(): Int {
-            return R.layout.dialog_item_share
-        }
+        override val layoutResourceId: Int
+            get() = R.layout.dialog_item_share
 
         override fun convert(helper: BaseAdapterViewHolder, item: ShareVO) {
             helper.setImageResource(R.id.iv_share, item.img)
             helper.setText(R.id.tv_share, item.title)
         }
-    }
-
-    interface OnItemClickListener {
-        fun onItemClick(position: Int)
-    }
-
-    interface OnShareResultListener {
-        fun onFailure()
     }
 }

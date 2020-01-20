@@ -1,7 +1,6 @@
 package com.jn.kikukt.adapter
 
 import android.app.Activity
-import androidx.annotation.LayoutRes
 import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -15,15 +14,17 @@ abstract class BaseRvAdapter<T> : BaseQuickAdapter<T, BaseAdapterViewHolder> {
     protected var mActivity: Activity? = null
     protected var mFragment: Fragment? = null
 
+    abstract val layoutResourceId: Int
+
     init {
-        mLayoutResId = getLayoutResourceId()
+        mLayoutResId = layoutResourceId
     }
 
-    constructor(activity: Activity) : super(0, null) {
+    constructor(activity: Activity) : super(null) {
         mActivity = activity
     }
 
-    constructor(fragment: Fragment) : super(0, null) {
+    constructor(fragment: Fragment) : super(null) {
         mActivity = fragment.activity
         mFragment = fragment
     }
@@ -43,7 +44,4 @@ abstract class BaseRvAdapter<T> : BaseQuickAdapter<T, BaseAdapterViewHolder> {
             holder.bindImageContext(mActivity!!)
         super.onBindViewHolder(holder, position)
     }
-
-    @LayoutRes
-    abstract fun getLayoutResourceId(): Int
 }

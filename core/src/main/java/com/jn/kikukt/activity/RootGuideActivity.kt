@@ -6,10 +6,10 @@ import android.view.View
 import android.widget.ImageView
 import com.jn.kikukt.R
 import com.jn.kikukt.adapter.BasePagerAdapter
+import com.jn.kikukt.common.SPManage
 import com.jn.kikukt.common.api.IGuideView
 import com.jn.kikukt.entiy.GuidePageVO
 import com.jn.kikukt.utils.glide.displayImage
-import com.jn.kikukt.common.SPManage
 import kotlinx.android.synthetic.main.common_guide_layout.*
 
 /**
@@ -62,9 +62,8 @@ class GuidePagerAdapter(activity: Activity) : BasePagerAdapter<GuidePageVO>(acti
 
     var onClickListener: View.OnClickListener? = null
 
-    override fun getLayoutResourceId(): Int {
-        return R.layout.common_guideitem_layout
-    }
+    override val layoutResourceId: Int
+        get() = R.layout.common_guideitem_layout
 
     override fun getView(view: View?, position: Int, bean: GuidePageVO?) {
         val iv = view?.findViewById<ImageView>(R.id.iv_rootGuide)

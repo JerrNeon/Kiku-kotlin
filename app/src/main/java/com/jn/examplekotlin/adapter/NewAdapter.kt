@@ -12,7 +12,8 @@ import com.jn.kikukt.adapter.BaseRvAdapter
  */
 class NewAdapter(activity: Activity) : BaseRvAdapter<NewsVO>(activity) {
 
-    override fun getLayoutResourceId(): Int = R.layout.item_news
+    override val layoutResourceId: Int
+        get() = R.layout.item_news
 
     override fun convert(helper: BaseAdapterViewHolder, item: NewsVO?) {
         item?.let {

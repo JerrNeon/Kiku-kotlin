@@ -37,9 +37,7 @@ abstract class BaseRvMultiItemDelegateAdapter<T> : BaseRvAdapter<T> {
         }
     }
 
-    override fun getLayoutResourceId(): Int {
-        return 0
-    }
+    override val layoutResourceId: Int = 0
 
     abstract fun getItemViewType(item: T): Int
 
