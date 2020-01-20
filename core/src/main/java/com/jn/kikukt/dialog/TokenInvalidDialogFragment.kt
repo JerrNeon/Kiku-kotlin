@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.dialog_tokeninvalid.view.*
  * Author：Stevie.Chen Time：2019/7/15
  * Class Comment：Token失效或被顶号对话框
  */
-class TokenInvalidDialogFragment : RootDialogFragment() {
+open class TokenInvalidDialogFragment : RootDialogFragment() {
 
     companion object {
         fun newInstance(): TokenInvalidDialogFragment = TokenInvalidDialogFragment()
@@ -28,7 +28,7 @@ class TokenInvalidDialogFragment : RootDialogFragment() {
 
     override fun initView() {
         super.initView()
-        mView!!.tv_commit.setOnClickListener(this)
+        mView?.tv_commit?.setOnClickListener(this)
     }
 
     override fun onClick(view: View) {
@@ -48,7 +48,7 @@ class TokenInvalidDialogFragment : RootDialogFragment() {
      * 更新用户可以用EventBus或BroadCastReceiver,是具体情况而定
      *
      */
-    protected fun openLoginActivity() {
+    open fun openLoginActivity() {
 
     }
 

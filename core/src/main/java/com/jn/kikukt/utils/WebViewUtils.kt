@@ -116,12 +116,12 @@ object WebViewUtils {
                 }
             }
         } else if (webView is com.tencent.smtt.sdk.WebView) {
-            webView.setWebViewClient(object : com.tencent.smtt.sdk.WebViewClient() {
+            webView.webViewClient = object : com.tencent.smtt.sdk.WebViewClient() {
                 override fun shouldOverrideUrlLoading(p0: com.tencent.smtt.sdk.WebView?, s: String): Boolean {
                     webView.loadUrl(s)
                     return true
                 }
-            })
+            }
         }
     }
 
@@ -138,7 +138,7 @@ object WebViewUtils {
                 }
             }
         } else if (webView is com.tencent.smtt.sdk.WebView) {
-            webView.setWebChromeClient(object : com.tencent.smtt.sdk.WebChromeClient() {
+            webView.webChromeClient = object : com.tencent.smtt.sdk.WebChromeClient() {
                 override fun onProgressChanged(view: com.tencent.smtt.sdk.WebView?, newProgress: Int) {
                     progressBar.progress = newProgress
                     if (newProgress == 100) {
@@ -147,7 +147,7 @@ object WebViewUtils {
                         progressBar.visibility = View.VISIBLE
                     }
                 }
-            })
+            }
         }
     }
 

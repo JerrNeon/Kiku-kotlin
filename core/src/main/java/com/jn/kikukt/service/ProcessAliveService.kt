@@ -45,7 +45,7 @@ class ProcessAliveService : Service() {
     /**
      * 设置此服务为前台服务，提高优先级，减少被系统杀死的概率
      */
-    fun setForegroundService() {
+    private fun setForegroundService() {
         val innerIntent = Intent(this, GrayInnerService::class.java)
         startService(innerIntent)
         startForeground(GRAY_SERVICE_ID, Notification())

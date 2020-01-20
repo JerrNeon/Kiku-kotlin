@@ -126,15 +126,17 @@ class GraphicCode {
         c.drawColor(Color.rgb(DEFAULT_COLOR, DEFAULT_COLOR, DEFAULT_COLOR))
         val paint = Paint()
         paint.textSize = context.sp2px(font_size.toFloat())
-        for (i in 0 until code!!.length) {
-            randomTextStyle(paint)
-            randomPadding()
-            c.drawText(
-                code!![i] + "",
-                context.dp2px(padding_left.toFloat()),
-                context.dp2px(padding_top.toFloat()),
-                paint
-            )
+        code?.let {
+            for (element in it) {
+                randomTextStyle(paint)
+                randomPadding()
+                c.drawText(
+                    element + "",
+                    context.dp2px(padding_left.toFloat()),
+                    context.dp2px(padding_top.toFloat()),
+                    paint
+                )
+            }
         }
         for (i in 0 until line_number) {
             drawLine(c, paint)
@@ -146,7 +148,7 @@ class GraphicCode {
     }
 
     fun getCode(): String {
-        return code!!.toLowerCase()
+        return code?.toLowerCase() ?: ""
     }
 
     fun getBitmap(): Bitmap {

@@ -45,24 +45,26 @@ class VersionUpdateDialog : RootDialogFragment() {
 
     override fun initView() {
         super.initView()
-        mTvVersionUpdateContent = mView!!.findViewById(R.id.tv_versionUpdateContent)
-        mTvVersionUpdateCancel = mView!!.findViewById(R.id.tv_versionUpdateCancel)
-        mTvVersionUpdateSubmit = mView!!.findViewById(R.id.tv_versionUpdateSubmit)
-        mTvVersionUpdateCancel!!.setOnClickListener(this)
-        mTvVersionUpdateSubmit!!.setOnClickListener(this)
+        mView?.run {
+            mTvVersionUpdateContent = findViewById(R.id.tv_versionUpdateContent)
+            mTvVersionUpdateCancel = findViewById(R.id.tv_versionUpdateCancel)
+            mTvVersionUpdateSubmit = findViewById(R.id.tv_versionUpdateSubmit)
+            mTvVersionUpdateCancel?.setOnClickListener(this@VersionUpdateDialog)
+            mTvVersionUpdateSubmit?.setOnClickListener(this@VersionUpdateDialog)
+        }
     }
 
     override fun initData() {
         val bundle = arguments
         mVersionUpdateVO = bundle?.getParcelable(VersionUpdateVO::class.java.simpleName)
-        if (mVersionUpdateVO != null) {
-            if (mVersionUpdateVO?.forceUpdate == 0)
-                mTvVersionUpdateCancel!!.visibility = View.VISIBLE
+        mVersionUpdateVO?.run {
+            if (forceUpdate == 0)
+                mTvVersionUpdateCancel?.visibility = View.VISIBLE
             else {
-                mTvVersionUpdateCancel!!.visibility = View.GONE
+                mTvVersionUpdateCancel?.visibility = View.GONE
                 setCanceledOnBackPress()
             }
-            mTvVersionUpdateContent!!.text = mVersionUpdateVO!!.content
+            mTvVersionUpdateContent?.text = content
         }
     }
 
@@ -77,13 +79,12 @@ class VersionUpdateDialog : RootDialogFragment() {
             this.dismiss()
         } else if (viewId == R.id.tv_versionUpdateSubmit) {
             this.dismiss()
-            if (mVersionUpdateVO != null) {
+            mVersionUpdateVO?.let {
                 val intent = Intent(mContext, VersionUpdateService::class.java)
-                intent.putExtra(VersionUpdateVO::class.java.simpleName, mVersionUpdateVO)
+                intent.putExtra(VersionUpdateVO::class.java.simpleName, it)
                 mActivity.startService(intent)
             }
-            if (mOnClickListener != null)
-                mOnClickListener!!.onClick(view)
+            mOnClickListener?.onClick(view)
         }
     }
 }

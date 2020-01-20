@@ -29,9 +29,11 @@ abstract class RootGuideActivity : RootActivity(), IGuideView {
     override fun initView() {
         super.initView()
         mAdapter = getAdapter()
-        mAdapter!!.onClickListener = View.OnClickListener {
-            handlerSkipEvent()
-        }
+            .apply {
+                onClickListener = View.OnClickListener {
+                    handlerSkipEvent()
+                }
+            }
         val imgResourceIds = getImgResourceIds()
         if (imgResourceIds.isNotEmpty()) {
             for (i in imgResourceIds.indices) {
@@ -67,13 +69,13 @@ class GuidePagerAdapter(activity: Activity) : BasePagerAdapter<GuidePageVO>(acti
 
     override fun getView(view: View?, position: Int, bean: GuidePageVO?) {
         val iv = view?.findViewById<ImageView>(R.id.iv_rootGuide)
-        bean?.let { it ->
-            if (it.imgType == 0)
-                iv?.displayImage(getImageContext()!!, it.imgUrl!!)
+        bean?.run {
+            if (imgType == 0)
+                iv?.displayImage(getImageContext()!!, imgUrl ?: "")
             else
-                iv?.setImageResource(it.imgRes)
+                iv?.setImageResource(imgRes)
             iv?.setOnClickListener {
-                if (bean.isLast && onClickListener != null) {
+                if (isLast && onClickListener != null) {
                     onClickListener?.onClick(it)
                 }
             }

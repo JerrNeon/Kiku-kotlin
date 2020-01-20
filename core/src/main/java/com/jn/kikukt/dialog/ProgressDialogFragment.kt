@@ -127,9 +127,7 @@ class ProgressDialogFragment : DialogFragment() {
      *
      * @param resId
      */
-    fun setProgressImageResource(@DrawableRes resId: Int): ProgressDialogFragment {
-        if (mSpinBlackProgressView != null)
-            mSpinBlackProgressView!!.setImageResource(resId)
-        return this
+    fun setProgressImageResource(@DrawableRes resId: Int) {
+        mSpinBlackProgressView?.setImageResource(resId)
     }
 }

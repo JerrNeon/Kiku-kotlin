@@ -38,15 +38,17 @@ abstract class RootDialogFragment : AppCompatDialogFragment(), DialogInterface.O
         super.onStart()
         dialog?.let {
             mWindow = it.window
-            if (layoutParams == null) {
-                val params = mWindow?.attributes
-                params?.gravity = Gravity.BOTTOM//底部显示
-                params?.width = WindowManager.LayoutParams.MATCH_PARENT//宽度为全屏
-                params?.height = WindowManager.LayoutParams.WRAP_CONTENT//宽度为全屏
-                mWindow?.attributes = params
-            } else
-                mWindow?.attributes = layoutParams
-            mWindow?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))//设置半透明背景
+            mWindow?.run {
+                attributes = if (layoutParams == null) {
+                    attributes.apply {
+                        gravity = Gravity.BOTTOM//底部显示
+                        width = WindowManager.LayoutParams.MATCH_PARENT//宽度为全屏
+                        height = WindowManager.LayoutParams.WRAP_CONTENT//宽度为全屏
+                    }
+                } else
+                    layoutParams
+                setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))//设置半透明背景
+            }
         }
     }
 
@@ -56,10 +58,12 @@ abstract class RootDialogFragment : AppCompatDialogFragment(), DialogInterface.O
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)//去掉默认标题
-        dialog?.setCanceledOnTouchOutside(!isCanceledOnTouchOutsideEnable)//点击边际是否可消失
-        if (animationStyle != 0)
-            dialog?.window!!.attributes.windowAnimations = animationStyle
+        dialog?.run {
+            requestWindowFeature(Window.FEATURE_NO_TITLE)//去掉默认标题
+            setCanceledOnTouchOutside(!isCanceledOnTouchOutsideEnable)//点击边际是否可消失
+            if (animationStyle != 0)
+                window?.attributes?.windowAnimations = animationStyle
+        }
         mView = inflater.inflate(layoutResourceId, container, false)
         mActivity = activity as Activity
         if (activity is AppCompatActivity)

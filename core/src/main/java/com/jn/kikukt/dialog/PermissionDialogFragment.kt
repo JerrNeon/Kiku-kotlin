@@ -39,21 +39,25 @@ class PermissionDialogFragment : RootDialogFragment() {
     }
 
     override fun initView() {
-        mView!!.tv_permissionCancel.setOnClickListener(this)
-        mView!!.tv_permissionSubmit.setOnClickListener(this)
+        mView?.run {
+            tv_permissionCancel.setOnClickListener(this@PermissionDialogFragment)
+            tv_permissionSubmit.setOnClickListener(this@PermissionDialogFragment)
+        }
     }
 
     override fun initData() {
         val bundle = arguments
         val appName = bundle?.getString(APP_NAME, "")
         val permissionName = bundle?.getString(PERMISSION_NAME, "")
-        mView!!.tv_permissionMessage.text =
-            String.format(
-                resources.getString(R.string.permission_content),
-                appName,
-                permissionName,
-                appName
-            )
+        mView?.run {
+            tv_permissionMessage.text =
+                String.format(
+                    resources.getString(R.string.permission_content),
+                    appName,
+                    permissionName,
+                    appName
+                )
+        }
     }
 
     override fun onClick(view: View) {

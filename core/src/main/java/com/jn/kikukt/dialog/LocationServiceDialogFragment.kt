@@ -37,8 +37,10 @@ class LocationServiceDialogFragment : RootDialogFragment() {
     }
 
     override fun initView() {
-        mView!!.tv_permissionCancel.setOnClickListener(this)
-        mView!!.tv_permissionSubmit.setOnClickListener(this)
+        mView?.run {
+            tv_permissionCancel.setOnClickListener(this@LocationServiceDialogFragment)
+            tv_permissionSubmit.setOnClickListener(this@LocationServiceDialogFragment)
+        }
     }
 
     fun show(manager: FragmentManager, tag: String, listener: ILocationServiceListener) {
@@ -48,8 +50,7 @@ class LocationServiceDialogFragment : RootDialogFragment() {
 
     override fun onClick(view: View) {
         if (view.id == R.id.tv_permissionCancel) {
-            if (mLocationServiceListener != null)
-                mLocationServiceListener!!.onLocationServiceOpenFailure()
+            mLocationServiceListener?.onLocationServiceOpenFailure()
             this.dismiss()
         } else if (view.id == R.id.tv_permissionSubmit) {
             mFragment.openLocationService(REQUESTCODE_LOCATIONSERVICE)
@@ -61,11 +62,9 @@ class LocationServiceDialogFragment : RootDialogFragment() {
         //回调再次判断是否开启定位服务
         if (requestCode == REQUESTCODE_LOCATIONSERVICE && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (mContext.checkLocationServiceOPen()) {
-                if (mLocationServiceListener != null)
-                    mLocationServiceListener!!.onLocationServiceOpenSuccess()
+                mLocationServiceListener?.onLocationServiceOpenSuccess()
             } else {
-                if (mLocationServiceListener != null)
-                    mLocationServiceListener!!.onLocationServiceOpenFailure()
+                mLocationServiceListener?.onLocationServiceOpenFailure()
             }
             this.dismiss()
         }

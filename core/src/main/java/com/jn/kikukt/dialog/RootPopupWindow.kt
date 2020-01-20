@@ -45,19 +45,20 @@ abstract class RootPopupWindow : View.OnClickListener {
 
     protected fun initView() {
         mView = LayoutInflater.from(mContext).inflate(layoutResourceId, null, false)
-        mPopupWindow = PopupWindow(mView)
-        if (width == 0)
-            mPopupWindow!!.width = mContext?.getScreenWidth() ?: ViewGroup.LayoutParams.WRAP_CONTENT
-        else
-            mPopupWindow!!.width = width
-        if (height == 0)
-            mPopupWindow!!.height = ViewGroup.LayoutParams.WRAP_CONTENT
-        else
-            mPopupWindow!!.height = height
-        mPopupWindow!!.isOutsideTouchable = false
+        mPopupWindow = PopupWindow(mView).apply {
+            width = if (width == 0)
+                mContext?.getScreenWidth() ?: ViewGroup.LayoutParams.WRAP_CONTENT
+            else
+                width
+            height = if (height == 0)
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            else
+                height
+            isOutsideTouchable = false
+        }
     }
 
-    protected fun setWindowAttributes() {
+    open fun setWindowAttributes() {
         mWindow = mActivity!!.window
         mWindow?.run {
             val lp = attributes
@@ -67,11 +68,11 @@ abstract class RootPopupWindow : View.OnClickListener {
         }
     }
 
-    protected fun initData() {
+    open fun initData() {
 
     }
 
-    protected fun setListener() {
+    open fun setListener() {
 
     }
 

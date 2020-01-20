@@ -56,10 +56,12 @@ abstract class RootBottomSheetDialogFragment : BottomSheetDialogFragment(),
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)//去掉默认标题
-        dialog?.setCanceledOnTouchOutside(!isCanceledOnTouchOutsideEnable)//点击边际是否可消失
-        if (animationStyle != 0)
-            dialog?.window!!.attributes.windowAnimations = animationStyle
+        dialog?.run {
+            requestWindowFeature(Window.FEATURE_NO_TITLE)//去掉默认标题
+            setCanceledOnTouchOutside(!isCanceledOnTouchOutsideEnable)//点击边际是否可消失
+            if (animationStyle != 0)
+                window?.attributes?.windowAnimations = animationStyle
+        }
         mView = inflater.inflate(layoutResourceId, container, false)
         mActivity = activity as Activity
         if (activity is AppCompatActivity)
