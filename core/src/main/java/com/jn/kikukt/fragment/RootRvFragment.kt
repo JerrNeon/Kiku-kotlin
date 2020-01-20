@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.jn.kikukt.R
 import com.jn.kikukt.annonation.*
 import com.jn.kikukt.common.api.IRvView
@@ -24,10 +23,7 @@ import kotlinx.android.synthetic.main.common_rv.view.*
  * Author：Stevie.Chen Time：2019/7/11
  * Class Comment：
  */
-abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T>,
-    BaseQuickAdapter.OnItemClickListener,
-    BaseQuickAdapter.OnItemLongClickListener, BaseQuickAdapter.OnItemChildClickListener,
-    BaseQuickAdapter.OnItemChildLongClickListener {
+abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T> {
 
     override var mRecyclerView: RecyclerView? = null//RecyclerView
     override var mEmptyView: View? = null//empty or failure view
@@ -78,7 +74,7 @@ abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T>,
     }
 
     override fun initRvView() {
-        mRecyclerView = mView!!.rv_common
+        mRecyclerView = mView?.rv_common
         mRecyclerView?.run {
             layoutManager = mLayoutManager
             adapter = mAdapter
@@ -164,10 +160,6 @@ abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T>,
         }
     }
 
-    override fun showLoadSuccessView(data: List<T>) {
-        showLoadCompleteView(SUCCESS, data)
-    }
-
     override fun showLoadSuccessView(total: Int, data: List<T>) {
         if (mLoadMoreEnableType == TOTAL)
             mTotalSize = total
@@ -176,60 +168,10 @@ abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T>,
         showLoadSuccessView(data)
     }
 
-    override fun showLoadErrorView() {
-        showLoadCompleteView(ERROR, emptyList())
-    }
-
-    override fun setLoadFailureResource(loadFailureDrawableRes: Int, loadFailureStringRes: Int) {
-        mIvLoadingFailure?.setImageResource(loadFailureDrawableRes)
-        mTvLoadingFailure?.setText(loadFailureStringRes)
-    }
-
     override fun onClickLoadFailure(view: View) {
         mRefreshOperateType = ON_RELOAD
         mPageIndex = mInitPageIndex
         sendRequest()
     }
 
-    override fun onItemClick(adapter: BaseQuickAdapter<*, *>?, view: View?, position: Int) {
-        onItemClick(adapter!!, view!!, mAdapter.getItem(position)!!)
-    }
-
-    override fun onItemLongClick(
-        adapter: BaseQuickAdapter<*, *>?,
-        view: View?,
-        position: Int
-    ): Boolean {
-        return onItemLongClick(adapter!!, view!!, mAdapter.getItem(position)!!)
-    }
-
-    override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>?, view: View?, position: Int) {
-        onItemChildClick(adapter!!, view!!, mAdapter.getItem(position)!!)
-    }
-
-    override fun onItemChildLongClick(
-        adapter: BaseQuickAdapter<*, *>?,
-        view: View?,
-        position: Int
-    ): Boolean {
-        return onItemChildLongClick(adapter!!, view!!, mAdapter.getItem(position)!!)
-    }
-
-    override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, item: T) {
-    }
-
-    override fun onItemLongClick(adapter: BaseQuickAdapter<*, *>, view: View, item: T): Boolean {
-        return false
-    }
-
-    override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>, view: View, item: T) {
-    }
-
-    override fun onItemChildLongClick(
-        adapter: BaseQuickAdapter<*, *>,
-        view: View,
-        item: T
-    ): Boolean {
-        return false
-    }
 }

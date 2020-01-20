@@ -10,14 +10,13 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.android.synthetic.main.common_refresh_layout.view.*
 
 /**
  * Author：Stevie.Chen Time：2019/7/11
  * Class Comment：
  */
-abstract class RootRefreshFragment : RootFragment(), IRefreshView, OnRefreshLoadMoreListener {
+abstract class RootRefreshFragment : RootFragment(), IRefreshView {
 
     override var mPageIndex: Int = mInitPageIndex//page info
     override var mPageSize: Int = mInitPageSize//page info
@@ -67,10 +66,12 @@ abstract class RootRefreshFragment : RootFragment(), IRefreshView, OnRefreshLoad
     }
 
     override fun initRefreshView() {
-        mSmartRefreshLayout = mView!!.srl_root
-        mClassicsHeader = mView!!.srlH_root
-        mClassicsFooter = mView!!.srlF_root
-        mFlRootContainer = mView!!.fl_rootContainer
+        mView?.run {
+            mSmartRefreshLayout = srl_root
+            mClassicsHeader = srlH_root
+            mClassicsFooter = srlF_root
+            mFlRootContainer = fl_rootContainer
+        }
         if (layoutItemResourceId != 0) {
             mFlRootContainer?.addView(
                 LayoutInflater.from(mContext).inflate(layoutItemResourceId, null, false),

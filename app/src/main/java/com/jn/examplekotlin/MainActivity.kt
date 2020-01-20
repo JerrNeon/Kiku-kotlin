@@ -31,7 +31,6 @@ class MainActivity : RootRvPresenterActivity<NewsContract.IPresenter, NewsVO>(),
     }
 
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, item: NewsVO) {
-        super.onItemClick(adapter, view, item)
         startActivity(Intent(this, NewsListActivity::class.java))
     }
 }

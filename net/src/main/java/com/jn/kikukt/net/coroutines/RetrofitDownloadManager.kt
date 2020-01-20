@@ -9,7 +9,7 @@ import okhttp3.Interceptor
  * Author：Stevie.Chen Time：2020/1/15
  * Class Comment：
  */
-class RetrofitDownloadManager(val baseUrl: String, val listener: ProgressListener?) :
+class RetrofitDownloadManager(private val baseUrl: String, val listener: ProgressListener?) :
     IBaseRetrofitManager {
 
     val service by lazy { create(RetrofitApiService::class.java, baseUrl) }
@@ -17,8 +17,14 @@ class RetrofitDownloadManager(val baseUrl: String, val listener: ProgressListene
     override val interceptor: Interceptor?
         get() = Interceptor { chain ->
             val originalResponse = chain.proceed(chain.request())
+            val responseBody = originalResponse.body
             originalResponse.newBuilder()
-                .body(DownloadResponseBody(originalResponse.body!!, progressListener!!))
+                .body(
+                    if (responseBody != null) DownloadResponseBody(
+                        responseBody,
+                        progressListener
+                    ) else null
+                )
                 .build()
         }
 

@@ -6,12 +6,13 @@ import com.jn.kikukt.common.Config
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 
 /**
  * Author：Stevie.Chen Time：2019/7/10
  * Class Comment：刷新和加载更多
  */
-interface IRefreshView {
+interface IRefreshView : OnRefreshLoadMoreListener {
 
     val mInitPageIndex: Int
         get() = Config.PAGE_INDEX//page info(init page index)

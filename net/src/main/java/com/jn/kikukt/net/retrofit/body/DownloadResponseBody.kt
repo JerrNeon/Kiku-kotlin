@@ -10,7 +10,8 @@ import java.io.IOException
  * Author：Stevie.Chen Time：2019/7/15
  * Class Comment：监听下载进度的ResponseBody
  */
-class DownloadResponseBody(val responseBody: ResponseBody, val listener: ProgressListener) : ResponseBody() {
+class DownloadResponseBody(val responseBody: ResponseBody, val listener: ProgressListener?) :
+    ResponseBody() {
 
     private var bufferedSource: BufferedSource? = null
 
@@ -37,9 +38,9 @@ class DownloadResponseBody(val responseBody: ResponseBody, val listener: Progres
             override fun read(sink: Buffer, byteCount: Long): Long {
                 val bytesRead = super.read(sink, byteCount)
                 totalBytesRead += if (bytesRead != -1L) bytesRead else 0
-                listener.onProgress(
+                listener?.onProgress(
                     totalBytesRead,
-                    responseBody.contentLength(),
+                    contentLength(),
                     totalBytesRead * 1.0f / responseBody.contentLength(),
                     bytesRead == -1L
                 )

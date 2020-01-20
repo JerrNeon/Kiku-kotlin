@@ -10,14 +10,13 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.android.synthetic.main.common_refresh_layout.*
 
 /**
  * Author：Stevie.Chen Time：2019/7/10
  * Class Comment：
  */
-abstract class RootRefreshActivity : RootTbActivity(), IRefreshView, OnRefreshLoadMoreListener {
+abstract class RootRefreshActivity : RootTbActivity(), IRefreshView {
 
     override var mPageIndex: Int = mInitPageIndex//page info
     override var mPageSize: Int = mInitPageSize//page info
