@@ -3,22 +3,23 @@ package com.jn.kikukt.dialog
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemClickListener
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.jn.kikukt.R
-import com.jn.kikukt.adapter.BaseAdapterViewHolder
 import com.jn.kikukt.adapter.BaseRvAdapter
 import com.jn.kikukt.common.utils.getScreenWidth
 import com.jn.kikukt.entiy.ShareVO
+import com.jn.kikukt.utils.glide.requestManager
 
 /**
  * Author：Stevie.Chen Time：2019/7/15
  * Class Comment：
  */
-class ShareDialogFragment : RootDialogFragment(), BaseQuickAdapter.OnItemClickListener {
+class ShareDialogFragment : RootDialogFragment(), OnItemClickListener {
 
     private var mRecyclerView: RecyclerView? = null
     private var mTvCancel: TextView? = null
@@ -52,22 +53,28 @@ class ShareDialogFragment : RootDialogFragment(), BaseQuickAdapter.OnItemClickLi
         }
         mTvCancel?.setOnClickListener(this)
 
-        val adapter = ShareAdapter(mFragment)
-        adapter.addData(ShareVO(R.drawable.ic_kiku_wxcircle_logo, "朋友圈"))
-        adapter.addData(ShareVO(R.drawable.ic_kiku_wechat_logo, "微信"))
-        adapter.addData(ShareVO(R.drawable.ic_kiku_sina_logo, "微博"))
-        adapter.addData(ShareVO(R.drawable.ic_kiku_qq_logo, "QQ"))
-        //adapter.add(new ShareVO(R.drawable.ic_qq_logo, "QQ空间"));
+        val adapter = object :
+            BaseRvAdapter<ShareVO>(requestManager(), layoutResId = R.layout.dialog_item_share) {
+
+            override fun convert(holder: BaseViewHolder, item: ShareVO) {
+                holder.setImageResource(R.id.iv_share, item.img)
+                holder.setText(R.id.tv_share, item.title)
+            }
+        }.apply {
+            addData(ShareVO(R.drawable.ic_kiku_wxcircle_logo, "朋友圈"))
+            addData(ShareVO(R.drawable.ic_kiku_wechat_logo, "微信"))
+            addData(ShareVO(R.drawable.ic_kiku_sina_logo, "微博"))
+            addData(ShareVO(R.drawable.ic_kiku_qq_logo, "QQ"))
+            //add(new ShareVO(R.drawable.ic_qq_logo, "QQ空间"));
+            setOnItemClickListener(this@ShareDialogFragment)
+        }
         mRecyclerView?.run {
             layoutManager = GridLayoutManager(mContext, 4)
             this.adapter = adapter
         }
-        adapter.onItemClickListener = this
     }
 
-    override fun initData() {
-
-    }
+    override fun initData() {}
 
     /**
      * 显示对话框
@@ -134,14 +141,4 @@ class ShareDialogFragment : RootDialogFragment(), BaseQuickAdapter.OnItemClickLi
         }
     }
 
-    private inner class ShareAdapter(fragment: Fragment) : BaseRvAdapter<ShareVO>(fragment) {
-
-        override val layoutResourceId: Int
-            get() = R.layout.dialog_item_share
-
-        override fun convert(helper: BaseAdapterViewHolder, item: ShareVO) {
-            helper.setImageResource(R.id.iv_share, item.img)
-            helper.setText(R.id.tv_share, item.title)
-        }
-    }
 }

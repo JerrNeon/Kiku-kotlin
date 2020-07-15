@@ -5,11 +5,14 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import com.jn.kikukt.R
 import com.jn.kikukt.annonation.*
+import com.jn.kikukt.common.api.IMvpView
 import com.jn.kikukt.common.api.IRefreshView
-import com.scwang.smartrefresh.layout.SmartRefreshLayout
-import com.scwang.smartrefresh.layout.api.RefreshLayout
-import com.scwang.smartrefresh.layout.footer.ClassicsFooter
-import com.scwang.smartrefresh.layout.header.ClassicsHeader
+import com.jn.kikukt.mvp.IBPresenter
+import com.jn.kikukt.mvp.IBView
+import com.scwang.smart.refresh.footer.ClassicsFooter
+import com.scwang.smart.refresh.header.ClassicsHeader
+import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import com.scwang.smart.refresh.layout.api.RefreshLayout
 import kotlinx.android.synthetic.main.common_refresh_layout.*
 
 /**
@@ -23,7 +26,7 @@ abstract class RootRefreshActivity : RootTbActivity(), IRefreshView {
     override var mTotalSize: Int = 0//page info
     override var mTotalPage: Int = 0//page info
     override var mRefreshOperateType: Int = 0//operate type
-    override var mSmartRefreshLayout: SmartRefreshLayout? = null//root layout
+    override lateinit var mSmartRefreshLayout: SmartRefreshLayout//root layout
     override var mClassicsHeader: ClassicsHeader? = null//refresh layout
     override var mClassicsFooter: ClassicsFooter? = null//load more layout
     override var mFlRootContainer: FrameLayout? = null//show content layout
@@ -43,7 +46,7 @@ abstract class RootRefreshActivity : RootTbActivity(), IRefreshView {
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
         mRefreshOperateType = ON_REFRESH
-        mSmartRefreshLayout?.resetNoMoreData()//reset no more data origin status
+        mSmartRefreshLayout.resetNoMoreData()//reset no more data origin status
         mPageIndex = mInitPageIndex
         sendRequest()
     }
@@ -58,7 +61,7 @@ abstract class RootRefreshActivity : RootTbActivity(), IRefreshView {
                 mPageIndex++
                 sendRequest()
             } else {
-                mSmartRefreshLayout?.finishLoadMoreWithNoMoreData()//load complete and no more data
+                mSmartRefreshLayout.finishLoadMoreWithNoMoreData()//load complete and no more data
             }
         }
     }
@@ -78,7 +81,7 @@ abstract class RootRefreshActivity : RootTbActivity(), IRefreshView {
             )
         }
 
-        mSmartRefreshLayout?.run {
+        mSmartRefreshLayout.run {
             when (mRefreshViewType) {
                 ALL -> {
                     setEnableRefresh(true)
@@ -103,5 +106,23 @@ abstract class RootRefreshActivity : RootTbActivity(), IRefreshView {
             setEnableFooterFollowWhenNoMoreData(true)//SmartRefreshLayout Api
         }
     }
+}
 
+abstract class RootRefreshPresenterActivity<P : IBPresenter> : RootRefreshActivity(),
+    IMvpView<P> {
+
+    override var mPresenter: P? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initPresenter()
+    }
+
+    override fun initPresenter() {
+        super.initPresenter()
+        mPresenter?.let {
+            it.attachView(this as? IBView)
+            lifecycle.addObserver(it)
+        }
+    }
 }

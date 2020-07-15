@@ -7,8 +7,11 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.jn.kikukt.common.api.IBaseView
 import com.jn.kikukt.common.api.IDisposableView
+import com.jn.kikukt.common.api.IMvpView
 import com.jn.kikukt.common.api.IViewModelView
 import com.jn.kikukt.dialog.ProgressDialogFragment
+import com.jn.kikukt.mvp.IBPresenter
+import com.jn.kikukt.mvp.IBView
 import com.jn.kikukt.net.coroutines.BaseViewModel
 import com.jn.kikukt.utils.BaseManager
 import com.tbruyelle.rxpermissions2.RxPermissions
@@ -48,5 +51,23 @@ abstract class RootActivity : AppCompatActivity(), IBaseView,
 
     override fun onClick(v: View?) {
     }
+}
 
+abstract class RootPresenterActivity<P : IBPresenter> : RootActivity(),
+    IMvpView<P> {
+
+    override var mPresenter: P? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initPresenter()
+    }
+
+    override fun initPresenter() {
+        super.initPresenter()
+        mPresenter?.let {
+            it.attachView(this as? IBView)
+            lifecycle.addObserver(it)
+        }
+    }
 }

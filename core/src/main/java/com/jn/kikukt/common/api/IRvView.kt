@@ -8,6 +8,10 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemChildClickListener
+import com.chad.library.adapter.base.listener.OnItemChildLongClickListener
+import com.chad.library.adapter.base.listener.OnItemClickListener
+import com.chad.library.adapter.base.listener.OnItemLongClickListener
 import com.jn.kikukt.adapter.BaseRvAdapter
 import com.jn.kikukt.annonation.ERROR
 import com.jn.kikukt.annonation.LoadCompleteType
@@ -18,12 +22,11 @@ import com.jn.kikukt.net.coroutines.HttpResponse
  * Author：Stevie.Chen Time：2019/7/10
  * Class Comment：
  */
-interface IRvView<T> : BaseQuickAdapter.OnItemClickListener,
-    BaseQuickAdapter.OnItemLongClickListener, BaseQuickAdapter.OnItemChildClickListener,
-    BaseQuickAdapter.OnItemChildLongClickListener {
+interface IRvView<T> : OnItemClickListener, OnItemLongClickListener, OnItemChildClickListener,
+    OnItemChildLongClickListener {
 
-    var mRecyclerView: RecyclerView?//RecyclerView
-    var mEmptyView: View?//empty or failure view
+    var mRecyclerView: RecyclerView//RecyclerView
+    var mEmptyView: View//empty or failure view
     var mIvLoadingFailure: ImageView?//empty or failure icon
     var mTvLoadingFailure: TextView?//empty or failure hint text
     val mAdapter: BaseRvAdapter<T>//adapter
@@ -73,7 +76,10 @@ interface IRvView<T> : BaseQuickAdapter.OnItemClickListener,
      * @param loadFailureDrawableRes 加载失败或数据为空显示图标资源
      * @param loadFailureStringRes   加载失败或数据为空显示提示文字资源
      */
-    fun setLoadFailureResource(@DrawableRes loadFailureDrawableRes: Int, @StringRes loadFailureStringRes: Int) {
+    fun setLoadFailureResource(
+        @DrawableRes loadFailureDrawableRes: Int,
+        @StringRes loadFailureStringRes: Int
+    ) {
         mIvLoadingFailure?.setImageResource(loadFailureDrawableRes)
         mTvLoadingFailure?.setText(loadFailureStringRes)
     }
@@ -91,9 +97,9 @@ interface IRvView<T> : BaseQuickAdapter.OnItemClickListener,
      * @param adapter
      * @param view
      */
-    override fun onItemClick(adapter: BaseQuickAdapter<*, *>?, view: View?, position: Int) {
-        val item = mAdapter.getItem(position)
-        if (adapter != null && view != null && item != null)
+    override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+        val item = mAdapter.getItemOrNull(position)
+        if (item != null)
             onItemClick(adapter, view, item)
     }
 
@@ -105,12 +111,12 @@ interface IRvView<T> : BaseQuickAdapter.OnItemClickListener,
      * @return
      */
     override fun onItemLongClick(
-        adapter: BaseQuickAdapter<*, *>?,
-        view: View?,
+        adapter: BaseQuickAdapter<*, *>,
+        view: View,
         position: Int
     ): Boolean {
-        val item = mAdapter.getItem(position)
-        return if (adapter != null && view != null && item != null) onItemLongClick(
+        val item = mAdapter.getItemOrNull(position)
+        return if (item != null) onItemLongClick(
             adapter,
             view,
             item
@@ -123,9 +129,9 @@ interface IRvView<T> : BaseQuickAdapter.OnItemClickListener,
      * @param adapter
      * @param view
      */
-    override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>?, view: View?, position: Int) {
-        val item = mAdapter.getItem(position)
-        if (adapter != null && view != null && item != null)
+    override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+        val item = mAdapter.getItemOrNull(position)
+        if (item != null)
             onItemChildClick(adapter, view, item)
     }
 
@@ -137,12 +143,12 @@ interface IRvView<T> : BaseQuickAdapter.OnItemClickListener,
      * @return
      */
     override fun onItemChildLongClick(
-        adapter: BaseQuickAdapter<*, *>?,
-        view: View?,
+        adapter: BaseQuickAdapter<*, *>,
+        view: View,
         position: Int
     ): Boolean {
-        val item = mAdapter.getItem(position)
-        return if (adapter != null && view != null && item != null)
+        val item = mAdapter.getItemOrNull(position)
+        return if (item != null)
             onItemChildLongClick(adapter, view, item) else false
     }
 

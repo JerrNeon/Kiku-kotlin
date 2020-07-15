@@ -14,7 +14,6 @@ interface ITabLayoutView {
         get() = R.color.colorPrimary//未选中文字颜色
     val tabSelectedTextColorId: Int
         get() = R.color.colorPrimaryDark//选中文字颜色
-    val tabItemMargin: Int?//子项左右margin
     val isTabIndicatorFullWidth: Boolean
         get() = false//Indicator是否是与Tab同宽度(false：与文字同宽度)
 
@@ -34,11 +33,4 @@ interface ITabLayoutView {
      */
     fun setOffscreenPageLimit()
 
-    /**
-     * 设置TabLayout子项左右margin值
-     *
-     * @param marginLeft  左margin
-     * @param marginRight 右margin
-     */
-    fun setTabLayoutIndicatorMargin(marginLeft: Int?, marginRight: Int?)
 }

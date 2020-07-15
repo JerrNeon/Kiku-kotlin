@@ -3,10 +3,10 @@ package com.jn.kikukt.common.api
 import android.widget.FrameLayout
 import com.jn.kikukt.annonation.*
 import com.jn.kikukt.common.Config
-import com.scwang.smartrefresh.layout.SmartRefreshLayout
-import com.scwang.smartrefresh.layout.footer.ClassicsFooter
-import com.scwang.smartrefresh.layout.header.ClassicsHeader
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
+import com.scwang.smart.refresh.footer.ClassicsFooter
+import com.scwang.smart.refresh.header.ClassicsHeader
+import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
 
 /**
  * Author：Stevie.Chen Time：2019/7/10
@@ -32,7 +32,7 @@ interface IRefreshView : OnRefreshLoadMoreListener {
         get() = true//isLoadMoreEnable(是否可以加载更多)
     @RefreshOperateType
     var mRefreshOperateType: Int//operate type(Refresh所在界面当前操作类型)
-    var mSmartRefreshLayout: SmartRefreshLayout?//root layout
+    var mSmartRefreshLayout: SmartRefreshLayout//root layout
     var mClassicsHeader: ClassicsHeader?//refresh layout
     var mClassicsFooter: ClassicsFooter?//load more layout
     var mFlRootContainer: FrameLayout?//show content layout

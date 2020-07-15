@@ -130,8 +130,8 @@ class JsonUtils {
         if (json != null) {
             try {
                 var jsonParser: JSONTokener? = JSONTokener(json.toString())
-                var status: JSONObject? = jsonParser!!.nextValue() as JSONObject
-                val obj = status!!.get(name)
+                var status: JSONObject? = jsonParser?.nextValue() as? JSONObject
+                val obj = status?.get(name)
                 if (obj != null) {
                     result = obj.toString()
                 }

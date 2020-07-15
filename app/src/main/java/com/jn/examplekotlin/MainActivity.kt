@@ -7,10 +7,11 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.jn.examplekotlin.activity.NewsListActivity
 import com.jn.examplekotlin.adapter.NewAdapter
 import com.jn.examplekotlin.entiy.NewsVO
-import com.jn.examplekotlin.mvp.contract.NewsContract
-import com.jn.examplekotlin.mvp.presenter.NewsPresenter
+import com.jn.examplekotlin.mvp.NewsContract
+import com.jn.examplekotlin.mvp.NewsPresenter
 import com.jn.kikukt.activity.RootRvPresenterActivity
 import com.jn.kikukt.adapter.BaseRvAdapter
+import com.jn.kikukt.utils.glide.requestManager
 
 
 class MainActivity : RootRvPresenterActivity<NewsContract.IPresenter, NewsVO>(),
@@ -18,7 +19,9 @@ class MainActivity : RootRvPresenterActivity<NewsContract.IPresenter, NewsVO>(),
 
     override fun createPresenter(): NewsContract.IPresenter? = NewsPresenter()
 
-    override val mAdapter: BaseRvAdapter<NewsVO> = NewAdapter(this)
+    override val mAdapter: BaseRvAdapter<NewsVO> by lazy {
+        NewAdapter(requestManager())
+    }
 
     override fun sendRequest() {
         super.sendRequest()

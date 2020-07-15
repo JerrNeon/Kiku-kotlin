@@ -67,6 +67,7 @@ dependencies {
     api project(':net')
 
     api dep["support-v4"]
+    api dep["viewpager2"]
     api dep["eventbus"]
     api dep["glide"]
     api dep["glide-transformations"]
@@ -74,6 +75,8 @@ dependencies {
 
     api dep["BaseRecyclerViewAdapterHelper"]
     api dep["SmartRefreshLayout"]
+    api dep["SmartRefreshLayout-header-classics"]
+    api dep["SmartRefreshLayout-footer-classics"]
 
     //jsoup parse Html
     api dep["jsoup"]

@@ -1,15 +1,14 @@
 package com.jn.kikukt.activity
 
-import android.app.Activity
 import android.os.Bundle
-import android.view.View
-import android.widget.ImageView
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.jn.kikukt.R
-import com.jn.kikukt.adapter.BasePagerAdapter
+import com.jn.kikukt.adapter.BaseRvAdapter
+import com.jn.kikukt.adapter.displayImage
 import com.jn.kikukt.common.SPManage
 import com.jn.kikukt.common.api.IGuideView
 import com.jn.kikukt.entiy.GuidePageVO
-import com.jn.kikukt.utils.glide.displayImage
+import com.jn.kikukt.utils.glide.requestManager
 import kotlinx.android.synthetic.main.common_guide_layout.*
 
 /**
@@ -18,7 +17,7 @@ import kotlinx.android.synthetic.main.common_guide_layout.*
  */
 abstract class RootGuideActivity : RootActivity(), IGuideView {
 
-    protected var mAdapter: GuidePagerAdapter? = null
+    protected lateinit var mAdapter: BaseRvAdapter<GuidePageVO>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,15 +28,10 @@ abstract class RootGuideActivity : RootActivity(), IGuideView {
     override fun initView() {
         super.initView()
         mAdapter = getAdapter()
-            .apply {
-                onClickListener = View.OnClickListener {
-                    handlerSkipEvent()
-                }
-            }
         val imgResourceIds = getImgResourceIds()
         if (imgResourceIds.isNotEmpty()) {
             for (i in imgResourceIds.indices) {
-                mAdapter?.add(
+                mAdapter.addData(
                     GuidePageVO(
                         position = i,
                         imgRes = imgResourceIds[i],
@@ -50,37 +44,29 @@ abstract class RootGuideActivity : RootActivity(), IGuideView {
         vp_RootGuide.adapter = mAdapter
     }
 
-    open fun getAdapter(): GuidePagerAdapter = GuidePagerAdapter(this)
+    open fun getAdapter(): BaseRvAdapter<GuidePageVO> = object : BaseRvAdapter<GuidePageVO>(
+        requestManager(),
+        layoutResId = R.layout.common_guideitem_layout
+    ) {
+        override fun convert(holder: BaseViewHolder, item: GuidePageVO) {
+            item.run {
+                if (imgType == 0)
+                    holder.displayImage(R.id.iv_rootGuide, requestManager, imgUrl ?: "")
+                else
+                    holder.setImageResource(R.id.iv_rootGuide, imgRes)
+            }
+        }
+    }.apply {
+        setOnItemClickListener { _, _, position ->
+            if (mAdapter.getItemOrNull(position)?.isLast == true)
+                handlerSkipEvent()
+        }
+    }
 
     open fun handlerSkipEvent() {
         openMainActivity()
         SPManage.instance.setFirstGuide(false)
         finish()
     }
-
-}
-
-class GuidePagerAdapter(activity: Activity) : BasePagerAdapter<GuidePageVO>(activity) {
-
-    var onClickListener: View.OnClickListener? = null
-
-    override val layoutResourceId: Int
-        get() = R.layout.common_guideitem_layout
-
-    override fun getView(view: View?, position: Int, bean: GuidePageVO?) {
-        val iv = view?.findViewById<ImageView>(R.id.iv_rootGuide)
-        bean?.run {
-            if (imgType == 0)
-                iv?.displayImage(getImageContext()!!, imgUrl ?: "")
-            else
-                iv?.setImageResource(imgRes)
-            iv?.setOnClickListener {
-                if (isLast && onClickListener != null) {
-                    onClickListener?.onClick(it)
-                }
-            }
-        }
-    }
-
 }
 
