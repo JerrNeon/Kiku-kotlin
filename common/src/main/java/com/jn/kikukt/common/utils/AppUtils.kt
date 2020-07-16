@@ -296,7 +296,7 @@ fun Context.isWifi(): Boolean {
  *
  * @return `true`: 是<br></br>`false`: 否
  */
-fun Context.getWifiEnabled(): Boolean {
+fun Context.isWifiEnabled(): Boolean {
     val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
     return wifiManager.isWifiEnabled
 }
@@ -306,7 +306,7 @@ fun Context.getWifiEnabled(): Boolean {
  *
  * @return `true`: 是<br></br>`false`: 否
  */
-fun Context.getMobileDataEnabled(): Boolean {
+fun Context.isMobileDataEnabled(): Boolean {
     try {
         val tm = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val getMobileDataEnabledMethod = tm.javaClass.getDeclaredMethod("getDataEnabled")

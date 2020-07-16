@@ -65,7 +65,7 @@ abstract class RootGuideActivity : RootActivity(), IGuideView {
 
     open fun handlerSkipEvent() {
         openMainActivity()
-        SPManage.instance.setFirstGuide(false)
+        SPManage.instance.isFirstGuide = false
         finish()
     }
 }

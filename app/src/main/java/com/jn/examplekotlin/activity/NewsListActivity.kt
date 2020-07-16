@@ -1,8 +1,7 @@
 package com.jn.examplekotlin.activity
 
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
+import androidx.activity.viewModels
 import com.jn.examplekotlin.adapter.NewAdapter
 import com.jn.examplekotlin.entiy.NewsVO
 import com.jn.examplekotlin.mvvm.NewsViewModel
@@ -16,9 +15,11 @@ import com.jn.kikukt.utils.glide.requestManager
  */
 class NewsListActivity : RootRvActivity<NewsVO>() {
 
-    override val viewModel: NewsViewModel? by lazy {
-        ViewModelProvider(this).get(NewsViewModel::class.java)
-    }
+    override val viewModel by viewModels<NewsViewModel>()
+
+//    override val viewModel: NewsViewModel? by lazy {
+//        ViewModelProvider(this).get(NewsViewModel::class.java)
+//    }
 
     override val mAdapter: BaseRvAdapter<NewsVO> by lazy {
         NewAdapter(requestManager = requestManager())
@@ -26,12 +27,12 @@ class NewsListActivity : RootRvActivity<NewsVO>() {
 
     override fun sendRequest() {
         super.sendRequest()
-        viewModel?.getNewsList(mPageIndex, mPageSize)
+        viewModel.getNewsList(mPageIndex, mPageSize)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTitleText("News ViewModel")
-        viewModel?.liveData?.observe(this, observer)
+        viewModel.liveData.observe(this, observer)
     }
 }

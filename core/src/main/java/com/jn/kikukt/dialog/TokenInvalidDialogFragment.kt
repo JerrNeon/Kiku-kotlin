@@ -4,7 +4,6 @@ import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import com.jn.kikukt.R
-import com.jn.kikukt.common.SPManage
 import com.jn.kikukt.common.utils.getScreenWidth
 import com.jn.kikukt.utils.dialog.DialogFragmentUtils
 import kotlinx.android.synthetic.main.dialog_tokeninvalid.view.*
@@ -34,7 +33,6 @@ open class TokenInvalidDialogFragment : RootDialogFragment() {
     override fun onClick(view: View) {
         super.onClick(view)
         if (view.id == R.id.tv_commit) {
-            SPManage.instance.clearUserInfo()
             openLoginActivity()
             this.dismiss()
             DialogFragmentUtils.onDestroyTokenValidDialog()

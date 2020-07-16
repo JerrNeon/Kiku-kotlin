@@ -11,15 +11,18 @@ import java.lang.reflect.Method
  */
 object SPUtils {
 
+    val context: Context
+        get() = ContextUtils.getContext()
+
     /**
      * 保存在手机里面的文件名
      */
-    private const val FILE_NAME = "sp_data"
+    const val FILE_NAME = "sp_data"
 
     /**
      * 保存数据的方法，我们需要拿到保存数据的具体类型，然后根据类型调用不同的保存方法
      */
-    fun put(context: Context, key: String, any: Any?) {
+    fun put(key: String, any: Any?) {
         val sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE)
         val editor = sp.edit()
         when (any) {
@@ -28,7 +31,7 @@ object SPUtils {
             is Boolean -> editor.putBoolean(key, any)
             is Float -> editor.putFloat(key, any)
             is Long -> editor.putLong(key, any)
-            else -> editor.putString(key, any.toString())
+            else -> throw IllegalArgumentException("$key type is no correct")
         }
         SharedPreferencesCompat.apply(editor)
     }
@@ -36,22 +39,22 @@ object SPUtils {
     /**
      * 得到保存数据的方法，我们根据默认值得到保存的数据的具体类型，然后调用相对于的方法获取值
      */
-    operator fun get(context: Context, key: String, defaultObject: Any): Any? {
+    inline operator fun <reified T> get(key: String, defaultObject: T): T {
         val sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE)
         return when (defaultObject) {
-            is String -> sp.getString(key, defaultObject)
-            is Int -> sp.getInt(key, defaultObject)
-            is Boolean -> sp.getBoolean(key, defaultObject)
-            is Float -> sp.getFloat(key, defaultObject)
-            is Long -> sp.getLong(key, defaultObject)
-            else -> null
+            is String -> sp.getString(key, defaultObject) as T
+            is Int -> sp.getInt(key, defaultObject) as T
+            is Boolean -> sp.getBoolean(key, defaultObject) as T
+            is Float -> sp.getFloat(key, defaultObject) as T
+            is Long -> sp.getLong(key, defaultObject) as T
+            else -> throw IllegalArgumentException("$key type is no correct")
         }
     }
 
     /**
      * 移除某个key值已经对应的值
      */
-    fun remove(context: Context, key: String) {
+    fun remove(key: String) {
         val sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE)
         val editor = sp.edit()
         editor.remove(key)
@@ -61,7 +64,7 @@ object SPUtils {
     /**
      * 清除所有数据
      */
-    fun clear(context: Context) {
+    fun clear() {
         val sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE)
         val editor = sp.edit()
         editor.clear()
@@ -71,7 +74,7 @@ object SPUtils {
     /**
      * 查询某个key是否已经存在
      */
-    fun contains(context: Context, key: String): Boolean {
+    fun contains(key: String): Boolean {
         val sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE)
         return sp.contains(key)
     }
@@ -79,7 +82,7 @@ object SPUtils {
     /**
      * 返回所有的键值对
      */
-    fun getAll(context: Context): Map<String, *> {
+    fun getAll(): Map<String, *> {
         val sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE)
         return sp.all
     }
