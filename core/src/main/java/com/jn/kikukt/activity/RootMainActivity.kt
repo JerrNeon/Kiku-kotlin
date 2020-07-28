@@ -4,16 +4,16 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import com.google.android.material.tabs.TabLayout
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
-import androidx.core.content.ContextCompat
-import androidx.collection.SimpleArrayMap
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.collection.SimpleArrayMap
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import com.google.android.material.tabs.TabLayout
 import com.jn.kikukt.R
 import com.jn.kikukt.common.api.IMainView
 import com.jn.kikukt.common.utils.showToast
@@ -40,8 +40,10 @@ abstract class RootMainActivity : RootActivity(), IMainView, TabLayout.OnTabSele
     protected var mMenuUnSelectedImgResources: IntArray? = null//unselected text color resource id
     protected var mMenuTitles: Array<String>? = null//text title resource
     protected var mMenuFragments: Array<Fragment>? = null//fragment color resource id
-    protected var mMenuFragmentMap = SimpleArrayMap<Int, Fragment>()//save Fragment add to FragmentTransaction
-    protected var mVersionUpdateReceiver: VersionUpdateReceiver? = null//versionUpdate downLoad receiver
+    protected var mMenuFragmentMap =
+        SimpleArrayMap<Int, Fragment>()//save Fragment add to FragmentTransaction
+    protected var mVersionUpdateReceiver: VersionUpdateReceiver? =
+        null//versionUpdate downLoad receiver
     protected var mVersionUpdateDialog: VersionUpdateDialog? = null//versionUpdate dialog
     protected var mVersionUpdateVO: VersionUpdateVO? = null//versionUpdate content
 
@@ -61,10 +63,16 @@ abstract class RootMainActivity : RootActivity(), IMainView, TabLayout.OnTabSele
         if (mMenuSelectedImgResources != null) {
             for (i in mMenuSelectedImgResources!!.indices) {
                 val menuView =
-                    LayoutInflater.from(mContext).inflate(R.layout.common_mainmenu_layout, ll_RootMain, false)
+                    LayoutInflater.from(mContext)
+                        .inflate(R.layout.common_mainmenu_layout, ll_RootMain, false)
                 val iv = menuView.findViewById<ImageView>(R.id.iv_menu)
                 val tv = menuView.findViewById<TextView>(R.id.tv_menu)
-                tv.setTextColor(ContextCompat.getColor(mContext, mMenuSelectedTextColorResources!![i]))
+                tv.setTextColor(
+                    ContextCompat.getColor(
+                        mContext,
+                        mMenuSelectedTextColorResources!![i]
+                    )
+                )
                 if (i == 0) {
                     iv.setImageResource(mMenuSelectedImgResources!![i])
                     tv.isSelected = true
@@ -81,24 +89,28 @@ abstract class RootMainActivity : RootActivity(), IMainView, TabLayout.OnTabSele
 
 
     override fun changeFragment(position: Int) {
-        if (position >= mMenuFragments!!.size)
-            throw ArrayIndexOutOfBoundsException("position is more than total: " + mMenuFragments!!.size)
-        val fm = supportFragmentManager
-        val ft = fm.beginTransaction()
-        var fragment = mMenuFragmentMap.get(position)
-        if (fragment == null) {
-            fragment = mMenuFragments!![position]
-            mMenuFragmentMap.put(position, fragment)
-            ft.add(mFlRootMainContainerId, fragment)
+        mMenuFragments?.run {
+            if (position >= size)
+                throw ArrayIndexOutOfBoundsException("position is more than total: $size")
+            val fm = supportFragmentManager
+            val ft = fm.beginTransaction()
+            var fragment = mMenuFragmentMap.get(position)
+            if (fragment == null) {
+                fragment = this[position]
+                mMenuFragmentMap.put(position, fragment)
+                ft.add(mFlRootMainContainerId, fragment)
+            }
+            hideAllFragment(ft)
+            ft.show(fragment)
+            ft.commit()
         }
-        hideAllFragment(ft)
-        ft.show(fragment)
-        ft.commit()
     }
 
     override fun hideAllFragment(fragmentTransaction: FragmentTransaction) {
-        for (fragment in mMenuFragments!!) {
-            fragmentTransaction.hide(fragment)
+        mMenuFragments?.run {
+            for (fragment in this) {
+                fragmentTransaction.hide(fragment)
+            }
         }
     }
 
@@ -154,19 +166,29 @@ abstract class RootMainActivity : RootActivity(), IMainView, TabLayout.OnTabSele
 
     override fun onTabUnselected(tab: TabLayout.Tab?) {
         val menuView = tab?.customView
-        val iv = menuView!!.findViewById<ImageView>(R.id.iv_menu)
-        val tv = menuView.findViewById<TextView>(R.id.tv_menu)
-        iv.setImageResource(mMenuUnSelectedImgResources?.get(tab.position)!!)
-        tv.isSelected = false
+        menuView?.run {
+            val iv = findViewById<ImageView>(R.id.iv_menu)
+            val tv = findViewById<TextView>(R.id.tv_menu)
+            mMenuUnSelectedImgResources?.let {
+                iv.setImageResource(it[tab.position])
+            }
+            tv.isSelected = false
+        }
     }
 
     override fun onTabSelected(tab: TabLayout.Tab?) {
-        val menuView = tab?.customView
-        val iv = menuView!!.findViewById<ImageView>(R.id.iv_menu)
-        val tv = menuView.findViewById<TextView>(R.id.tv_menu)
-        iv.setImageResource(mMenuSelectedImgResources?.get(tab.position)!!)
-        tv.isSelected = true
-        changeFragment(tab.position)
+        tab?.let {
+            val menuView = it.customView
+            menuView?.run {
+                val iv = findViewById<ImageView>(R.id.iv_menu)
+                val tv = findViewById<TextView>(R.id.tv_menu)
+                mMenuSelectedImgResources?.let { array ->
+                    iv.setImageResource(array[it.position])
+                }
+                tv.isSelected = true
+            }
+            changeFragment(it.position)
+        }
     }
 
     override fun onPause() {

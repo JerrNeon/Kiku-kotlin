@@ -17,6 +17,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.bumptech.glide.request.target.DrawableImageViewTarget
 import com.bumptech.glide.request.target.SimpleTarget
+import com.jn.kikukt.BuildConfig
 import com.jn.kikukt.R
 import com.jn.kikukt.utils.glide.GlideTransformUtil.withRadius
 
@@ -99,6 +100,7 @@ private fun getRequestOptions(
  */
 private fun getRequestManager(context: Any): RequestManager {
     return when (context) {
+        is RequestManager -> context
         is Activity -> Glide.with(context)
         is Fragment -> Glide.with(context)
         is Context -> Glide.with(context)
@@ -106,58 +108,11 @@ private fun getRequestManager(context: Any): RequestManager {
     }
 }
 
-/**
- * 获取资源对象
- *
- * @param context context资源对象
- * @return
- */
-private fun getResources(context: Any): Resources {
-    return when (context) {
-        is Activity -> context.resources
-        is Fragment -> context.resources
-        is Context -> context.resources
-        else -> throw IllegalArgumentException("context type is no correct")
-    }
-}
-
-private fun getContext(context: Any): Context? {
-    return when (context) {
-        is Activity -> context.applicationContext
-        is Fragment -> context.context
-        else -> context as? Context ?: throw IllegalArgumentException("context type is no correct")
-    }
-}
-
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-fun ImageView.displayImage(
-    context: Any,
-    url: String
-) {
-    displayImage(context = context, url = url, isGif = false)
-}
-
-fun ImageView.displayAvatar(
-    context: Any,
-    url: String
-) {
-    displayImage(
-        context = context,
-        url = url,
-        placeholderResourceId = R.drawable.ic_default_placeholder,
-        isCache = true,
-        isGif = false
-    )
-}
-
-fun ImageView.displayImage(
-    context: Any,
-    url: String,
-    isGif: Boolean
-) {
-    displayImage(context = context, url = url, isCache = true, isGif = isGif)
-}
+fun Activity.requestManager() = Glide.with(this)
+fun Fragment.requestManager() = Glide.with(this)
+fun Context.requestManager() = Glide.with(this)
 
 fun ImageView.displayImage(
     context: Any,
@@ -165,16 +120,40 @@ fun ImageView.displayImage(
     placeholderResourceId: Int = R.drawable.ic_default_placeholder,
     errorResourceId: Int = 0,
     isCache: Boolean = true,
-    isGif: Boolean = false
+    isGif: Boolean = false,
+    isCircle: Boolean = false,
+    radius: Int? = null
 ) {
+    if (BuildConfig.DEBUG && isCircle && (isGif || radius != null)) {
+        error("Assertion failed")
+    }
     val requestManager = getRequestManager(context)
-    val requestOptions = getRequestOptions(placeholderResourceId, errorResourceId, isCache)
-    val requestBuilder: RequestBuilder<*> =
-        if (isGif)
-            requestManager.asGif().load(url)
-        else
-            requestManager.load(url)
-    requestBuilder.apply(requestOptions).into(this)
+    val requestOptions = getRequestOptions(placeholderResourceId, errorResourceId, isCache).apply {
+        if (radius != null) {
+            transform(withRadius(context, radius))
+        }
+    }
+    if (isCircle) {
+        val requestBuilder: RequestBuilder<Bitmap> =
+            requestManager.asBitmap().load(url)
+        val circleBitmapImageViewTarget = object : BitmapImageViewTarget(this) {
+            override fun setResource(resource: Bitmap?) {
+                val circularBitmapDrawable =
+                    RoundedBitmapDrawableFactory.create(resources, resource).apply {
+                        isCircular = true
+                    }
+                this@displayImage.setImageDrawable(circularBitmapDrawable)
+            }
+        }
+        requestBuilder.apply(requestOptions).into(circleBitmapImageViewTarget)
+    } else {
+        val requestBuilder: RequestBuilder<*> =
+            if (isGif)
+                requestManager.asGif().load(url)
+            else
+                requestManager.load(url)
+        requestBuilder.apply(requestOptions).into(this)
+    }
 }
 
 fun ImageView.displayImage(
@@ -194,80 +173,9 @@ fun ImageView.displayImage(
     url: String,
     placeholderResourceId: Int = R.drawable.ic_default_placeholder,
     errorResourceId: Int = 0,
-    simpleTarget: SimpleTarget<Bitmap>
+    bitmapImageViewTarget: BitmapImageViewTarget
 ) {
     val requestManager = getRequestManager(context)
     val requestOptions = getRequestOptions(placeholderResourceId, errorResourceId, false)
-    requestManager.asBitmap().load(url).apply(requestOptions).into(simpleTarget)
-}
-
-fun ImageView.displayCircleImage(
-    context: Any,
-    url: String
-) {
-    displayCircleImage(context = context, url = url, isCache = true)
-}
-
-fun ImageView.displayCircleAvatar(
-    context: Any,
-    url: String
-) {
-    displayCircleImage(
-        context = context,
-        url = url,
-        placeholderResourceId = R.drawable.ic_default_placeholder,
-        isCache = true
-    )
-}
-
-fun ImageView.displayCircleImage(
-    context: Any,
-    url: String,
-    placeholderResourceId: Int = R.drawable.ic_default_placeholder,
-    errorResourceId: Int = 0,
-    isCache: Boolean = true
-) {
-    val requestManager = getRequestManager(context)
-    val requestOptions = getRequestOptions(placeholderResourceId, errorResourceId, isCache)
-    val requestBuilder: RequestBuilder<Bitmap> =
-        requestManager.asBitmap().load(url)
-    requestBuilder.apply(requestOptions).into(object : BitmapImageViewTarget(this) {
-        override fun setResource(resource: Bitmap?) {
-            val circularBitmapDrawable = RoundedBitmapDrawableFactory.create(
-                getResources(
-                    context
-                ), resource
-            )
-            circularBitmapDrawable.isCircular = true
-            this@displayCircleImage.setImageDrawable(circularBitmapDrawable)
-        }
-    })
-}
-
-fun ImageView.displayRoundImage(
-    context: Any,
-    url: String,
-    radius: Int
-) {
-    displayRoundImage(context = context, url = url, radius = radius, isCache = true)
-}
-
-fun ImageView.displayRoundImage(
-    context: Any,
-    url: String,
-    placeholderResourceId: Int = R.drawable.ic_default_placeholder,
-    errorResourceId: Int = 0,
-    isCache: Boolean = true,
-    isGif: Boolean = false,
-    radius: Int
-) {
-    val requestManager = getRequestManager(context)
-    val requestOptions = getRequestOptions(placeholderResourceId, errorResourceId, isCache)
-        .transform(withRadius(context, radius))
-    val requestBuilder: RequestBuilder<*> =
-        if (isGif)
-            requestManager.asGif().load(url)
-        else
-            requestManager.load(url)
-    requestBuilder.apply(requestOptions).into(this)
+    requestManager.asBitmap().load(url).apply(requestOptions).into(bitmapImageViewTarget)
 }

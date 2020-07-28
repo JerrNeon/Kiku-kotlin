@@ -2,7 +2,6 @@ package com.jn.kikukt.dialog
 
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
 import com.jn.kikukt.R
 import com.jn.kikukt.common.utils.LatLng
 import com.jn.kikukt.common.utils.MapUtils
@@ -38,38 +37,27 @@ class MapChoiceDialogFragment : RootDialogFragment() {
     private lateinit var originLl: LatLng//初始地
     private lateinit var destinationLl: LatLng//目的地
 
-    override fun getLayoutResourceId(): Int {
-        return R.layout.dialog_mapchoice
-    }
+    override val layoutResourceId: Int = R.layout.dialog_mapchoice
 
-    override fun getAnimationStyle(): Int {
-        return R.style.bottom_in_out
-    }
-
-    override fun getCanceledOnTouchOutsideEnable(): Boolean {
-        return false
-    }
-
-    override fun getLayoutParams(): WindowManager.LayoutParams? {
-        return null
-    }
+    override val animationStyle: Int = R.style.bottom_in_out
 
     override fun initView() {
         super.initView()
-        mView!!.tv_google!!.setOnClickListener(this)
-        mView!!.tv_baiduMap!!.setOnClickListener(this)
-        mView!!.tv_autoNavi!!.setOnClickListener(this)
-        mView!!.tv_cancel!!.setOnClickListener(this)
+        mView?.run {
+            tv_google.setOnClickListener(this@MapChoiceDialogFragment)
+            tv_baiduMap.setOnClickListener(this@MapChoiceDialogFragment)
+            tv_autoNavi.setOnClickListener(this@MapChoiceDialogFragment)
+            tv_cancel.setOnClickListener(this@MapChoiceDialogFragment)
+        }
     }
 
     override fun initData() {
         super.initData()
-        val bundle = arguments
-        if (bundle != null) {
-            val originLatitude = bundle.getDouble(ROUTE_ORIGINLATITUDE, 0.0)
-            val originLongitude = bundle.getDouble(ROUTE_ORIGINLONGITUDE, 0.0)
-            val destinationLatitude = bundle.getDouble(ROUTE_DESTINATIONLATITUDE, 0.0)
-            val destinationLongitude = bundle.getDouble(ROUTE_DESTINATIONLONGITUDE, 0.0)
+        arguments?.run {
+            val originLatitude = getDouble(ROUTE_ORIGINLATITUDE, 0.0)
+            val originLongitude = getDouble(ROUTE_ORIGINLONGITUDE, 0.0)
+            val destinationLatitude = getDouble(ROUTE_DESTINATIONLATITUDE, 0.0)
+            val destinationLongitude = getDouble(ROUTE_DESTINATIONLONGITUDE, 0.0)
             originLl = LatLng(originLatitude, originLongitude)
             destinationLl = LatLng(destinationLatitude, destinationLongitude)
         }
@@ -77,15 +65,24 @@ class MapChoiceDialogFragment : RootDialogFragment() {
 
     override fun onClick(view: View) {
         super.onClick(view)
-        val i = view.id
-        if (i == R.id.tv_google) {//Google
-            MapUtils.openGoogleMap(mActivity, MapUtils.MapType.DRIVING, originLl, destinationLl)
-        } else if (i == R.id.tv_baiduMap) {//百度地图
-            MapUtils.openBaiduMap(mActivity, MapUtils.MapType.DRIVING, originLl, destinationLl)
-        } else if (i == R.id.tv_autoNavi) {//高德地图
-            MapUtils.openAutoNaviMap(mActivity, MapUtils.MapType.DRIVING, originLl, destinationLl)
-        } else if (i == R.id.tv_cancel) {
-            //
+        when (view.id) {
+            R.id.tv_google -> {//Google
+                MapUtils.openGoogleMap(mActivity, MapUtils.MapType.DRIVING, originLl, destinationLl)
+            }
+            R.id.tv_baiduMap -> {//百度地图
+                MapUtils.openBaiduMap(mActivity, MapUtils.MapType.DRIVING, originLl, destinationLl)
+            }
+            R.id.tv_autoNavi -> {//高德地图
+                MapUtils.openAutoNaviMap(
+                    mActivity,
+                    MapUtils.MapType.DRIVING,
+                    originLl,
+                    destinationLl
+                )
+            }
+            R.id.tv_cancel -> {
+                //
+            }
         }
         dismissAllowingStateLoss()
     }

@@ -40,7 +40,8 @@ class VersionUpdateService : Service() {
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        val versionUpdateVO = intent.getParcelableExtra<VersionUpdateVO>(VersionUpdateVO::class.java.simpleName)
+        val versionUpdateVO =
+            intent.getParcelableExtra<VersionUpdateVO>(VersionUpdateVO::class.java.simpleName)
         downloadFile(versionUpdateVO!!)
         return super.onStartCommand(intent, flags, startId)
     }
@@ -75,7 +76,7 @@ class VersionUpdateService : Service() {
         val downLoadFileName = versionUpdateVO.appName
         RetrofitManage.instance
             .getDownloadObservable(
-                versionUpdateVO.downLoadUrl!!, object : ProgressListener {
+                versionUpdateVO.downLoadUrl ?: "", object : ProgressListener {
                     override fun onProgress(
                         progressBytes: Long,
                         totalBytes: Long,
@@ -101,9 +102,11 @@ class VersionUpdateService : Service() {
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.io())
             .map { responseBody ->
-                val mimeType =
-                    responseBody.contentType()!!.type + File.separator + responseBody.contentType()!!.subtype
-                val fileSuffix = FileUtils.getFileSuffix(mimeType)//文件后缀名
+                var fileSuffix = ""
+                responseBody.contentType()?.run {
+                    val mimeType = type + File.separator + subtype
+                    fileSuffix = FileUtils.getFileSuffix(mimeType)//文件后缀名
+                }
                 val filePath =
                     FileUtils.getFileCacheFile().absolutePath + File.separator + downLoadFileName + "." + fileSuffix
                 FileIOUtils.writeFileFromIS(filePath, responseBody.byteStream())
@@ -133,10 +136,12 @@ class VersionUpdateService : Service() {
                         intent,
                         PendingIntent.FLAG_UPDATE_CURRENT
                     )
-                    builder.setContentIntent(pendingIntent)
-                    builder.setAutoCancel(true)//设置点击后消失
-                    builder.setContentText(resources.getString(R.string.versionUpdate_downloadComplete))
-                    builder.setProgress(100, 100, false)
+                    builder.run {
+                        setContentIntent(pendingIntent)
+                        setAutoCancel(true)//设置点击后消失
+                        setContentText(resources.getString(R.string.versionUpdate_downloadComplete))
+                        setProgress(100, 100, false)
+                    }
                     manager.notify(0, builder.build())
                     val broadcastIntent = Intent(VersionUpdateReceiver.VERSION_UPDATE_ACTION)
                     broadcastIntent.putExtra(

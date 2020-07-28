@@ -34,7 +34,7 @@ abstract class RootSplashActivity : RootActivity(), ISplashView, Handler.Callbac
 
     override fun initView() {
         super.initView()
-        if (SPManage.instance.getFirstGuide())
+        if (SPManage.instance.isFirstGuide)
             requestAllPermission()//need check All permission first enter App
         else
             mHandler.sendEmptyMessageDelayed(SKIP_WHAT, SKIP_TIME)
@@ -51,7 +51,7 @@ abstract class RootSplashActivity : RootActivity(), ISplashView, Handler.Callbac
 
     override fun handleMessage(msg: Message?): Boolean {
         if (msg?.what == SKIP_WHAT) {
-            if (SPManage.instance.getFirstGuide())
+            if (SPManage.instance.isFirstGuide)
                 openGuideActivity()//open splash first
             else
                 openMainActivity()

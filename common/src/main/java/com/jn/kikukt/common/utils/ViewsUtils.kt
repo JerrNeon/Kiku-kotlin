@@ -212,7 +212,7 @@ fun TabLayout.setTabLayoutIndicatorMargin(context: Context, marginLeft: Int, mar
     var tabStrip: Field? = null
     try {
         tabStrip = tabLayoutClass.getDeclaredField("mTabStrip")
-        tabStrip!!.isAccessible = true
+        tabStrip.isAccessible = true
     } catch (e: NoSuchFieldException) {
         e.printStackTrace()
     }

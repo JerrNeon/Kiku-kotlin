@@ -15,7 +15,8 @@ const val ON_RELOAD = 4//加载失败或重新加载
  * RecyclerView界面操作类型
  */
 @IntDef(ON_CREATE, ON_REFRESH, ON_ONLOADMORE, ON_RELOAD)
-@Target(AnnotationTarget.FIELD, AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FUNCTION,
+@Target(
+    AnnotationTarget.FIELD, AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FUNCTION,
     AnnotationTarget.PROPERTY
 )
 @Retention(AnnotationRetention.SOURCE)
@@ -30,7 +31,10 @@ const val ONLY_LOADMORE = 3//只有加载更多
  * RecyclerView类型
  */
 @IntDef(ALL, NONE, ONLY_REFRESH, ONLY_LOADMORE)
-@Target(AnnotationTarget.FIELD, AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FUNCTION)
+@Target(
+    AnnotationTarget.FIELD, AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FUNCTION,
+    AnnotationTarget.PROPERTY
+)
 @Retention(AnnotationRetention.SOURCE)
 annotation class RefreshViewType
 
@@ -42,7 +46,9 @@ const val PAGE = 3//根据总页数来判断
  * 是否可以加载更多的判断标志
  */
 @IntDef(TOTAL, EMPTY, PAGE)
-@Target(AnnotationTarget.FIELD, AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FUNCTION)
+@Target(AnnotationTarget.FIELD, AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FUNCTION,
+    AnnotationTarget.PROPERTY
+)
 @Retention(AnnotationRetention.SOURCE)
 annotation class LoadMoreEnableType
 

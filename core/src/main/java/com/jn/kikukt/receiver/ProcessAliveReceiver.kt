@@ -9,7 +9,7 @@ import com.jn.kikukt.activity.ProcessAliveActivity
  * Author：Stevie.Chen Time：2019/7/12
  * Class Comment：进程保活需要用到的系统广播
  */
-class ProcessAliveReceiver : BroadcastReceiver() {
+open class ProcessAliveReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         //利用系统广播Intent.ACTION_TIME_TICK 每隔一分钟检测一次Service的运行状态
@@ -35,7 +35,7 @@ class ProcessAliveReceiver : BroadcastReceiver() {
      *
      * @param context Context
      */
-    fun checkProcessAliveService(context: Context) {
+    open fun checkProcessAliveService(context: Context) {
 
     }
 }

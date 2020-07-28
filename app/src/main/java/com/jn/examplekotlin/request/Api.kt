@@ -1,7 +1,7 @@
 package com.jn.examplekotlin.request
 
+import com.jn.examplekotlin.entiy.HttpResult
 import com.jn.examplekotlin.entiy.NewsVO
-import com.jn.examplekotlin.entiy.XaResult
 import io.reactivex.Observable
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -18,5 +18,12 @@ interface Api {
     fun getNewList(
         @Field("page") pageIndex: Int, @Field("count") pageSize: Int, @Field("type")
         type: String
-    ): Observable<XaResult<List<NewsVO>>>
+    ): Observable<HttpResult<List<NewsVO>>>
+
+    @FormUrlEncoded
+    @POST(ApiConfig.GET_NEW_LIST)
+    suspend fun getNewList2(
+        @Field("page") pageIndex: Int, @Field("count") pageSize: Int, @Field("type")
+        type: String
+    ): HttpResult<List<NewsVO>>
 }

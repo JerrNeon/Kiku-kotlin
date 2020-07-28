@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
-import com.jn.kikukt.R
 
 /**
  * Author：Stevie.Chen Time：2019/7/12
@@ -22,7 +21,7 @@ class SpinBlackView : AppCompatImageView {
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
 
     init {
-        setImageResource(R.drawable.ic_kiku_progress)
+        //setImageResource(R.drawable.ic_kiku_progress)
         mFrameTime = 1000 / 12
         mUpdateViewRunnable = object : Runnable {
             override fun run() {

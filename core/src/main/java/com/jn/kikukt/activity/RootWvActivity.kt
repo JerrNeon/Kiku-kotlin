@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.widget.FrameLayout
 import com.jn.kikukt.R
+import com.jn.kikukt.common.api.IMvpView
 import com.jn.kikukt.common.api.IWvView
+import com.jn.kikukt.mvp.IBPresenter
+import com.jn.kikukt.mvp.IBView
 import com.jn.kikukt.utils.WebViewUtils
 import kotlinx.android.synthetic.main.common_wv_progress.*
 import kotlinx.android.synthetic.main.common_wv_tencent.*
@@ -19,9 +22,7 @@ open class RootWvActivity : RootTbActivity(), IWvView {
     private lateinit var mWebView: Any
     private var mWebViewHeight: Int = 0//WebView height
 
-    override fun getLayoutResourceId(): Int {
-        return R.layout.common_wv_tencent
-    }
+    override val layoutResourceId: Int = R.layout.common_wv_tencent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +59,8 @@ open class RootWvActivity : RootTbActivity(), IWvView {
                 mWebViewHeight = (mWebView as com.tencent.smtt.sdk.WebView).rootView.height
                 WebViewUtils.removeVideoChildView(mActivity)//hide video top view
             } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {//PORTRAIT
-                val lp = (mWebView as com.tencent.smtt.sdk.WebView).rootView.layoutParams as FrameLayout.LayoutParams
+                val lp =
+                    (mWebView as com.tencent.smtt.sdk.WebView).rootView.layoutParams as FrameLayout.LayoutParams
                 lp.height = mWebViewHeight
             }
         }
@@ -80,6 +82,27 @@ open class RootWvActivity : RootTbActivity(), IWvView {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        return if (WebViewUtils.onKeyDown(keyCode, mWebView)) true else super.onKeyDown(keyCode, event)
+        return if (WebViewUtils.onKeyDown(keyCode, mWebView)) true else super.onKeyDown(
+            keyCode,
+            event
+        )
+    }
+}
+
+abstract class RootWvPresenterActivity<P : IBPresenter> : RootWvActivity(), IMvpView<P> {
+
+    override var mPresenter: P? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initPresenter()
+    }
+
+    override fun initPresenter() {
+        super.initPresenter()
+        mPresenter?.let {
+            it.attachView(this as? IBView)
+            lifecycle.addObserver(it)
+        }
     }
 }

@@ -63,9 +63,16 @@ interface IBaseView {
      * 显示加载框
      */
     fun showProgressDialog() {
+        showProgressDialog(ProgressDialogFragment.TYPE_BLACK)
+    }
+
+    /**
+     * 显示加载框
+     */
+    fun showProgressDialog(type: Int) {
         if (mProgressDialog == null)
-            mProgressDialog = ProgressDialogFragment()
-        mProgressDialog!!.show(mAppCompatActivity.supportFragmentManager, "")
+            mProgressDialog = ProgressDialogFragment.newInstance(type)
+        mProgressDialog?.show(mAppCompatActivity.supportFragmentManager, "")
     }
 
     /**
@@ -73,6 +80,7 @@ interface IBaseView {
      */
     fun dismissProgressDialog() {
         mProgressDialog?.cancel()
+        mProgressDialog = null
     }
 
     /**

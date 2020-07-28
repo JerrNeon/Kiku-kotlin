@@ -1,104 +1,46 @@
 package com.jn.kikukt.common.api
 
-import androidx.annotation.LayoutRes
 import android.widget.FrameLayout
 import com.jn.kikukt.annonation.*
 import com.jn.kikukt.common.Config
-import com.scwang.smartrefresh.layout.SmartRefreshLayout
-import com.scwang.smartrefresh.layout.footer.ClassicsFooter
-import com.scwang.smartrefresh.layout.header.ClassicsHeader
+import com.scwang.smart.refresh.footer.ClassicsFooter
+import com.scwang.smart.refresh.header.ClassicsHeader
+import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
 
 /**
  * Author：Stevie.Chen Time：2019/7/10
  * Class Comment：刷新和加载更多
  */
-interface IRefreshView {
+interface IRefreshView : OnRefreshLoadMoreListener {
 
-    var mPageIndex: Int //page info
-    var mPageSize: Int//page info
-    var mTotalSize: Int//page info
-    var mTotalPage: Int//page info
+    val mInitPageIndex: Int
+        get() = Config.PAGE_INDEX//page info(init page index)
+    val mInitPageSize: Int
+        get() = Config.PAGE_SIZE//page info(init page size)
+    var mPageIndex: Int //page info(page index)
+    var mPageSize: Int//page info(page size)
+    var mTotalSize: Int//page info(total size)
+    var mTotalPage: Int//page info(total page)
+    @RefreshViewType
+    val mRefreshViewType: Int
+        get() = ALL//refresh type(刷新类型)
+    @LoadMoreEnableType
+    val mLoadMoreEnableType: Int
+        get() = EMPTY//load more type(是否可以加载更多的判断标志)
+    val isLoadMoreEnable: Boolean
+        get() = true//isLoadMoreEnable(是否可以加载更多)
     @RefreshOperateType
-    var mRefreshOperateType: Int//operate type
-    var mSmartRefreshLayout: SmartRefreshLayout?//root layout
+    var mRefreshOperateType: Int//operate type(Refresh所在界面当前操作类型)
+    var mSmartRefreshLayout: SmartRefreshLayout//root layout
     var mClassicsHeader: ClassicsHeader?//refresh layout
     var mClassicsFooter: ClassicsFooter?//load more layout
     var mFlRootContainer: FrameLayout?//show content layout
 
-    /**
-     * 获取主内容区域布局
-     *
-     */
-    @LayoutRes
-    fun getLayoutItemResourceId(): Int
-
-    /**
-     * 获取初始分页索引值
-     *
-     */
-    fun getInitPageIndex(): Int = Config.PAGE_INDEX
-
-    /**
-     * 获取初始分页大小
-     *
-     */
-    fun getInitPageSize(): Int = Config.PAGE_SIZE
-
-    /**
-     * 获取分页索引值
-     *
-     */
-    fun getPageIndex(): Int = mPageIndex
-
-    /**
-     * 获取分页大小
-     *
-     */
-    fun getPageSize(): Int = mPageSize
-
-    /**
-     * 获取总大小
-     *
-     */
-    fun getTotalSize(): Int = mTotalSize
-
-    /**
-     * 获取总页大小
-     *
-     */
-    fun getTotalPage(): Int = mTotalPage
+    val layoutItemResourceId: Int//获取主区域内容布局Id
 
     /**
      * 初始化刷新相关控件
      */
     fun initRefreshView()
-
-    /**
-     * 获取刷新类型
-     *
-     */
-    @RefreshViewType
-    fun getRefreshViewType(): Int = ALL
-
-    /**
-     * 设置Refresh所在界面当前操作类型
-     *
-     * @param operateType @RefreshOperateType
-     */
-    fun setRefreshOperateType(@RefreshOperateType operateType: Int) {
-        mRefreshOperateType = operateType
-    }
-
-    /**
-     * 获取是否可以加载更多的判断标志
-     */
-    @LoadMoreEnableType
-    fun getLoadMoreEnableType(): Int = EMPTY
-
-    /**
-     * 是否可以加载更多
-     *
-     * @return true：可以加载更多
-     */
-    fun isLoadMoreEnable(): Boolean = true
 }

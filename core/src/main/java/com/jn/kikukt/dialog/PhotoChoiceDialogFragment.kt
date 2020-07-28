@@ -1,8 +1,7 @@
 package com.jn.kikukt.dialog
 
-import androidx.fragment.app.FragmentManager
 import android.view.View
-import android.view.WindowManager
+import androidx.fragment.app.FragmentManager
 import com.jn.kikukt.R
 import kotlinx.android.synthetic.main.dialog_photochoicedialog.view.*
 
@@ -21,27 +20,17 @@ class PhotoChoiceDialogFragment : RootDialogFragment() {
         }
     }
 
-    override fun getLayoutResourceId(): Int {
-        return R.layout.dialog_photochoicedialog
-    }
+    override val layoutResourceId: Int = R.layout.dialog_photochoicedialog
 
-    override fun getAnimationStyle(): Int {
-        return R.style.bottom_in_out
-    }
-
-    override fun getCanceledOnTouchOutsideEnable(): Boolean {
-        return false
-    }
-
-    override fun getLayoutParams(): WindowManager.LayoutParams? {
-        return null
-    }
+    override val animationStyle: Int = R.style.bottom_in_out
 
     override fun initView() {
         super.initView()
-        mView!!.tv_takePhoto.setOnClickListener(this)
-        mView!!.tv_album.setOnClickListener(this)
-        mView!!.tv_cancel.setOnClickListener(this)
+        mView?.run {
+            tv_takePhoto.setOnClickListener(this@PhotoChoiceDialogFragment)
+            tv_album.setOnClickListener(this@PhotoChoiceDialogFragment)
+            tv_cancel.setOnClickListener(this@PhotoChoiceDialogFragment)
+        }
     }
 
     fun show(
@@ -56,17 +45,16 @@ class PhotoChoiceDialogFragment : RootDialogFragment() {
 
     override fun onClick(view: View) {
         super.onClick(view)
-        val i = view.id
-        if (i == R.id.tv_takePhoto) {
-            if (mTakePhotoOnClickListener != null) {
-                mTakePhotoOnClickListener!!.onClick(view)
+        when (view.id) {
+            R.id.tv_takePhoto -> {
+                mTakePhotoOnClickListener?.onClick(view)
             }
-        } else if (i == R.id.tv_album) {
-            if (mAlbumOnClickListener != null) {
-                mAlbumOnClickListener!!.onClick(view)
+            R.id.tv_album -> {
+                mAlbumOnClickListener?.onClick(view)
             }
-        } else if (i == R.id.tv_cancel) {
+            R.id.tv_cancel -> {
 
+            }
         }
         dismissAllowingStateLoss()
     }

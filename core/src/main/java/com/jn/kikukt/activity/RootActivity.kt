@@ -3,11 +3,16 @@ package com.jn.kikukt.activity
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.jn.kikukt.common.api.IBaseView
 import com.jn.kikukt.common.api.IDisposableView
+import com.jn.kikukt.common.api.IMvpView
+import com.jn.kikukt.common.api.IViewModelView
 import com.jn.kikukt.dialog.ProgressDialogFragment
+import com.jn.kikukt.mvp.IBPresenter
+import com.jn.kikukt.mvp.IBView
+import com.jn.kikukt.net.coroutines.BaseViewModel
 import com.jn.kikukt.utils.BaseManager
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.disposables.CompositeDisposable
@@ -17,7 +22,7 @@ import io.reactivex.disposables.CompositeDisposable
  * Class Comment：
  */
 abstract class RootActivity : AppCompatActivity(), IBaseView,
-    IDisposableView, View.OnClickListener {
+    IDisposableView, IViewModelView, View.OnClickListener {
 
     override lateinit var mActivity: Activity
     override lateinit var mAppCompatActivity: AppCompatActivity
@@ -26,6 +31,7 @@ abstract class RootActivity : AppCompatActivity(), IBaseView,
     override var mProgressDialog: ProgressDialogFragment? = null
     override var mCompositeDisposable: CompositeDisposable? = null
     override var mBaseManager: BaseManager? = null
+    override val viewModel: BaseViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,5 +51,23 @@ abstract class RootActivity : AppCompatActivity(), IBaseView,
 
     override fun onClick(v: View?) {
     }
+}
 
+abstract class RootPresenterActivity<P : IBPresenter> : RootActivity(),
+    IMvpView<P> {
+
+    override var mPresenter: P? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initPresenter()
+    }
+
+    override fun initPresenter() {
+        super.initPresenter()
+        mPresenter?.let {
+            it.attachView(this as? IBView)
+            lifecycle.addObserver(it)
+        }
+    }
 }

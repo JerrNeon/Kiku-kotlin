@@ -29,36 +29,35 @@ class PermissionDialogFragment : RootDialogFragment() {
         }
     }
 
-    override fun getLayoutResourceId(): Int {
-        return R.layout.dialog_permission
-    }
+    override val layoutResourceId: Int = R.layout.dialog_permission
 
-    override fun getAnimationStyle(): Int {
-        return 0
-    }
+    override val isCanceledOnTouchOutsideEnable: Boolean = true
 
-    override fun getCanceledOnTouchOutsideEnable(): Boolean {
-        return true
-    }
-
-    override fun getLayoutParams(): WindowManager.LayoutParams? {
-        val params = mWindow!!.attributes
-        params.gravity = Gravity.CENTER//中间显示
-        params.width = (mContext.getScreenWidth() * 0.9).toInt()//宽度为屏幕90%
-        return params
+    override val layoutParams: WindowManager.LayoutParams? = mWindow?.attributes?.apply {
+        gravity = Gravity.CENTER//中间显示
+        width = (mContext.getScreenWidth() * 0.9).toInt()//宽度为屏幕90%
     }
 
     override fun initView() {
-        mView!!.tv_permissionCancel.setOnClickListener(this)
-        mView!!.tv_permissionSubmit.setOnClickListener(this)
+        mView?.run {
+            tv_permissionCancel.setOnClickListener(this@PermissionDialogFragment)
+            tv_permissionSubmit.setOnClickListener(this@PermissionDialogFragment)
+        }
     }
 
     override fun initData() {
         val bundle = arguments
         val appName = bundle?.getString(APP_NAME, "")
         val permissionName = bundle?.getString(PERMISSION_NAME, "")
-        mView!!.tv_permissionMessage.text =
-            String.format(resources.getString(R.string.permission_content), appName, permissionName, appName)
+        mView?.run {
+            tv_permissionMessage.text =
+                String.format(
+                    resources.getString(R.string.permission_content),
+                    appName,
+                    permissionName,
+                    appName
+                )
+        }
     }
 
     override fun onClick(view: View) {

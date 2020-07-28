@@ -63,7 +63,6 @@ class CrashHandler private constructor() : Thread.UncaughtExceptionHandler {
             } catch (e: InterruptedException) {
                 "error : $e.message".logE()
             }
-
             Process.killProcess(Process.myPid())
         }
     }
@@ -76,7 +75,10 @@ class CrashHandler private constructor() : Thread.UncaughtExceptionHandler {
      */
     @Throws(IOException::class)
     private fun dumpExceptionToLocal(ex: Throwable) {
-        val time = SimpleDateFormat("yyyy-MM-dd HH:MM:SS", Locale.CHINA).format(Date(System.currentTimeMillis()))
+        val time = SimpleDateFormat(
+            "yyyy-MM-dd HH:MM:SS",
+            Locale.CHINA
+        ).format(Date(System.currentTimeMillis()))
         val file = File(FileUtils.getCrashPath(time))
         try {
             val pw = PrintWriter(BufferedWriter(FileWriter(file)))
@@ -90,7 +92,6 @@ class CrashHandler private constructor() : Thread.UncaughtExceptionHandler {
             e.message?.logE()
             "dump crash info failed".logE()
         }
-
     }
 
     /**
@@ -128,7 +129,10 @@ class CrashHandler private constructor() : Thread.UncaughtExceptionHandler {
      */
     @Throws(IOException::class)
     private fun uploadExceptionToServer(ex: Throwable) {
-        val time = SimpleDateFormat("yyyy-MM-dd HH:MM:SS", Locale.CHINA).format(Date(System.currentTimeMillis()))
+        val time = SimpleDateFormat(
+            "yyyy-MM-dd HH:MM:SS",
+            Locale.CHINA
+        ).format(Date(System.currentTimeMillis()))
         try {
             val writer = StringWriter()
             val pw = PrintWriter(BufferedWriter(writer))
@@ -137,7 +141,7 @@ class CrashHandler private constructor() : Thread.UncaughtExceptionHandler {
             pw.println()
             ex.printStackTrace(pw)
             pw.close()
-            SPManage.instance.setExceptionMessage(writer.toString())
+            SPManage.instance.exceptionMessage = writer.toString()
             "dump crash info seccess".logI()
         } catch (e: Exception) {
             e.message?.logE()

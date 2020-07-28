@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
  * Class Comment：
  */
 @Serializable
-data class XaResult<out T>(
+data class HttpResult<out T>(
     val code: Int,
     val message: String?,
     val result: T

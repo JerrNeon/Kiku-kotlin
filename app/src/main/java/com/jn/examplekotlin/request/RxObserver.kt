@@ -1,6 +1,6 @@
 package com.jn.examplekotlin.request
 
-import com.jn.examplekotlin.entiy.XaResult
+import com.jn.examplekotlin.entiy.HttpResult
 import com.jn.kikukt.mvp.IBPresenter
 import com.jn.kikukt.mvp.RxBasePresenterObserver
 import com.jn.kikukt.net.retrofit.exception.OkHttpException
@@ -9,23 +9,23 @@ import com.jn.kikukt.net.retrofit.exception.OkHttpException
  * Author：Stevie.Chen Time：2019/9/12
  * Class Comment：
  */
-abstract class RxObserver<T> : RxBasePresenterObserver<XaResult<T>, T> {
+abstract class RxObserver<T> : RxBasePresenterObserver<HttpResult<T>, T> {
 
     constructor(ibPresenter: IBPresenter) : this(ibPresenter, ALL)
 
     constructor(ibPresenter: IBPresenter, errorType: Int) : super(ibPresenter, errorType)
 
-    override fun onNext(tXaResult: XaResult<T>) {
-        super.onNext(tXaResult)
-        if (tXaResult.code.toString() != ApiStatus.CODE_200) {
+    override fun onNext(result: HttpResult<T>) {
+        super.onNext(result)
+        if (result.code.toString() != ApiStatus.CODE_200) {
             val okHttpException =
-                OkHttpException(tXaResult.code.toString(), tXaResult.message ?: "")
+                OkHttpException(result.code.toString(), result.message ?: "")
             val errorMsg = if (mErrorType == ALL) okHttpException.errorMsg else ""
             onFailure(okHttpException, errorMsg)
         } else {
             try {
-                onResponse(tXaResult)
-                onSuccess(tXaResult.result)
+                onResponse(result)
+                onSuccess(result.result)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

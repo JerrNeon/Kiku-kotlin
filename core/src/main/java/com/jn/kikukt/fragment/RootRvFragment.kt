@@ -5,35 +5,63 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemChildClickListener
+import com.chad.library.adapter.base.listener.OnItemChildLongClickListener
+import com.chad.library.adapter.base.listener.OnItemClickListener
+import com.chad.library.adapter.base.listener.OnItemLongClickListener
 import com.jn.kikukt.R
-import com.jn.kikukt.adapter.BaseRvAdapter
 import com.jn.kikukt.annonation.*
+import com.jn.kikukt.common.api.IMvpView
 import com.jn.kikukt.common.api.IRvView
+import com.jn.kikukt.common.utils.cast
 import com.jn.kikukt.common.utils.isConnected
-import com.scwang.smartrefresh.layout.api.RefreshLayout
+import com.jn.kikukt.mvp.IBPresenter
+import com.jn.kikukt.mvp.IBView
+import com.jn.kikukt.net.coroutines.Failure
+import com.jn.kikukt.net.coroutines.HttpResponse
+import com.jn.kikukt.net.coroutines.Success
+import com.scwang.smart.refresh.layout.api.RefreshLayout
 import kotlinx.android.synthetic.main.common_rv.view.*
 
 /**
  * Author：Stevie.Chen Time：2019/7/11
  * Class Comment：
  */
-abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T>,
-    BaseQuickAdapter.OnItemClickListener,
-    BaseQuickAdapter.OnItemLongClickListener, BaseQuickAdapter.OnItemChildClickListener,
-    BaseQuickAdapter.OnItemChildLongClickListener {
+abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T> {
 
-    override var mRecyclerView: RecyclerView? = null//RecyclerView
-    override var mEmptyView: View? = null//empty or failure view
+    override lateinit var mRecyclerView: RecyclerView//RecyclerView
+    override lateinit var mEmptyView: View//empty or failure view
     override var mIvLoadingFailure: ImageView? = null//empty or failure icon
     override var mTvLoadingFailure: TextView? = null//empty or failure hint text
-    override var mAdapter: BaseRvAdapter<T>? = null//adapter
 
-    override fun getLayoutItemResourceId(): Int {
-        return R.layout.common_rv
+    //RecyclerView.LayoutManager
+    override val mLayoutManager: RecyclerView.LayoutManager by lazy { LinearLayoutManager(context) }
+    override val observer: Observer<HttpResponse> by lazy {
+        Observer<HttpResponse> {
+            when (it) {
+                is Success<*> -> {
+                    it.data?.cast<List<T>>()?.let { data ->
+                        showLoadSuccessView(data)
+                    }
+                }
+                is Failure -> {
+                    showLoadErrorView()
+                }
+            }
+        }
     }
+
+    override val layoutItemResourceId: Int = R.layout.common_rv
+
+    override val isLoadMoreEnable: Boolean
+        get() = when (mLoadMoreEnableType) {
+            TOTAL -> mAdapter.itemCount < mTotalSize
+            PAGE -> mPageIndex < mTotalPage
+            else -> super.isLoadMoreEnable
+        }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -49,157 +77,127 @@ abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T>,
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
-        mAdapter?.setNewData(null)//clear data
+        mAdapter.setList(null)//clear data
         super.onRefresh(refreshLayout)
     }
 
-    override fun isLoadMoreEnable(): Boolean {
-        if (getLoadMoreEnableType() == TOTAL)
-            return mAdapter?.itemCount ?: 0 < getTotalSize()
-        else if (getLoadMoreEnableType() == PAGE)
-            return getPageIndex() < getTotalPage()
-        return super.isLoadMoreEnable()
-    }
-
-    override fun getLayoutManager(): RecyclerView.LayoutManager {
-        return LinearLayoutManager(mContext)
-    }
-
     override fun initRvView() {
-        mRecyclerView = mView!!.rv_common
-        mAdapter = getAdapter()
-        mRecyclerView?.layoutManager = getLayoutManager()
-        mRecyclerView?.adapter = mAdapter
+        mRecyclerView = mView?.rv_common!!
+        mRecyclerView.run {
+            layoutManager = mLayoutManager
+            adapter = mAdapter
+        }
 
-        mAdapter?.bindToRecyclerView(mRecyclerView)
         mEmptyView = LayoutInflater.from(mContext)
             .inflate(R.layout.common_loadingfailure, mFlRootContainer, false)
-        mIvLoadingFailure = mEmptyView?.findViewById(R.id.iv_commonLoadingFailure)
-        mTvLoadingFailure = mEmptyView?.findViewById(R.id.tv_commonLoadingFailure)
-        mEmptyView?.setOnClickListener { view -> onClickLoadFailure(view) }
-        mAdapter?.emptyView = mEmptyView//set empty or failure view
-        mAdapter?.isUseEmpty(false)//don t show empty or failure view first
-        mAdapter?.onItemClickListener = this
-        mAdapter?.onItemChildClickListener = this
-        mAdapter?.onItemLongClickListener = this
-        mAdapter?.onItemChildLongClickListener = this
+        mEmptyView.run {
+            mIvLoadingFailure = findViewById(R.id.iv_commonLoadingFailure)
+            mTvLoadingFailure = findViewById(R.id.tv_commonLoadingFailure)
+            setOnClickListener { view -> onClickLoadFailure(view) }
+        }
+        mAdapter.run {
+            recyclerView = mRecyclerView
+            setEmptyView(mEmptyView)//set empty or failure view
+            isUseEmpty = false//don t show empty or failure view first
+            setOnItemClickListener(this@RootRvFragment as? OnItemClickListener)
+            setOnItemChildClickListener(this@RootRvFragment as? OnItemChildClickListener)
+            setOnItemLongClickListener(this@RootRvFragment as? OnItemLongClickListener)
+            setOnItemChildLongClickListener(this@RootRvFragment as? OnItemChildLongClickListener)
+        }
     }
 
     override fun showLoadCompleteView(loadCompleteType: Int, data: List<T>) {
         dismissProgressDialog()
-        mSmartRefreshLayout?.finishRefresh()//refresh complete
-        mSmartRefreshLayout?.finishLoadMore()//load more complete
-        val refreshViewType = getRefreshViewType()
+        mSmartRefreshLayout.run {
+            finishRefresh()//refresh complete
+            finishLoadMore()//load more complete
+        }
+        val refreshViewType = mRefreshViewType
         if (loadCompleteType == SUCCESS) {//load success
             if (data.isNotEmpty()) {//有数据
-                mSmartRefreshLayout?.setEnableRefresh(refreshViewType == ONLY_REFRESH || refreshViewType == ALL)
-                mSmartRefreshLayout?.setEnableLoadMore(refreshViewType == ONLY_LOADMORE || refreshViewType == ALL)
-                mAdapter?.isUseEmpty(false)//don t show empty or failure view
-                if (mPageIndex == getInitPageIndex())
-                    mAdapter?.setNewData(data)
-                else
-                    mAdapter?.addData(data)
-            } else if (mPageIndex == getInitPageIndex()) {//first page no data
+                mSmartRefreshLayout.run {
+                    setEnableRefresh(refreshViewType == ONLY_REFRESH || refreshViewType == ALL)
+                    setEnableLoadMore(refreshViewType == ONLY_LOADMORE || refreshViewType == ALL)
+                }
+                mAdapter.run {
+                    isUseEmpty = false//don t show empty or failure view
+                    if (mPageIndex == mInitPageIndex)
+                        setList(data)
+                    else
+                        addData(data)
+                }
+            } else if (mPageIndex == mInitPageIndex) {//first page no data
                 setLoadFailureResource(R.drawable.ic_kiku_nodata, R.string.kiku_load_nodata)
-                mSmartRefreshLayout?.setEnableRefresh(false)//invalid refresh
-                mSmartRefreshLayout?.setEnableLoadMore(false)//invalid load more
-                mAdapter?.isUseEmpty(true)//show empty or failure view
-                mAdapter?.setNewData(null)
-            } else if (mPageIndex > getInitPageIndex()) {//next page no data
-                if (getLoadMoreEnableType() == EMPTY) {
-                    mAdapter?.isUseEmpty(false)//don t show empty or failure view
-                    mSmartRefreshLayout?.finishLoadMoreWithNoMoreData()//all data load complete
+                mSmartRefreshLayout.run {
+                    setEnableRefresh(false)//invalid refresh
+                    setEnableLoadMore(false)//invalid load more
+                }
+                mAdapter.run {
+                    isUseEmpty = true//show empty or failure view
+                    setList(null)
+                }
+            } else if (mPageIndex > mInitPageIndex) {//next page no data
+                if (mLoadMoreEnableType == EMPTY) {
+                    mAdapter.isUseEmpty = false//don t show empty or failure view
+                    mSmartRefreshLayout.finishLoadMoreWithNoMoreData()//all data load complete
                 }
             }
-            mEmptyView?.isEnabled = false//enable false
+            mEmptyView.isEnabled = false//enable false
         } else if (loadCompleteType == ERROR) {//no net or load failure
-            if (mPageIndex == getInitPageIndex()) {//first page
-                mSmartRefreshLayout?.setEnableRefresh(false)//invalid refresh
-                mSmartRefreshLayout?.setEnableLoadMore(false)//invalid load more
-                mAdapter?.isUseEmpty(true)//show empty or failure view
-                mAdapter?.setNewData(null)
+            if (mPageIndex == mInitPageIndex) {//first page
+                mSmartRefreshLayout.run {
+                    setEnableRefresh(false)//invalid refresh
+                    setEnableLoadMore(false)//invalid load more
+                }
+                mAdapter.run {
+                    isUseEmpty = true//show empty or failure view
+                    setList(null)
+                }
                 if (!mContext.isConnected()) {//no net
                     setLoadFailureResource(R.drawable.ic_kiku_nonet, R.string.kiku_load_nonet)
                 } else {//other reason(connect failure or server error)
                     setLoadFailureResource(R.drawable.ic_kiku_nonet, R.string.kiku_load_failure)
                 }
-                mEmptyView?.isEnabled = true//enable true
+                mEmptyView.isEnabled = true//enable true
             } else {
                 if (refreshViewType == ONLY_LOADMORE || refreshViewType == ALL) {
                     mPageIndex--//reset pageIndex when load more failure
-                    mSmartRefreshLayout?.finishLoadMore(false)//load more failure
+                    mSmartRefreshLayout.finishLoadMore(false)//load more failure
                 }
             }
         }
     }
 
-    override fun showLoadSuccessView(data: List<T>) {
-        showLoadCompleteView(SUCCESS, data)
-    }
-
     override fun showLoadSuccessView(total: Int, data: List<T>) {
-        val loadMoreEnableType = getLoadMoreEnableType()
-        if (loadMoreEnableType == TOTAL)
+        if (mLoadMoreEnableType == TOTAL)
             mTotalSize = total
-        else if (loadMoreEnableType == PAGE)
+        else if (mLoadMoreEnableType == PAGE)
             mTotalPage = total
         showLoadSuccessView(data)
     }
 
-    override fun showLoadErrorView() {
-        showLoadCompleteView(ERROR, emptyList())
-    }
-
-    override fun setLoadFailureResource(loadFailureDrawableRes: Int, loadFailureStringRes: Int) {
-        mIvLoadingFailure?.setImageResource(loadFailureDrawableRes)
-        mTvLoadingFailure?.setText(loadFailureStringRes)
-    }
-
     override fun onClickLoadFailure(view: View) {
-        setRefreshOperateType(ON_RELOAD)
-        mPageIndex = getInitPageIndex()
+        mRefreshOperateType = ON_RELOAD
+        mPageIndex = mInitPageIndex
         sendRequest()
     }
+}
 
-    override fun onItemClick(adapter: BaseQuickAdapter<*, *>?, view: View?, position: Int) {
-        onItemClick(adapter!!, view!!, mAdapter?.getItem(position)!!)
+abstract class RootRvPresenterFragment<P : IBPresenter, T> : RootRvFragment<T>(),
+    IMvpView<P> {
+
+    override var mPresenter: P? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initPresenter()
     }
 
-    override fun onItemLongClick(
-        adapter: BaseQuickAdapter<*, *>?,
-        view: View?,
-        position: Int
-    ): Boolean {
-        return onItemLongClick(adapter!!, view!!, mAdapter?.getItem(position)!!)
-    }
-
-    override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>?, view: View?, position: Int) {
-        onItemChildClick(adapter!!, view!!, mAdapter?.getItem(position)!!)
-    }
-
-    override fun onItemChildLongClick(
-        adapter: BaseQuickAdapter<*, *>?,
-        view: View?,
-        position: Int
-    ): Boolean {
-        return onItemChildLongClick(adapter!!, view!!, mAdapter?.getItem(position)!!)
-    }
-
-    override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, item: T) {
-    }
-
-    override fun onItemLongClick(adapter: BaseQuickAdapter<*, *>, view: View, item: T): Boolean {
-        return false
-    }
-
-    override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>, view: View, item: T) {
-    }
-
-    override fun onItemChildLongClick(
-        adapter: BaseQuickAdapter<*, *>,
-        view: View,
-        item: T
-    ): Boolean {
-        return false
+    override fun initPresenter() {
+        super.initPresenter()
+        mPresenter?.let {
+            it.attachView(this as? IBView)
+            lifecycle.addObserver(it)
+        }
     }
 }

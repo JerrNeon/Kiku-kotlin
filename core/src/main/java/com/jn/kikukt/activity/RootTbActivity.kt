@@ -9,8 +9,10 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.IntDef
-import androidx.annotation.LayoutRes
 import com.jn.kikukt.R
+import com.jn.kikukt.common.api.IMvpView
+import com.jn.kikukt.mvp.IBPresenter
+import com.jn.kikukt.mvp.IBView
 
 /**
  * Author：Stevie.Chen Time：2019/7/10
@@ -27,7 +29,7 @@ abstract class RootTbActivity : RootActivity() {
         protected const val VIEW_DIVIDER = 6//divider
         protected const val RESOURCE_TEXT = 1//text resource
         protected const val RESOURCE_COLOR = 2//text color resource or background color resource
-        protected const val RESOURCE_DRAWABLE = 3//drawable recource
+        protected const val RESOURCE_DRAWABLE = 3//drawable resource
         protected const val RESOURCE_ENABLE = 4//enable
         protected const val RESOURCE_VISIBLE = 5//visible
     }
@@ -40,6 +42,8 @@ abstract class RootTbActivity : RootActivity() {
     protected var mIvTitleBarRight: ImageView? = null//right icon
     protected var mTvTitleBarRight: TextView? = null//right text
     protected var mViewTitleBarDivider: View? = null//divider
+
+    abstract val layoutResourceId: Int
 
     @IntDef(ROOT_LAYOUT, IV_LEFT, TV_TITLE, IV_RIGHT, TV_RIGHT, VIEW_DIVIDER)
     @Retention(AnnotationRetention.SOURCE)
@@ -58,14 +62,11 @@ abstract class RootTbActivity : RootActivity() {
         setStatusBar()
     }
 
-    @LayoutRes
-    abstract fun getLayoutResourceId(): Int
-
     /**
      * init titleBar Parent View
      */
     protected fun initRootTbParentView() {
-        if (getLayoutResourceId() != 0) {
+        if (layoutResourceId != 0) {
             mLlTitleBar = findViewById(R.id.ll_commonTitleBar)
             mVsTitleBar = findViewById(R.id.vs_commonTitleBar)
             mViewTitleBarDivider = findViewById(R.id.view_commonTitleBarDivider)
@@ -76,7 +77,7 @@ abstract class RootTbActivity : RootActivity() {
      * init titleBar View
      */
     protected fun initRootTbView() {
-        if (getLayoutResourceId() != 0) {
+        if (layoutResourceId != 0) {
             mVsTitleBar?.inflate()
             mRlTitleBar = findViewById(R.id.rl_commonTitleBar)
             mIvTitleBarLeft = findViewById(R.id.iv_commonTitleBar_left)
@@ -94,9 +95,9 @@ abstract class RootTbActivity : RootActivity() {
      * set main content View
      */
     protected fun setRootContainerView() {
-        if (getLayoutResourceId() != 0) {
+        if (layoutResourceId != 0) {
             val contentView =
-                LayoutInflater.from(mActivity).inflate(getLayoutResourceId(), null, false)
+                LayoutInflater.from(mActivity).inflate(layoutResourceId, null, false)
             val drawable = contentView.background
             if (drawable == null) {
                 contentView.setBackgroundResource(R.color.white)
@@ -237,5 +238,24 @@ abstract class RootTbActivity : RootActivity() {
      */
     protected fun onClickTitleBar(@TitleBarType titleBarType: Int) {
 
+    }
+}
+
+abstract class RootTbPresenterActivity<P : IBPresenter> : RootTbActivity(),
+    IMvpView<P> {
+
+    override var mPresenter: P? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initPresenter()
+    }
+
+    override fun initPresenter() {
+        super.initPresenter()
+        mPresenter?.let {
+            it.attachView(this as? IBView)
+            lifecycle.addObserver(it)
+        }
     }
 }

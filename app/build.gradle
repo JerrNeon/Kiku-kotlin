@@ -4,8 +4,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlinx-serialization'
 
-def dep = rootProject.ext.dependencies //dep
-
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
@@ -53,4 +51,5 @@ dependencies {
     implementation project(':core')
 
     implementation dep["constraint-layout"]
+    implementation depKt["activity-ktx"]
 }

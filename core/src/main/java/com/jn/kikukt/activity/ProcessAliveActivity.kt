@@ -6,8 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Gravity
+import androidx.appcompat.app.AppCompatActivity
 import com.jn.kikukt.R
 import com.jn.kikukt.common.utils.isScreenOn
 
@@ -21,12 +21,10 @@ import com.jn.kikukt.common.utils.isScreenOn
 class ProcessAliveActivity : AppCompatActivity() {
 
     companion object {
-
         const val KIKUKT_FINISH_ACTION = "com.jn.kikukt.processalive.finish"//用于发送关闭此Activity的广播Action
-
     }
 
-    var mFinishReceiver: BroadcastReceiver? = null//结束此Activity的广播
+    private var mFinishReceiver: BroadcastReceiver? = null//结束此Activity的广播
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +57,7 @@ class ProcessAliveActivity : AppCompatActivity() {
     /**
      * 注册结束此Activity的广播
      */
-    fun registerFinishReceiver() {
+    private fun registerFinishReceiver() {
         mFinishReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 finish()
@@ -71,7 +69,7 @@ class ProcessAliveActivity : AppCompatActivity() {
     /**
      * 检查屏幕状态
      */
-    fun checkScreenStatus() {
+    private fun checkScreenStatus() {
         if (isScreenOn()) {
             finish()
         }

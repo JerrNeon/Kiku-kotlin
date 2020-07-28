@@ -12,7 +12,10 @@ import android.view.ViewGroup
 import com.jn.kikukt.common.api.IBaseView
 import com.jn.kikukt.common.api.IDisposableView
 import com.jn.kikukt.common.api.ILazyFragmentView
+import com.jn.kikukt.common.api.IMvpView
 import com.jn.kikukt.dialog.ProgressDialogFragment
+import com.jn.kikukt.mvp.IBPresenter
+import com.jn.kikukt.mvp.IBView
 import com.jn.kikukt.utils.BaseManager
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.disposables.CompositeDisposable
@@ -87,5 +90,23 @@ abstract class RootFragment : Fragment(), IBaseView, IDisposableView, ILazyFragm
     }
 
     override fun onClick(v: View?) {
+    }
+}
+
+abstract class RootPresenterFragment<P : IBPresenter> : RootFragment(), IMvpView<P> {
+
+    override var mPresenter: P? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initPresenter()
+    }
+
+    override fun initPresenter() {
+        super.initPresenter()
+        mPresenter?.let {
+            it.attachView(this as? IBView)
+            lifecycle.addObserver(it)
+        }
     }
 }

@@ -2,10 +2,9 @@ package com.jn.kikukt.dialog
 
 import android.app.Activity
 import android.content.Context
-import androidx.annotation.LayoutRes
-import androidx.fragment.app.Fragment
 import android.view.*
 import android.widget.PopupWindow
+import androidx.fragment.app.Fragment
 import com.jn.kikukt.common.utils.getScreenWidth
 
 /**
@@ -21,27 +20,9 @@ abstract class RootPopupWindow : View.OnClickListener {
     protected var mPopupWindow: PopupWindow? = null
     protected var mWindow: Window? = null
 
-    /**
-     * LayoutResourceId
-     *
-     * @return
-     */
-    @LayoutRes
-    protected abstract fun getLayoutResourceId(): Int
-
-    /**
-     * get popupWindow width
-     *
-     * @return
-     */
-    protected abstract fun getWidth(): Int
-
-    /**
-     * get popupWindow height
-     *
-     * @return
-     */
-    protected abstract fun getHeight(): Int
+    abstract val layoutResourceId: Int//LayoutResourceId
+    abstract val width: Int//popupWindow width
+    abstract val height: Int//popupWindow height
 
     constructor(activity: Activity) {
         this.mActivity = activity
@@ -63,32 +44,35 @@ abstract class RootPopupWindow : View.OnClickListener {
     }
 
     protected fun initView() {
-        mView = LayoutInflater.from(mContext).inflate(getLayoutResourceId(), null, false)
-        mPopupWindow = PopupWindow(mView)
-        if (getWidth() == 0)
-            mPopupWindow!!.width = mContext?.getScreenWidth() ?: ViewGroup.LayoutParams.WRAP_CONTENT
-        else
-            mPopupWindow!!.width = getWidth()
-        if (getHeight() == 0)
-            mPopupWindow!!.height = ViewGroup.LayoutParams.WRAP_CONTENT
-        else
-            mPopupWindow!!.height = getHeight()
-        mPopupWindow!!.isOutsideTouchable = false
+        mView = LayoutInflater.from(mContext).inflate(layoutResourceId, null, false)
+        mPopupWindow = PopupWindow(mView).apply {
+            width = if (width == 0)
+                mContext?.getScreenWidth() ?: ViewGroup.LayoutParams.WRAP_CONTENT
+            else
+                width
+            height = if (height == 0)
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            else
+                height
+            isOutsideTouchable = false
+        }
     }
 
-    protected fun setWindowAttributes() {
+    open fun setWindowAttributes() {
         mWindow = mActivity!!.window
-        val lp = mWindow!!.attributes
-        lp.alpha = 0.5f
-        mWindow!!.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-        mWindow!!.attributes = lp
+        mWindow?.run {
+            val lp = attributes
+            lp.alpha = 0.5f
+            addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+            attributes = lp
+        }
     }
 
-    protected fun initData() {
+    open fun initData() {
 
     }
 
-    protected fun setListener() {
+    open fun setListener() {
 
     }
 

@@ -1,10 +1,7 @@
 apply plugin: 'com.android.library'
 
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
-
-def dep = rootProject.ext.dependencies // dep
-def depKt = rootProject.ext.dependenciesKt // dep
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -61,4 +58,8 @@ dependencies {
     api dep["okhttp3-logging-interceptor"]
     api dep["rxjava2"]
     api dep["rxandroid2"]
+    api depKt["fragment-ktx"]
+    api depKt["lifecycle-viewmodel-ktx"]
+    api depKt["kotlinx-coroutines-core"]
+    api depKt["kotlinx-coroutines-android"]
 }
