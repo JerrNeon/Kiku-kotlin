@@ -1,10 +1,7 @@
 apply plugin: 'com.android.library'
 
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
-
-def dep = rootProject.ext.dependencies // dep
-def depKt = rootProject.ext.dependenciesKt // dep
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
