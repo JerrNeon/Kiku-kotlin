@@ -2,7 +2,7 @@ package com.jn.examplekotlin.request
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.jn.examplekotlin.entiy.XaResult
+import com.jn.examplekotlin.entiy.HttpResult
 import com.jn.kikukt.common.utils.Clazz
 import com.jn.kikukt.common.utils.log
 import com.jn.kikukt.common.utils.showToast
@@ -39,7 +39,7 @@ open class ApiViewModel<T>(application: Application) : BaseViewModel(application
         }
     }
 
-    fun <R> XaResult<R>.execute(
+    fun <R> HttpResult<R>.execute(
         success: ((Success<R>) -> Unit)?,
         error: ((Failure) -> Unit)? = null
     ) {
@@ -91,7 +91,7 @@ open class ApiViewModel<T>(application: Application) : BaseViewModel(application
             startBlock = block
         }
 
-        fun request(block: suspend CoroutineScope.() -> XaResult<R>?) {
+        fun request(block: suspend CoroutineScope.() -> HttpResult<R>?) {
             startBlock?.invoke()
             launchOnMain(tryBlock = {
                 block()?.execute(successBlock)
