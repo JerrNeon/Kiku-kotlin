@@ -1,13 +1,13 @@
 package com.jn.kikukt.utils
 
 import android.app.Activity
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleOwner
 import android.content.Context
 import androidx.annotation.NonNull
-import androidx.fragment.app.Fragment
-import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import com.jn.kikukt.R
 import com.jn.kikukt.common.api.IBaseView
 import com.jn.kikukt.common.utils.statusbar.StatusBarUtils
@@ -39,7 +39,7 @@ class BaseManager : IBaseView, DefaultLifecycleObserver {
 
     constructor(@NonNull fragment: Fragment) {
         mFragment = fragment
-        mActivity = fragment.activity!!
+        mActivity = fragment.requireActivity()
         if (mActivity is AppCompatActivity)
             mAppCompatActivity = mActivity as AppCompatActivity
         mContext = mActivity.applicationContext
