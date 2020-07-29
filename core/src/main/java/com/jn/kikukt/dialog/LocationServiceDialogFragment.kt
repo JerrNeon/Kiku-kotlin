@@ -18,7 +18,8 @@ import kotlinx.android.synthetic.main.dialog_locationservice.view.*
  */
 class LocationServiceDialogFragment : RootDialogFragment() {
 
-    private var mLocationServiceListener: ILocationServiceListener? = null
+    private var onLocationServiceOpenSuccess: (() -> Unit)? = null
+    private var onLocationServiceOpenFailure: (() -> Unit)? = null
 
     companion object {
         private const val REQUESTCODE_LOCATIONSERVICE = 1
@@ -43,14 +44,20 @@ class LocationServiceDialogFragment : RootDialogFragment() {
         }
     }
 
-    fun show(manager: FragmentManager, tag: String, listener: ILocationServiceListener) {
+    fun show(
+        manager: FragmentManager,
+        tag: String,
+        onLocationServiceOpenSuccess: () -> Unit,
+        onLocationServiceOpenFailure: () -> Unit
+    ) {
         super.show(manager, tag)
-        mLocationServiceListener = listener
+        this.onLocationServiceOpenSuccess = onLocationServiceOpenSuccess
+        this.onLocationServiceOpenFailure = onLocationServiceOpenFailure
     }
 
     override fun onClick(view: View) {
         if (view.id == R.id.tv_permissionCancel) {
-            mLocationServiceListener?.onLocationServiceOpenFailure()
+            onLocationServiceOpenFailure?.invoke()
             this.dismiss()
         } else if (view.id == R.id.tv_permissionSubmit) {
             mFragment.openLocationService(REQUESTCODE_LOCATIONSERVICE)
@@ -62,20 +69,11 @@ class LocationServiceDialogFragment : RootDialogFragment() {
         //回调再次判断是否开启定位服务
         if (requestCode == REQUESTCODE_LOCATIONSERVICE && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (mContext.checkLocationServiceOPen()) {
-                mLocationServiceListener?.onLocationServiceOpenSuccess()
+                onLocationServiceOpenSuccess?.invoke()
             } else {
-                mLocationServiceListener?.onLocationServiceOpenFailure()
+                onLocationServiceOpenFailure?.invoke()
             }
             this.dismiss()
         }
-    }
-
-    /**
-     * 定位服务监听器
-     */
-    interface ILocationServiceListener {
-        fun onLocationServiceOpenSuccess()
-
-        fun onLocationServiceOpenFailure()
     }
 }

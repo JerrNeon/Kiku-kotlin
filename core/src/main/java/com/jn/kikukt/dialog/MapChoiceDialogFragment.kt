@@ -67,14 +67,24 @@ class MapChoiceDialogFragment : RootDialogFragment() {
         super.onClick(view)
         when (view.id) {
             R.id.tv_google -> {//Google
-                MapUtils.openGoogleMap(mActivity, MapUtils.MapType.DRIVING, originLl, destinationLl)
+                MapUtils.openGoogleMap(
+                    requireActivity(),
+                    MapUtils.MapType.DRIVING,
+                    originLl,
+                    destinationLl
+                )
             }
             R.id.tv_baiduMap -> {//百度地图
-                MapUtils.openBaiduMap(mActivity, MapUtils.MapType.DRIVING, originLl, destinationLl)
+                MapUtils.openBaiduMap(
+                    requireActivity(),
+                    MapUtils.MapType.DRIVING,
+                    originLl,
+                    destinationLl
+                )
             }
             R.id.tv_autoNavi -> {//高德地图
                 MapUtils.openAutoNaviMap(
-                    mActivity,
+                    requireActivity(),
                     MapUtils.MapType.DRIVING,
                     originLl,
                     destinationLl

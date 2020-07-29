@@ -1,6 +1,5 @@
 package com.jn.kikukt.dialog
 
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -9,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import androidx.annotation.DrawableRes
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.jn.kikukt.R
@@ -21,7 +19,7 @@ import com.jn.kikukt.widget.imageview.SpinBlackView
  */
 class ProgressDialogFragment : DialogFragment() {
 
-    private var mSpinBlackProgressView: SpinBlackView? = null
+    var spinBlackProgressView: SpinBlackView? = null//图标资源View
     private var startedShowing: Boolean = false
     private var mStartMillisecond: Long = 0
     private var mStopMillisecond: Long = 0
@@ -54,11 +52,10 @@ class ProgressDialogFragment : DialogFragment() {
             container,
             false
         )
-        mSpinBlackProgressView = view.findViewById(R.id.sbv_progressDialog)
+        spinBlackProgressView = view.findViewById(R.id.sbv_progressDialog)
         return view
     }
 
-    @SuppressLint("ResourceType")
     override fun onStart() {
         super.onStart()
         dialog?.let {
@@ -100,7 +97,7 @@ class ProgressDialogFragment : DialogFragment() {
         mStopMillisecond = System.currentTimeMillis()
 
         if (startedShowing) {
-            if (mSpinBlackProgressView != null) {
+            if (spinBlackProgressView != null) {
                 cancelWhenShowing()
             } else {
                 cancelWhenNotShowing()
@@ -120,14 +117,5 @@ class ProgressDialogFragment : DialogFragment() {
     private fun cancelWhenNotShowing() {
         val handler = Handler()
         handler.postDelayed({ dismissAllowingStateLoss() }, DELAY_MILLISECOND.toLong())
-    }
-
-    /**
-     * 设置加载图标
-     *
-     * @param resId
-     */
-    fun setProgressImageResource(@DrawableRes resId: Int) {
-        mSpinBlackProgressView?.setImageResource(resId)
     }
 }

@@ -15,10 +15,10 @@ import com.jn.kikukt.entiy.VersionUpdateVO
 import com.jn.kikukt.net.RetrofitManage
 import com.jn.kikukt.net.retrofit.callback.ProgressListener
 import com.jn.kikukt.receiver.VersionUpdateReceiver
-import io.reactivex.Observer
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observer
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import java.io.File
 
 /**

@@ -57,7 +57,7 @@ open class RootWvActivity : RootTbActivity(), IWvView {
         if (mWebView is com.tencent.smtt.sdk.WebView) {
             if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {//LANDSCAPE)
                 mWebViewHeight = (mWebView as com.tencent.smtt.sdk.WebView).rootView.height
-                WebViewUtils.removeVideoChildView(mActivity)//hide video top view
+                WebViewUtils.removeVideoChildView(this)//hide video top view
             } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {//PORTRAIT
                 val lp =
                     (mWebView as com.tencent.smtt.sdk.WebView).rootView.layoutParams as FrameLayout.LayoutParams

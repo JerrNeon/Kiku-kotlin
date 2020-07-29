@@ -1,7 +1,5 @@
 package com.jn.kikukt.activity
 
-import android.content.Context
-import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,7 +17,6 @@ import com.jn.kikukt.common.api.IMainView
 import com.jn.kikukt.common.utils.showToast
 import com.jn.kikukt.dialog.VersionUpdateDialog
 import com.jn.kikukt.entiy.VersionUpdateVO
-import com.jn.kikukt.receiver.IReceiverListener
 import com.jn.kikukt.receiver.VersionUpdateReceiver
 import kotlinx.android.synthetic.main.common_main_layout.*
 
@@ -133,14 +130,12 @@ abstract class RootMainActivity : RootActivity(), IMainView, TabLayout.OnTabSele
 
     override fun registerVersionUpdateReceiver() {
         if (mVersionUpdateReceiver == null) {
-            mVersionUpdateReceiver = VersionUpdateReceiver(object : IReceiverListener {
-                override fun onReceive(context: Context, intent: Intent) {
-                    dismissProgressDialog()
-                    val message = intent.getStringExtra(VersionUpdateReceiver.VERSION_UPDATE_ACTION)
-                    applicationContext.showToast(message!!)
-                    showVersionUpdateDialog()
-                }
-            })
+            mVersionUpdateReceiver = VersionUpdateReceiver { _, intent ->
+                dismissProgressDialog()
+                val message = intent.getStringExtra(VersionUpdateReceiver.VERSION_UPDATE_ACTION)
+                applicationContext.showToast(message!!)
+                showVersionUpdateDialog()
+            }
         }
         val intentFilter = IntentFilter(VersionUpdateReceiver.VERSION_UPDATE_ACTION)
         registerReceiver(mVersionUpdateReceiver, intentFilter)

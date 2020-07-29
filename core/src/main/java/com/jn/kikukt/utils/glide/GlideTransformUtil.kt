@@ -1,9 +1,7 @@
 package com.jn.kikukt.utils.glide
 
-import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
-import androidx.fragment.app.Fragment
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.jn.kikukt.common.utils.getIntDip
@@ -12,26 +10,22 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 object GlideTransformUtil {
 
-    private fun getContext(context: Any): Context? {
-        return when (context) {
-            is Activity -> context.applicationContext
-            is Fragment -> context.context
-            else -> context as? Context ?: throw IllegalArgumentException("context type is no correct")
-        }
-    }
-
     /**
      * 加载'圆角'高斯模糊图片
      * GlideCircleBorderTransform
      * @param radius  圆角半径
      * @param blurred 设置模糊度(在0.0到25.0之间)，默认”25"
      */
-    fun withRadiusBlurred(context: Any, radius: Int, blurred: Int): MultiTransformation<Bitmap> {
+    fun withRadiusBlurred(
+        context: Context,
+        radius: Int,
+        blurred: Int
+    ): MultiTransformation<Bitmap> {
         return MultiTransformation(
             BlurTransformation(blurred),
             CenterCrop(),
             RoundedCornersTransformation(
-                getContext(context)?.getIntDip(radius.toFloat()) ?: 0,
+                context.getIntDip(radius.toFloat()),
                 0,
                 RoundedCornersTransformation.CornerType.ALL
             )
@@ -53,11 +47,11 @@ object GlideTransformUtil {
      *
      * @param radius 圆角半径
      */
-    fun withRadius(context: Any, radius: Int): MultiTransformation<Bitmap> {
+    fun withRadius(context: Context, radius: Int): MultiTransformation<Bitmap> {
         return MultiTransformation(
             CenterCrop(),
             RoundedCornersTransformation(
-                getContext(context)?.getIntDip(radius.toFloat()) ?: 0,
+                context.getIntDip(radius.toFloat()),
                 0,
                 RoundedCornersTransformation.CornerType.ALL
             )
@@ -67,11 +61,13 @@ object GlideTransformUtil {
     /**
      * 加载圆形图片带外框，颜色
      *
-     * @param context     上下文
      * @param borderColor 外圈圆颜色
      * @param borderWith  外圈圆宽度
      */
-    fun withCircleBorder(context: Any, borderWith: Int, borderColor: Int): MultiTransformation<Bitmap> {
+    fun withCircleBorder(
+        borderWith: Int,
+        borderColor: Int
+    ): MultiTransformation<Bitmap> {
         return MultiTransformation(GlideCircleBorderTransform(borderWith, borderColor))
     }
 
@@ -82,13 +78,13 @@ object GlideTransformUtil {
      * @param cornerType 圆角位置
      */
     fun withRadiusAndCornerType(
-        context: Any,
+        context: Context,
         radius: Int,
         cornerType: RoundedCornersTransformation.CornerType
     ): MultiTransformation<Bitmap> {
         return MultiTransformation(
             CenterCrop(),
-            RoundedCornersTransformation(getContext(context)?.getIntDip(radius.toFloat()) ?: 0, 0, cornerType)
+            RoundedCornersTransformation(context.getIntDip(radius.toFloat()), 0, cornerType)
         )
     }
 
@@ -98,14 +94,14 @@ object GlideTransformUtil {
      * @param radius     圆角半径
      * @param cornerType 圆角位置
      */
-    fun withRadiusAndCornerType_Natural(
-        context: Any,
+    fun withRadiusAndCornerTypeNatural(
+        context: Context,
         radius: Int,
         cornerType: RoundedCornersTransformation.CornerType
     ): MultiTransformation<Bitmap> {
         return MultiTransformation(
             RoundedCornersTransformation(
-                getContext(context)?.getIntDip(radius.toFloat()) ?: 0, 0, cornerType
+                context.getIntDip(radius.toFloat()), 0, cornerType
             )
         )
     }

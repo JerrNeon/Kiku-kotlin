@@ -6,8 +6,8 @@ import com.jn.examplekotlin.request.RxObserver
 import com.jn.kikukt.common.api.IRefreshView
 import com.jn.kikukt.common.api.IRvView
 import com.jn.kikukt.mvp.*
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 /**
  * Author：Stevie.Chen Time：2019/9/12

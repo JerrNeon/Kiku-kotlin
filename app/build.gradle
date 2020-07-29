@@ -51,5 +51,4 @@ dependencies {
     implementation project(':core')
 
     implementation dep["constraint-layout"]
-    implementation depKt["activity-ktx"]
 }

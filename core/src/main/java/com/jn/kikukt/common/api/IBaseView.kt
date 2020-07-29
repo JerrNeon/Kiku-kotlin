@@ -1,13 +1,8 @@
 package com.jn.kikukt.common.api
 
-import android.app.Activity
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
-import com.jn.kikukt.annonation.PermissionType
 import com.jn.kikukt.dialog.ProgressDialogFragment
-import com.jn.kikukt.utils.BaseManager
-import com.tbruyelle.rxpermissions2.RxPermissions
-import io.reactivex.functions.Consumer
 
 /**
  * Author：Stevie.Chen Time：2019/7/11
@@ -15,64 +10,20 @@ import io.reactivex.functions.Consumer
  */
 interface IBaseView {
 
-    var mActivity: Activity
     var mAppCompatActivity: AppCompatActivity
     var mContext: Context
-    var mRxPermissions: RxPermissions?
     var mProgressDialog: ProgressDialogFragment?
-    var mBaseManager: BaseManager?
-
-    /**
-     * 初始化EventBus
-     */
-    fun initEventBus() {
-        mBaseManager?.initEventBus()
-    }
-
-    /**
-     * 取消注册EventBus
-     */
-    fun unregisterEventBus() {
-        mBaseManager?.unregisterEventBus()
-    }
-
-    /**
-     * 初始化RxPermissions
-     */
-    fun initRxPermissions() {
-        mBaseManager?.initRxPermissions()
-    }
-
-    /**
-     * 请求权限
-     * @param permissionType @PermissionType
-     * @param consumer Consumer
-     */
-    fun requestPermission(@PermissionType permissionType: Int, consumer: Consumer<Boolean>?) {
-        mBaseManager?.requestPermission(permissionType, consumer)
-    }
-
-    /**
-     * 设置状态栏
-     */
-    fun setStatusBar() {
-        mBaseManager?.setStatusBar()
-    }
 
     /**
      * 显示加载框
      */
-    fun showProgressDialog() {
-        showProgressDialog(ProgressDialogFragment.TYPE_BLACK)
-    }
-
-    /**
-     * 显示加载框
-     */
-    fun showProgressDialog(type: Int) {
+    fun showProgressDialog(type: Int = ProgressDialogFragment.TYPE_BLACK) {
         if (mProgressDialog == null)
             mProgressDialog = ProgressDialogFragment.newInstance(type)
-        mProgressDialog?.show(mAppCompatActivity.supportFragmentManager, "")
+        mProgressDialog?.show(
+            mAppCompatActivity.supportFragmentManager,
+            ProgressDialogFragment::class.java.simpleName
+        )
     }
 
     /**
@@ -96,5 +47,5 @@ interface IBaseView {
     /**
      * 发起网络请求
      */
-    fun sendRequest() {}
+    fun onRequest() {}
 }

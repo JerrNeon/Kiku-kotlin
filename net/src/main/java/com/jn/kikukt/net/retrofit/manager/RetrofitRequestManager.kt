@@ -10,7 +10,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.reflect.Modifier
 import java.util.concurrent.TimeUnit
@@ -30,7 +30,7 @@ open class RetrofitRequestManager(val base_url: String) : IRetrofitManage {
     override fun createRetrofitBuilder(): Retrofit.Builder {
         val builder = Retrofit.Builder()
             .baseUrl(base_url)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         val okHttpClientBuilder = createOkHttpClient()
         if (okHttpClientBuilder != null)
             builder.client(okHttpClientBuilder.build())

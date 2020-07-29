@@ -18,15 +18,6 @@ import com.jn.kikukt.utils.glide.GlideUtil.trimMemory
  */
 abstract class RootApplication : Application() {
 
-    private var LOG_DEBUG: Boolean = false
-
-    protected abstract fun isLOG_DEBUG(): Boolean
-
-    override fun onCreate() {
-        super.onCreate()
-        LOG_DEBUG = isLOG_DEBUG()
-    }
-
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
         MultiDex.install(this)//突破65536个方法数
@@ -98,7 +89,7 @@ abstract class RootApplication : Application() {
      * @param tagName Tag名称
      */
     protected fun initUtilsManager(tagName: String) {
-        UtilsManager.initLogUtils(LOG_DEBUG, tagName)
+        UtilsManager.initLogUtils(BuildConfig.DEBUG, tagName)
         UtilsManager.initContextUtils(this)
     }
 
@@ -113,7 +104,7 @@ abstract class RootApplication : Application() {
      * 初始化崩溃异常信息
      */
     protected fun initCrashHandler() {
-        if (!LOG_DEBUG)
+        if (!BuildConfig.DEBUG)
             CrashHandler.instance.init(this)
     }
 
