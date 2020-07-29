@@ -7,7 +7,6 @@ import com.jn.kikukt.common.SPManage
 import com.jn.kikukt.common.api.ISplashView
 import com.jn.kikukt.common.utils.statusbar.StatusBarUtils
 import com.jn.kikukt.utils.RxPermissionsManager
-import io.reactivex.functions.Consumer
 
 /**
  * Author：Stevie.Chen Time：2019/7/11
@@ -24,12 +23,8 @@ abstract class RootSplashActivity : RootActivity(), ISplashView, Handler.Callbac
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStatusBar()
-        initView()
-    }
-
-    override fun setStatusBar() {
         StatusBarUtils.setTransparent(this)
+        initView()
     }
 
     override fun initView() {
@@ -41,12 +36,10 @@ abstract class RootSplashActivity : RootActivity(), ISplashView, Handler.Callbac
     }
 
     override fun requestAllPermission() {
-        initRxPermissions()
-        RxPermissionsManager.requestAllPermissions(
-            mRxPermissions,
-            Consumer { mHandler.sendEmptyMessageDelayed(SKIP_WHAT, SKIP_TIME) },
+        RxPermissionsManager.requestPermission(
+            this,
             getAllPermissions()
-        )
+        ) { mHandler.sendEmptyMessageDelayed(SKIP_WHAT, SKIP_TIME) }
     }
 
     override fun handleMessage(msg: Message?): Boolean {

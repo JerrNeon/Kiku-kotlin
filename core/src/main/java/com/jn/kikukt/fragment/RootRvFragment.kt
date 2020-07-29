@@ -68,11 +68,11 @@ abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T> {
         initRvView()
         //非懒加载Fragment在onActivityCreated(方法中发起请求)
         if (!isLazyLoadFragment())
-            sendRequest()
+            onRequest()
     }
 
-    override fun sendRequest() {
-        super.sendRequest()
+    override fun onRequest() {
+        super.onRequest()
         showProgressDialog()
     }
 
@@ -179,7 +179,7 @@ abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T> {
     override fun onClickLoadFailure(view: View) {
         mRefreshOperateType = ON_RELOAD
         mPageIndex = mInitPageIndex
-        sendRequest()
+        onRequest()
     }
 }
 

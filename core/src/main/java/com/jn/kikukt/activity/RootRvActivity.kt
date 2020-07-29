@@ -73,11 +73,11 @@ abstract class RootRvActivity<T> : RootRefreshActivity(), IRvView<T> {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initRvView()
-        sendRequest()
+        onRequest()
     }
 
-    override fun sendRequest() {
-        super.sendRequest()
+    override fun onRequest() {
+        super.onRequest()
         showProgressDialog()
     }
 
@@ -184,7 +184,7 @@ abstract class RootRvActivity<T> : RootRefreshActivity(), IRvView<T> {
     override fun onClickLoadFailure(view: View) {
         mRefreshOperateType = ON_RELOAD
         mPageIndex = mInitPageIndex
-        sendRequest()
+        onRequest()
     }
 }
 

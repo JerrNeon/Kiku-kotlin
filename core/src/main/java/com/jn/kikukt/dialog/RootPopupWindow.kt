@@ -36,7 +36,7 @@ abstract class RootPopupWindow : View.OnClickListener {
     constructor(fragment: Fragment) {
         this.mFragment = fragment
         this.mActivity = fragment.activity
-        this.mContext = fragment.activity!!.applicationContext
+        this.mContext = fragment.requireActivity().applicationContext
         initView()
         setWindowAttributes()
         initData()

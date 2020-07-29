@@ -3,11 +3,10 @@ package com.jn.kikukt.utils.glide
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Bitmap
-import androidx.fragment.app.Fragment
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import android.widget.ImageView
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.RequestBuilder
@@ -16,7 +15,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.bumptech.glide.request.target.DrawableImageViewTarget
-import com.bumptech.glide.request.target.SimpleTarget
 import com.jn.kikukt.BuildConfig
 import com.jn.kikukt.R
 import com.jn.kikukt.utils.glide.GlideTransformUtil.withRadius
@@ -130,7 +128,7 @@ fun ImageView.displayImage(
     val requestManager = getRequestManager(context)
     val requestOptions = getRequestOptions(placeholderResourceId, errorResourceId, isCache).apply {
         if (radius != null) {
-            transform(withRadius(context, radius))
+            transform(withRadius(getContext(), radius))
         }
     }
     if (isCircle) {

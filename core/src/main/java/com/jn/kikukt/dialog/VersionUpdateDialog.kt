@@ -82,7 +82,7 @@ class VersionUpdateDialog : RootDialogFragment() {
             mVersionUpdateVO?.let {
                 val intent = Intent(mContext, VersionUpdateService::class.java)
                 intent.putExtra(VersionUpdateVO::class.java.simpleName, it)
-                mActivity.startService(intent)
+                activity?.startService(intent)
             }
             mOnClickListener?.onClick(view)
         }

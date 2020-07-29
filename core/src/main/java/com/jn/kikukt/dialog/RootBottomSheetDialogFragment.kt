@@ -1,6 +1,5 @@
 package com.jn.kikukt.dialog
 
-import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
@@ -13,8 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.jn.kikukt.common.api.IBaseView
-import com.jn.kikukt.utils.BaseManager
-import com.tbruyelle.rxpermissions2.RxPermissions
 
 /**
  * Author：Stevie.Chen Time：2019/7/15
@@ -23,12 +20,9 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 abstract class RootBottomSheetDialogFragment : BottomSheetDialogFragment(),
     DialogInterface.OnKeyListener, IBaseView, View.OnClickListener {
 
-    override lateinit var mActivity: Activity
     override lateinit var mAppCompatActivity: AppCompatActivity
     override lateinit var mContext: Context
-    override var mRxPermissions: RxPermissions? = null
     override var mProgressDialog: ProgressDialogFragment? = null
-    override var mBaseManager: BaseManager? = null
     protected lateinit var mFragment: Fragment
     protected var mWindow: Window? = null
     protected var mView: View? = null
@@ -63,13 +57,9 @@ abstract class RootBottomSheetDialogFragment : BottomSheetDialogFragment(),
                 window?.attributes?.windowAnimations = animationStyle
         }
         mView = inflater.inflate(layoutResourceId, container, false)
-        mActivity = activity as Activity
         if (activity is AppCompatActivity)
             mAppCompatActivity = activity as AppCompatActivity
-        mContext = activity!!.applicationContext
         mFragment = this
-        mBaseManager = BaseManager(this)
-        lifecycle.addObserver(mBaseManager!!)
         initView()
         initData()
         return mView

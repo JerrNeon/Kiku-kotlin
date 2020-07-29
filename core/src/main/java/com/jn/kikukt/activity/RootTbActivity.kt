@@ -13,12 +13,13 @@ import com.jn.kikukt.R
 import com.jn.kikukt.common.api.IMvpView
 import com.jn.kikukt.mvp.IBPresenter
 import com.jn.kikukt.mvp.IBView
+import com.jn.kikukt.utils.setStatusBar
 
 /**
  * Author：Stevie.Chen Time：2019/7/10
  * Class Comment：
  */
-abstract class RootTbActivity : RootActivity() {
+abstract class RootTbActivity : RootActivity(), View.OnClickListener {
 
     companion object {
         protected const val ROOT_LAYOUT = 1//root layout
@@ -65,7 +66,7 @@ abstract class RootTbActivity : RootActivity() {
     /**
      * init titleBar Parent View
      */
-    protected fun initRootTbParentView() {
+    open fun initRootTbParentView() {
         if (layoutResourceId != 0) {
             mLlTitleBar = findViewById(R.id.ll_commonTitleBar)
             mVsTitleBar = findViewById(R.id.vs_commonTitleBar)
@@ -76,7 +77,7 @@ abstract class RootTbActivity : RootActivity() {
     /**
      * init titleBar View
      */
-    protected fun initRootTbView() {
+    open fun initRootTbView() {
         if (layoutResourceId != 0) {
             mVsTitleBar?.inflate()
             mRlTitleBar = findViewById(R.id.rl_commonTitleBar)
@@ -94,10 +95,10 @@ abstract class RootTbActivity : RootActivity() {
     /**
      * set main content View
      */
-    protected fun setRootContainerView() {
+    open fun setRootContainerView() {
         if (layoutResourceId != 0) {
             val contentView =
-                LayoutInflater.from(mActivity).inflate(layoutResourceId, null, false)
+                LayoutInflater.from(this).inflate(layoutResourceId, null, false)
             val drawable = contentView.background
             if (drawable == null) {
                 contentView.setBackgroundResource(R.color.white)
@@ -118,7 +119,7 @@ abstract class RootTbActivity : RootActivity() {
      * @param resourceType ResourceType
      * @param content      content
      */
-    protected fun setTitleBarView(
+    open fun setTitleBarView(
         @TitleBarType titleBarType: Int, @ResourceType resourceType: Int, content: Any
     ) {
         when (titleBarType) {
@@ -236,7 +237,7 @@ abstract class RootTbActivity : RootActivity() {
      *
      * @param titleBarType TitleBarType
      */
-    protected fun onClickTitleBar(@TitleBarType titleBarType: Int) {
+    open fun onClickTitleBar(@TitleBarType titleBarType: Int) {
 
     }
 }

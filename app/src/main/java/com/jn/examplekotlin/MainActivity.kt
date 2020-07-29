@@ -23,8 +23,8 @@ class MainActivity : RootRvPresenterActivity<NewsContract.IPresenter, NewsVO>(),
         NewAdapter(requestManager())
     }
 
-    override fun sendRequest() {
-        super.sendRequest()
+    override fun onRequest() {
+        super.onRequest()
         mPresenter?.getNewList()
     }
 

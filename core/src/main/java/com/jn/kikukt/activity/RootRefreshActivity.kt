@@ -39,27 +39,27 @@ abstract class RootRefreshActivity : RootTbActivity(), IRefreshView {
         initRefreshView()
     }
 
-    override fun showProgressDialog() {
+    override fun showProgressDialog(type: Int) {
         if (mRefreshOperateType == ON_CREATE || mRefreshOperateType == ON_RELOAD)
-            super.showProgressDialog()
+            super.showProgressDialog(type)
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
         mRefreshOperateType = ON_REFRESH
         mSmartRefreshLayout.resetNoMoreData()//reset no more data origin status
         mPageIndex = mInitPageIndex
-        sendRequest()
+        onRequest()
     }
 
     override fun onLoadMore(refreshLayout: RefreshLayout) {
         mRefreshOperateType = ON_ONLOADMORE
         if (mLoadMoreEnableType == EMPTY) {
             mPageIndex++
-            sendRequest()
+            onRequest()
         } else {
             if (isLoadMoreEnable) {
                 mPageIndex++
-                sendRequest()
+                onRequest()
             } else {
                 mSmartRefreshLayout.finishLoadMoreWithNoMoreData()//load complete and no more data
             }

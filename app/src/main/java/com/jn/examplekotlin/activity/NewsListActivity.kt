@@ -25,8 +25,8 @@ class NewsListActivity : RootRvActivity<NewsVO>() {
         NewAdapter(requestManager = requestManager())
     }
 
-    override fun sendRequest() {
-        super.sendRequest()
+    override fun onRequest() {
+        super.onRequest()
         viewModel.getNewsList(mPageIndex, mPageSize)
     }
 

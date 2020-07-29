@@ -8,8 +8,6 @@ import com.jn.kikukt.RootApplication
  */
 class BaseApplication : RootApplication() {
 
-    override fun isLOG_DEBUG(): Boolean = BuildConfig.DEBUG
-
     override fun onCreate() {
         super.onCreate()
         initActivityManager()
