@@ -252,7 +252,7 @@ ext {
 
     jpush = [
             JPUSH_APPKEY : "a624af118cf9d0cbada216a0", //JPush上注册的包名对应的appkey.
-            JPUSH_CHANNEL: "盛时网", //暂时填写默认值即可.
+            JPUSH_CHANNEL: "Kiku", //暂时填写默认值即可.
     ]
 
     bugtags = [
