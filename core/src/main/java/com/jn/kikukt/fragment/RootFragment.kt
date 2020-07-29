@@ -15,7 +15,7 @@ import com.jn.kikukt.common.api.IMvpView
 import com.jn.kikukt.dialog.ProgressDialogFragment
 import com.jn.kikukt.mvp.IBPresenter
 import com.jn.kikukt.mvp.IBView
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 /**
  * Author：Stevie.Chen Time：2019/7/11

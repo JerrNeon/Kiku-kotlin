@@ -3,7 +3,7 @@ package com.jn.kikukt.net
 import com.jn.kikukt.net.retrofit.body.RetrofitBodyHelp
 import com.jn.kikukt.net.retrofit.callback.ProgressListener
 import com.jn.kikukt.net.retrofit.manager.RetrofitManagerFactory
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import java.io.File

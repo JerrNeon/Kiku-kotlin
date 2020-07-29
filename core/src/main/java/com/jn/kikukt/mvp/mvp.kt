@@ -5,8 +5,8 @@ import androidx.lifecycle.LifecycleOwner
 import com.jn.kikukt.common.api.IDisposableView
 import com.jn.kikukt.common.utils.Clazz
 import com.jn.kikukt.net.retrofit.observer.RxBaseObserver
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
 
 /**
  * Author：Stevie.Chen Time：2020/7/15

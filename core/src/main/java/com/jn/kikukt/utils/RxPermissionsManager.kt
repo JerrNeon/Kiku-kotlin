@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import androidx.annotation.IntDef
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
@@ -11,14 +12,14 @@ import com.jn.kikukt.R
 import com.jn.kikukt.common.utils.checkLocationSereviceOPenInM
 import com.jn.kikukt.dialog.LocationServiceDialogFragment
 import com.jn.kikukt.dialog.PermissionDialogFragment
-import com.tbruyelle.rxpermissions2.RxPermissions
-import io.reactivex.disposables.Disposable
+import com.tbruyelle.rxpermissions3.RxPermissions
+import io.reactivex.rxjava3.disposables.Disposable
 
 /**
  * Author：Stevie.Chen Time：2019/7/11
  * Class Comment：RxPermissions权限管理
  */
-private val Activity.rxPermissions
+private val FragmentActivity.rxPermissions
     get() = RxPermissions(this)
 
 const val PERMISSION_CAMERA = 1//相机
@@ -57,7 +58,7 @@ object RxPermissionsManager {
         arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)//拍照&存储空间权限
 
     fun requestPermission(
-        activity: Activity,
+        activity: FragmentActivity,
         @PermissionType permissionType: Int,
         result: ((granted: Boolean) -> Unit)? = null
     ) {
@@ -137,7 +138,7 @@ object RxPermissionsManager {
      * 一般用于启动页
      */
     fun requestPermission(
-        activity: Activity,
+        activity: FragmentActivity,
         permissions: Array<String>,
         result: ((granted: Boolean) -> Unit)? = null
     ) {
@@ -172,7 +173,7 @@ object RxPermissionsManager {
      * @param appName        App名称
      * @param permissionName 权限名称
      */
-    private fun showPermissionDialog(activity: Activity, appName: String, permissionName: String?) {
+    private fun showPermissionDialog(activity: FragmentActivity, appName: String, permissionName: String?) {
         if (activity is AppCompatActivity) {
             PermissionDialogFragment.newInstance(appName, permissionName)
                 .show(activity.supportFragmentManager, "")
@@ -186,7 +187,7 @@ object RxPermissionsManager {
      * @param result
      */
     private fun showLocationServiceDialog(
-        activity: Activity,
+        activity: FragmentActivity,
         result: ((granted: Boolean) -> Unit)? = null
     ) {
         if (activity is AppCompatActivity) {

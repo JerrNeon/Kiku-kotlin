@@ -6,8 +6,8 @@ import androidx.annotation.IntDef
 import androidx.appcompat.app.AppCompatActivity
 import com.jn.kikukt.common.utils.showToast
 import com.jn.kikukt.net.retrofit.exception.OkHttpErrorHelper
-import io.reactivex.Observer
-import io.reactivex.disposables.Disposable
+import io.reactivex.rxjava3.core.Observer
+import io.reactivex.rxjava3.disposables.Disposable
 
 /**
  * Author：Stevie.Chen Time：2019/7/15
