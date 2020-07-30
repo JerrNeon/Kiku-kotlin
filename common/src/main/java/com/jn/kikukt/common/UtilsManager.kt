@@ -25,7 +25,7 @@ object UtilsManager {
      * 初始化Context
      */
     fun initContextUtils(application: Application) {
-        ContextUtils.init(application)
+        ContextUtils.application = application
     }
 
 }

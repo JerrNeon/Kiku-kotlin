@@ -1,5 +1,6 @@
 package com.jn.kikukt.common.utils.statusbar
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.os.Build
@@ -57,7 +58,7 @@ object PUtils {
                     Log.e("TAG", "安全区域距离屏幕顶部的距离 SafeInsetTop:" + displayCutout.safeInsetTop)
                     Log.e("TAG", "安全区域距离屏幕底部的距离 SafeInsetBottom:" + displayCutout.safeInsetBottom)
                     val rectList = displayCutout.boundingRects
-                    if (rectList != null && rectList.size > 0) {
+                    if (rectList.size > 0) {
                         val rect = rectList[0]
                         if (rect != null)
                             Log.e(javaClass.simpleName, "刘海屏区域：$rect")
@@ -73,13 +74,13 @@ object PUtils {
      * @param context
      * @return true为有刘海，false则没有
      */
-    fun hasNotchAtHuawei(context: Context): Boolean {
+    fun hasNotchAtHuaWei(context: Context): Boolean {
         var ret = false
         try {
             val classLoader = context.classLoader
-            val HwNotchSizeUtil = classLoader.loadClass("com.huawei.android.util.HwNotchSizeUtil")
-            val get = HwNotchSizeUtil.getMethod("hasNotchInScreen")
-            ret = get.invoke(HwNotchSizeUtil) as Boolean
+            val hwNotchSizeUtil = classLoader.loadClass("com.huawei.android.util.HwNotchSizeUtil")
+            val get = hwNotchSizeUtil.getMethod("hasNotchInScreen")
+            ret = get.invoke(hwNotchSizeUtil) as Boolean
         } catch (e: ClassNotFoundException) {
             Log.e("Notch", "hasNotchAtHuawei ClassNotFoundException")
         } catch (e: NoSuchMethodException) {
@@ -97,13 +98,13 @@ object PUtils {
      * @param context
      * @return int[0]值为刘海宽度 int[1]值为刘海高度
      */
-    fun getNotchSizeAtHuawei(context: Context): IntArray {
+    fun getNotchSizeAtHuaWei(context: Context): IntArray {
         var ret = intArrayOf(0, 0)
         try {
             val cl = context.classLoader
-            val HwNotchSizeUtil = cl.loadClass("com.huawei.android.util.HwNotchSizeUtil")
-            val get = HwNotchSizeUtil.getMethod("getNotchSize")
-            ret = get.invoke(HwNotchSizeUtil) as IntArray
+            val hwNotchSizeUtil = cl.loadClass("com.huawei.android.util.HwNotchSizeUtil")
+            val get = hwNotchSizeUtil.getMethod("getNotchSize")
+            ret = get.invoke(hwNotchSizeUtil) as IntArray
         } catch (e: ClassNotFoundException) {
             Log.e("Notch", "getNotchSizeAtHuawei ClassNotFoundException")
         } catch (e: NoSuchMethodException) {
@@ -121,13 +122,14 @@ object PUtils {
      * @param context
      * @return true为有刘海，false则没有
      */
+    @SuppressLint("PrivateApi")
     fun hasNotchAtViVo(context: Context): Boolean {
         var ret = false
         try {
             val classLoader = context.classLoader
-            val FtFeature = classLoader.loadClass("android.util.FtFeature")
-            val method = FtFeature.getMethod("isFeatureSupport", Int::class.javaPrimitiveType)
-            ret = method.invoke(FtFeature, VIVO_NOTCH) as Boolean
+            val ftFeature = classLoader.loadClass("android.util.FtFeature")
+            val method = ftFeature.getMethod("isFeatureSupport", Int::class.javaPrimitiveType)
+            ret = method.invoke(ftFeature, VIVO_NOTCH) as Boolean
         } catch (e: ClassNotFoundException) {
             Log.e("Notch", "hasNotchAtVoio ClassNotFoundException")
         } catch (e: NoSuchMethodException) {

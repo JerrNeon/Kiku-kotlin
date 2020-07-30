@@ -16,7 +16,7 @@ import java.lang.reflect.Field
 /**
  * 打开软键盘
  */
-fun Context.openKeybord(mEditText: EditText) {
+fun Context.openKeyboard(mEditText: EditText) {
     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.showSoftInput(mEditText, InputMethodManager.RESULT_SHOWN)
     imm.toggleSoftInput(
@@ -28,7 +28,7 @@ fun Context.openKeybord(mEditText: EditText) {
 /**
  * 关闭软键盘
  */
-fun Context.closeKeybord(mEditText: EditText) {
+fun Context.closeKeyboard(mEditText: EditText) {
     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(mEditText.windowToken, 0)
 }
@@ -36,33 +36,31 @@ fun Context.closeKeybord(mEditText: EditText) {
 /**
  * 关闭软件盘
  */
-fun Activity.closeSoftKeybord() {
+fun Activity.closeSoftKeyboard() {
     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(window.decorView.windowToken, 0)
 }
 
 /**
  * 解决InputMethodManager内存泄漏的问题
- *
- * @param destContext
  */
 fun Context.fixInputMethodManagerLeak() {
     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
     val arr = arrayOf("mCurRootView", "mServedView", "mNextServedView", "mLastSrvView")
     var f: Field? = null
-    var obj_get: Any? = null
+    var objGet: Any? = null
     for (i in arr.indices) {
         val param = arr[i]
         try {
             f = imm.javaClass.getDeclaredField(param)
-            if (!f!!.isAccessible) {
+            if (!f.isAccessible) {
                 f.isAccessible = true
             } // author: sodino mail:sodino@qq.com
-            obj_get = f.get(imm)
-            if (obj_get != null && obj_get is View) {
-                val v_get = obj_get as View?
-                if (v_get!!.context === this) { // 被InputMethodManager持有引用的context是想要目标销毁的
+            objGet = f.get(imm)
+            if (objGet != null && objGet is View) {
+                val vGet = objGet as View?
+                if (vGet!!.context === this) { // 被InputMethodManager持有引用的context是想要目标销毁的
                     f.set(imm, null) // 置空，破坏掉path to gc节点
                 } else {
                     // 不是想要目标销毁的，即为又进了另一层界面了，不要处理，避免影响原逻辑,也就不用继续for循环了
@@ -80,8 +78,6 @@ fun Context.fixInputMethodManagerLeak() {
  * Return whether soft input is visible.
  *
  * The minimum height is 200
- *
- * @param activity The activity.
  * @return `true`: yes<br></br>`false`: no
  */
 fun Activity.isSoftInputVisible(): Boolean {
@@ -91,7 +87,6 @@ fun Activity.isSoftInputVisible(): Boolean {
 /**
  * Return whether soft input is visible.
  *
- * @param activity             The activity.
  * @param minHeightOfSoftInput The minimum height of soft input.
  * @return `true`: yes<br></br>`false`: no
  */
@@ -101,9 +96,6 @@ fun Activity.isSoftInputVisible(minHeightOfSoftInput: Int): Boolean {
 
 /**
  * 获取窗口可视区域大小
- *
- * @param activity Activity
- * @return
  */
 fun Activity.getContentViewInvisibleHeight(): Int {
     val contentView = findViewById<View>(android.R.id.content)

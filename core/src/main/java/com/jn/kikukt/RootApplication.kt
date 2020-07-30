@@ -7,7 +7,6 @@ import androidx.multidex.MultiDex
 import com.jn.kikukt.common.ActivityManager
 import com.jn.kikukt.common.UtilsManager
 import com.jn.kikukt.common.exception.CrashHandler
-import com.jn.kikukt.net.RetrofitManage
 import com.jn.kikukt.utils.WebViewUtils
 import com.jn.kikukt.utils.glide.GlideUtil.clearMemory
 import com.jn.kikukt.utils.glide.GlideUtil.trimMemory
@@ -72,15 +71,6 @@ abstract class RootApplication : Application() {
      */
     protected fun initActivityManager() {
         ActivityManager.instance.register(this)
-    }
-
-    /**
-     * 初始化Retrofit
-     *
-     * @param BASE_URL 服务器域名地址
-     */
-    protected fun initRetrofit(BASE_URL: String) {
-        RetrofitManage.instance.initRetrofit(BASE_URL)
     }
 
     /**

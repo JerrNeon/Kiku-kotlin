@@ -19,7 +19,7 @@ class SoftKeyBoardManager {
     private var onGlobalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
 
     companion object {
-        val instance: SoftKeyBoardManager by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
+        val instance: SoftKeyBoardManager by lazy(mode = LazyThreadSafetyMode.NONE) {
             SoftKeyBoardManager()
         }
     }

@@ -8,8 +8,8 @@ import android.graphics.Canvas
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.os.Environment
-import androidx.annotation.ColorInt
 import android.widget.ScrollView
+import androidx.annotation.ColorInt
 import com.jn.kikukt.common.utils.ContextUtils
 import java.io.*
 import java.text.SimpleDateFormat
@@ -168,7 +168,7 @@ object FileUtils {
      * 获取缓存根目录
      */
     fun getCacheRootFile(): File? {
-        return getCacheRootFile(ContextUtils.getApplication())
+        return getCacheRootFile(ContextUtils.application)
     }
 
     /**
@@ -220,7 +220,7 @@ object FileUtils {
         val outputFile = File(targetPath)
         try {
             if (!outputFile.exists()) {
-                outputFile.parentFile.mkdirs()
+                outputFile.parentFile?.mkdirs()
                 //outputFile.createNewFile();
             } else {
                 outputFile.delete()
@@ -330,7 +330,7 @@ object FileUtils {
      * 保存本地资源文件到手机中
      */
     fun saveLocalResourceFile(resourceId: Int, fileName: String): String? {
-        return saveLocalResourceFile(ContextUtils.getContext(), resourceId, fileName)
+        return saveLocalResourceFile(ContextUtils.context, resourceId, fileName)
     }
 
     /**
@@ -358,7 +358,7 @@ object FileUtils {
             val path = getImageCachePath(fileName)
             val outputFile = File(getImageCachePath(fileName))
             if (!outputFile.exists()) {
-                outputFile.parentFile.mkdirs()
+                outputFile.parentFile?.mkdirs()
             } else {
                 outputFile.delete()
             }
@@ -380,7 +380,11 @@ object FileUtils {
      * @param fileName        图片名
      * @return
      */
-    fun saveBitmap(scrollView: ScrollView, @ColorInt backgroundColor: Int, fileName: String): String? {
+    fun saveBitmap(
+        scrollView: ScrollView,
+        @ColorInt backgroundColor: Int,
+        fileName: String
+    ): String? {
         var height = 0
         val bitmap: Bitmap
         for (i in 0 until scrollView.childCount) {
@@ -401,11 +405,11 @@ object FileUtils {
             deleteAllFiles(getImageCacheFile())
     }
 
-    fun makeDir(dir: File) {
-        if (!dir.parentFile.exists()) {
-            makeDir(dir.parentFile)
+    fun makeDir(dir: File?) {
+        if (dir?.parentFile?.exists() != true) {
+            makeDir(dir?.parentFile)
         }
-        dir.mkdir()
+        dir?.mkdir()
     }
 
     /**
@@ -414,7 +418,8 @@ object FileUtils {
     fun getGeneralFilePath(oriPath: String?): String? {
         var originalPath = oriPath
         if (null != originalPath && "" != originalPath) {
-            val strPath = originalPath.split("\\\\|/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            val strPath =
+                originalPath.split("\\\\|/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             originalPath = ""
             // 拼接jar路径
             for (i in strPath.indices) {

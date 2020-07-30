@@ -38,11 +38,9 @@ object MapUtils {
         //用于存储所有已安装程序的包名
         val packageNames = ArrayList<String>()
         //从pinfo中将包名字逐一取出，压入pName list中
-        if (packageInfos != null) {
-            for (i in packageInfos.indices) {
-                val packName = packageInfos[i].packageName
-                packageNames.add(packName)
-            }
+        for (i in packageInfos.indices) {
+            val packName = packageInfos[i].packageName
+            packageNames.add(packName)
         }
         //判断packageNames中是否有目标程序的包名，有TRUE，没有FALSE
         return packageNames.contains(packageName)
@@ -70,21 +68,21 @@ object MapUtils {
             val intent = Intent()
             var uriString = ""
             when (mapType) {
-                MapUtils.MapType.DRIVING -> uriString = String.format(
+                MapType.DRIVING -> uriString = String.format(
                     "baidumap://map/navi?location=%s,%s",
                     (destinationLl.latitude).toString() + "", (destinationLl.longitude).toString() + ""
                 )
-                MapUtils.MapType.TRANSIT -> uriString = String.format(
+                MapType.TRANSIT -> uriString = String.format(
                     "baidumap://map/direction?destination=%s,%s&mode=transit&target=1",
                     //originLl.latitude + "", originLl.longitude + "",
                     (destinationLl.latitude).toString() + "", (destinationLl.longitude).toString() + ""
                 )
-                MapUtils.MapType.BIKING -> uriString = String.format(
+                MapType.BIKING -> uriString = String.format(
                     "baidumap://map/bikenavi?origin=%s,%s&destination=%s,%s",
                     (originLl.latitude).toString() + "", (originLl.longitude).toString() + "",
                     (destinationLl.latitude).toString() + "", (destinationLl.longitude).toString() + ""
                 )
-                MapUtils.MapType.WALKING -> uriString = String.format(
+                MapType.WALKING -> uriString = String.format(
                     "baidumap://map/walknavi?origin=%s,%s&destination=%s,%s",
                     (originLl.latitude).toString() + "", (originLl.longitude).toString() + "",
                     (destinationLl.latitude).toString() + "", (destinationLl.longitude).toString() + ""

@@ -8,14 +8,7 @@ import android.content.Context
  * Class Comment：
  */
 object ContextUtils {
-
-    private var application: Application? = null
-
-    fun init(application: Application) {
-        this.application = application
-    }
-
-    fun getApplication(): Application = application!!
-
-    fun getContext(): Context = application!!.applicationContext
+    lateinit var application: Application
+    val context: Context
+        get() = application.applicationContext
 }

@@ -28,7 +28,7 @@ object UriUtils {
      * @return
      */
     fun getUri(context: Context, filePath: String): Uri? {
-        return getUri(context, filePath, ContextUtils.getApplication().packageName)
+        return getUri(context, filePath, ContextUtils.application.packageName)
     }
 
     /**
@@ -45,7 +45,11 @@ object UriUtils {
         try {
             var uri: Uri? = null
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                uri = FileProvider.getUriForFile(context, "$application_id.fileprovider", File(filePath))
+                uri = FileProvider.getUriForFile(
+                    context,
+                    "$application_id.fileprovider",
+                    File(filePath)
+                )
             } else
                 uri = Uri.fromFile(File(filePath))
             return uri
@@ -122,12 +126,18 @@ object UriUtils {
      * @param selectionArgs (Optional) Selection arguments used in the query.
      * @return The value of the _data column, which is typically a file path.
      */
-    fun getDataColumn(context: Context, uri: Uri?, selection: String?, selectionArgs: Array<String>?): String? {
+    fun getDataColumn(
+        context: Context,
+        uri: Uri?,
+        selection: String?,
+        selectionArgs: Array<String>?
+    ): String? {
         var cursor: Cursor? = null
         val column = "_data"
         val projection = arrayOf(column)
         try {
-            cursor = context.contentResolver.query(uri!!, projection, selection, selectionArgs, null)
+            cursor =
+                context.contentResolver.query(uri!!, projection, selection, selectionArgs, null)
             if (cursor != null && cursor.moveToFirst()) {
                 val column_index = cursor.getColumnIndexOrThrow(column)
                 return cursor.getString(column_index)

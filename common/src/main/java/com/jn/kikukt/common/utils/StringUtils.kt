@@ -45,3 +45,16 @@ object StringUtils {
         return flag
     }
 }
+
+/**
+ * 获取域名
+ * return "http://www.xx.com/"
+ */
+fun String.getDomain(): String {
+    return if (startsWith("http") || startsWith("Http")) {
+        val index = indexOf("//")
+        val httpStr = substring(0, index + 2)
+        val urlStr = substring(index + 2, length)//不包含http://
+        httpStr + urlStr.substring(0, urlStr.indexOf("/") + 1)
+    } else ""
+}

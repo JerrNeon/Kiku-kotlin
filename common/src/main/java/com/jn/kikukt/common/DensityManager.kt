@@ -4,8 +4,8 @@ import android.app.Activity
 import android.app.Application
 import android.content.ComponentCallbacks
 import android.content.res.Configuration
-import androidx.annotation.IntDef
 import android.util.DisplayMetrics
+import androidx.annotation.IntDef
 import java.text.DecimalFormat
 
 /**
@@ -32,7 +32,7 @@ class DensityManager {
         private const val WIDTH = 1//宽
         private const val HEIGHT = 2//高
 
-        val instance: DensityManager by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
+        val instance: DensityManager by lazy(mode = LazyThreadSafetyMode.NONE) {
             DensityManager()
         }
     }
@@ -82,21 +82,12 @@ class DensityManager {
     }
 
     /**
-     * 设置Activity默认的适配(基于屏幕宽度)
-     *
-     * @param activity Activity
-     */
-    fun setDensity(activity: Activity) {
-        setAppOrientation(activity, WIDTH)
-    }
-
-    /**
-     * 设置Activity基于某个方向的适配
+     * 设置Activity基于某个方向的适配(默认基于屏幕宽度)
      *
      * @param activity    Activity
      * @param orientation Orientation
      */
-    fun setDensity(activity: Activity, @Orientation orientation: Int) {
+    fun setDensity(activity: Activity, @Orientation orientation: Int = WIDTH) {
         setAppOrientation(activity, orientation)
     }
 
@@ -133,9 +124,8 @@ class DensityManager {
     private fun getTargetDensity(@Orientation orientation: Int): Float {
         var targetDensity = 0f
         try {
-            val division: Double?
             //根据带入参数选择不同的适配方向
-            division = if (orientation == WIDTH) {
+            val division: Double? = if (orientation == WIDTH) {
                 division(appDisplayMetrics?.widthPixels ?: 0, DESIGN_WIDTH)
             } else {
                 division(appDisplayMetrics?.heightPixels ?: 0, DESIGN_HEIGHT)

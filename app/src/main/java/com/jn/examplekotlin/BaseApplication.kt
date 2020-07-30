@@ -11,7 +11,6 @@ class BaseApplication : RootApplication() {
     override fun onCreate() {
         super.onCreate()
         initActivityManager()
-        initRetrofit(BuildConfig.BASE_URL)
         initUtilsManager("kiku_kotlin")
     }
 }

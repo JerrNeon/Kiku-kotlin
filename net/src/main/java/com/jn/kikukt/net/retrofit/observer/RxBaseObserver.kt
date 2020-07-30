@@ -14,15 +14,20 @@ import io.reactivex.rxjava3.disposables.Disposable
  */
 abstract class RxBaseObserver<T, V>(@ErrorType val mErrorType: Int) : Observer<T> {
 
+    val context: Context
+        get() = ContextUtils.context
+
     companion object {
         /**
          * 不显示任何错误信息
          */
         const val NONE = 1
+
         /**
          * 仅显示异常类信息
          */
         const val EXCEPTION = 2
+
         /**
          * 显示所有错误信息
          */
@@ -43,7 +48,7 @@ abstract class RxBaseObserver<T, V>(@ErrorType val mErrorType: Int) : Observer<T
         e.printStackTrace()
         var errorMsg = ""
         if (mErrorType != NONE)
-            errorMsg = OkHttpErrorHelper.getMessage(e, getContext()) ?: ""
+            errorMsg = OkHttpErrorHelper.getMessage(e, context) ?: ""
         onFailure(e, errorMsg)
     }
 
@@ -61,10 +66,6 @@ abstract class RxBaseObserver<T, V>(@ErrorType val mErrorType: Int) : Observer<T
 
     }
 
-    protected fun getContext(): Context {
-        return ContextUtils.getContext()
-    }
-
     /**
      * 请求失败
      *
@@ -73,7 +74,7 @@ abstract class RxBaseObserver<T, V>(@ErrorType val mErrorType: Int) : Observer<T
      */
     open fun onFailure(e: Throwable, errorMsg: String?) {
         if (null != errorMsg && "" != errorMsg) {
-            getContext().showToast(errorMsg)
+            context.showToast(errorMsg)
         }
     }
 }

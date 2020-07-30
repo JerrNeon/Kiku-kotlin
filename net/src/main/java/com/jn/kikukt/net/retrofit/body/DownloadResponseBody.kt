@@ -10,21 +10,21 @@ import java.io.IOException
  * Author：Stevie.Chen Time：2019/7/15
  * Class Comment：监听下载进度的ResponseBody
  */
-class DownloadResponseBody(val responseBody: ResponseBody, val listener: ProgressListener?) :
+class DownloadResponseBody(val responseBody: ResponseBody?, val listener: ProgressListener?) :
     ResponseBody() {
 
     private var bufferedSource: BufferedSource? = null
 
     override fun contentType(): MediaType? {
-        return responseBody.contentType()
+        return responseBody?.contentType()
     }
 
     override fun contentLength(): Long {
-        return responseBody.contentLength()
+        return responseBody?.contentLength() ?: 0
     }
 
     override fun source(): BufferedSource {
-        if (null == bufferedSource) {
+        if (null == bufferedSource && responseBody != null) {
             bufferedSource = source(responseBody.source()).buffer()
         }
         return bufferedSource!!
@@ -41,7 +41,7 @@ class DownloadResponseBody(val responseBody: ResponseBody, val listener: Progres
                 listener?.onProgress(
                     totalBytesRead,
                     contentLength(),
-                    totalBytesRead * 1.0f / responseBody.contentLength(),
+                    totalBytesRead * 1.0f / (responseBody?.contentLength() ?: 1),
                     bytesRead == -1L
                 )
                 return bytesRead

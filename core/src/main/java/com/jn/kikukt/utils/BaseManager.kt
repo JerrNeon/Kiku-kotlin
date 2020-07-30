@@ -4,7 +4,7 @@ import android.app.Activity
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import com.jn.kikukt.R
-import com.jn.kikukt.common.utils.statusbar.StatusBarUtils
+import com.jn.kikukt.common.utils.statusbar.setColorNoTranslucent
 import org.greenrobot.eventbus.EventBus
 
 /**
@@ -21,9 +21,5 @@ fun Activity.unregisterEventBus() {
 }
 
 fun Activity.setStatusBar(@ColorRes id: Int = R.color.colorPrimary) {
-    StatusBarUtils.setColor(
-        this,
-        ContextCompat.getColor(applicationContext, id),
-        0
-    )
+    setColorNoTranslucent(ContextCompat.getColor(applicationContext, id))
 }

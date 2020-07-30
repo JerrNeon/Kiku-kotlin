@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.fragment.app.Fragment
+import com.jn.common.BuildConfig
 import java.io.Serializable
 import java.util.*
 
@@ -121,7 +122,9 @@ object IntentManager {
         }
 
         val bundle = getBundle(tClass.simpleName, params)
-        assert(fragment != null)
+        if (BuildConfig.DEBUG && fragment == null) {
+            error("Assertion failed")
+        }
         fragment!!.arguments = bundle
         return fragment
     }

@@ -114,7 +114,7 @@ class GraphicCode {
     private val random = Random()
 
     private fun createBitmap(): Bitmap {
-        val context = ContextUtils.getContext()
+        val context = ContextUtils.context
         padding_left = 0
         val bp = Bitmap.createBitmap(
             (context.getScreenWidth() * 0.21).toInt(),

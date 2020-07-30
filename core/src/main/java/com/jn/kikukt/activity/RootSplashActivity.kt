@@ -5,7 +5,7 @@ import android.os.Handler
 import android.os.Message
 import com.jn.kikukt.common.SPManage
 import com.jn.kikukt.common.api.ISplashView
-import com.jn.kikukt.common.utils.statusbar.StatusBarUtils
+import com.jn.kikukt.common.utils.statusbar.setTransparent
 import com.jn.kikukt.utils.RxPermissionsManager
 
 /**
@@ -23,7 +23,7 @@ abstract class RootSplashActivity : RootActivity(), ISplashView, Handler.Callbac
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        StatusBarUtils.setTransparent(this)
+        setTransparent()
         initView()
     }
 

@@ -1,5 +1,7 @@
 package com.jn.kikukt.common.utils.date
 
+import com.jn.kikukt.common.utils.date.DateUtils.YYYY_MM_DD_HH_MM_SS
+import com.jn.kikukt.common.utils.date.DateUtils.YYYY_MM_DD_SHORTHAND
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -9,278 +11,196 @@ import java.util.*
  * Class Comment：
  */
 object DateUtils {
-
-    private const val LONG_DATE_FORMAT = "yyyy-MM-dd"//长日期格式
-    private const val SMALL_DATE_FORMAT = "yyyy-MM"//短日期格式
-    private const val LONG_DATE_FORMAT2 = "yyyyMMdd"//长日期格式
-    private const val DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss"//长日期时间格式
-    private const val LONG_TIME_FORMAT = "HH:mm:ss"//长时间格式
-    private const val SMALL_TIME_FORMAT = "HH:mm"//短时间格式
+    const val YYYY_MM_DD = "yyyy-MM-dd"//短日期格式
+    const val YYYY_MM = "yyyy-MM"//短日期格式
+    const val YYYY_MM_DD_SHORTHAND = "yyyyMMdd"//短日期格式
+    const val YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss"//长日期时间格式
+    const val HH_MM_SS = "HH:mm:ss"//长时间格式
+    const val HH_MM = "HH:mm"//短时间格式
 
     /**
      * 获取当前时间.(yyyy-MM-dd HH:mm:ss)
      */
-    fun getToDayStr(): String {
-        val sdf = SimpleDateFormat(DATE_TIME_FORMAT, Locale.getDefault())
-        return sdf.format(Date())
+    fun getCurrTime(pattern: String = YYYY_MM_DD_HH_MM_SS): String {
+        return SimpleDateFormat(pattern, Locale.getDefault()).format(Date())
     }
+}
 
-    /**
-     * 获取当前时间.(yyyy-MM-dd)
-     */
-    fun getToDayStrSmall(): String {
-        val sdf = SimpleDateFormat(LONG_DATE_FORMAT, Locale.getDefault())
-        return sdf.format(Date())
+/**
+ * 格式化时间.
+ */
+fun String.formatDateStr(): String {
+    return if (isNotEmpty() && (length == 8 || length == 14)) {
+        if (length == 8) "${substring(0, 4)}-${substring(4, 6)}-${substring(6, 8)}"
+        else "${substring(0, 4)}-${substring(4, 6)}-${substring(6, 8)} ${substring(
+            8,
+            10
+        )}:${substring(10, 12)}:${substring(12, 14)}"
+    } else ""
+}
+
+/**
+ * 将时间字符串格式化成一个日期("2014-06-15 12:30:12")
+ * @param pattern 格式化模板，如"yyyy-MM-dd HH:mm:ss"
+ */
+fun String.toDate(pattern: String = YYYY_MM_DD_HH_MM_SS): Date? {
+    val dateFormat = SimpleDateFormat(pattern, Locale.getDefault())
+    var date: Date? = null
+    try {
+        date = dateFormat.parse(this)
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
+    return date
+}
 
-    /**
-     * 格式化时间.
-     */
-    fun fomatDate(date: String): String {
-        return if (date.isNotEmpty()) {
-            (date.substring(0, 4) + "-" + date.substring(4, 6) + "-"
-                    + date.substring(6, 8))
-        } else ""
+/**
+ * 格式化时间字符串("2014-06-15 12:30:12")
+ * @param pattern 格式化模板，如"yyyy-MM-dd HH:mm:ss"
+ */
+fun String.formatDate(pattern: String = YYYY_MM_DD_HH_MM_SS): String? {
+    val dateFormat = SimpleDateFormat(pattern, Locale.getDefault())
+    var dateStr = ""
+    try {
+        val date = dateFormat.parse(this)
+        if (date != null) dateStr = dateFormat.format(date)
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
+    return dateStr
+}
 
-    /**
-     * 格式化时间.
-     *
-     * @param date the date
-     * @return the string
-     */
-    fun fomatLongDate(date: String): String {
-        return if (date.isNotEmpty()) {
-            (date.substring(0, 4) + "-" + date.substring(4, 6) + "-"
-                    + date.substring(6, 8) + " " + date.substring(8, 10) + ":"
-                    + date.substring(10, 12) + ":" + date.substring(12, 14))
-        } else ""
+/**
+ * 格式化[Date]("2014-06-15 12:30:12")
+ * @param pattern 格式化模板，如"yyyy-MM-dd HH:mm:ss"
+ */
+fun String.formatDate(date: Date, pattern: String = YYYY_MM_DD_HH_MM_SS): String? {
+    val dateFormat = SimpleDateFormat(pattern, Locale.getDefault())
+    var dateStr = ""
+    try {
+        dateStr = dateFormat.format(date)
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
+    return dateStr
+}
 
-    /**
-     * 格式化时间.
-     */
-    fun fomatDateTime2String(date: String): String {
-        return if (date.isNotEmpty()) {
-            date.replace("-", "").replace("T", "").replace(":", "")
-                .replace(" ", "")
-        } else ""
+/**
+ * 将一个毫秒数时间转换为相应的时间格式（yyyy-MM-dd hh:mm:ss）
+ */
+fun Long.formatDate(pattern: String = YYYY_MM_DD_HH_MM_SS): String {
+    val gc = GregorianCalendar()
+    gc.timeInMillis = this
+    val format = SimpleDateFormat(YYYY_MM_DD_HH_MM_SS, Locale.getDefault())
+    return format.format(gc.time)
+}
+
+/**
+ * 将日期格式的字符串转换为长整型
+ */
+fun String.toLong(pattern: String = YYYY_MM_DD_HH_MM_SS): Long? {
+    try {
+        val sf = SimpleDateFormat(pattern, Locale.getDefault())
+        return sf.parse(this)?.time
+    } catch (e: ParseException) {
+        e.printStackTrace()
     }
+    return 0L
+}
 
-    /**
-     * 将时间字符串格式化成一个日期(java.util.Date)
-     *
-     * @param dateStr   要格式化的日期字符串，如"2014-06-15 12:30:12"
-     * @param formatStr 格式化模板，如"yyyy-MM-dd HH:mm:ss"
-     * @return the string
-     */
-    fun formatDateString2Date(dateStr: String, formatStr: String): Date? {
-        val dateFormat = SimpleDateFormat(formatStr, Locale.getDefault())
-        var date: Date? = null
-        try {
-            date = dateFormat.parse(dateStr)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return date
-    }
-
-    /**
-     * 将时间字符串格式化成一个日期(java.util.Date)
-     *
-     * @param date      要格式化的日期字符串，如"2014-06-15 12:30:12"
-     * @param formatStr 格式化模板，如"yyyy-MM-dd HH:mm:ss"
-     * @return the string
-     */
-    fun formatDate2String(date: Date, formatStr: String): String? {
-        val dateFormat = SimpleDateFormat(formatStr, Locale.getDefault())
-        var result: String? = null
-        try {
-            result = dateFormat.format(date)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return result
-    }
-
-    /**
-     * 将时间字符串规范化
-     *
-     * @param dateStr   要格式化的日期字符串，如"2014-06-15 12:30:12.0"
-     * @param formatStr 格式化模板，如"yyyy-MM-dd HH:mm:ss"
-     * @return the string
-     */
-    fun formatDateString2String(dateStr: String, formatStr: String): String? {
-        val dateFormat = SimpleDateFormat(formatStr, Locale.getDefault())
-        var result: String? = null
-        try {
-            result = dateFormat.format(dateFormat.parse(dateStr))
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return result
-    }
-
-    /**
-     * 将一个毫秒数时间转换为相应的时间格式（yyyy-MM-dd hh:mm:ss）
-     */
-    fun formateDateLongToString(longSecond: Long): String {
-        val gc = GregorianCalendar()
-        gc.timeInMillis = longSecond
-        val format = SimpleDateFormat(DATE_TIME_FORMAT, Locale.getDefault())
-        return format.format(gc.time)
-    }
-
-    /**
-     * 将一个毫秒数时间转换为相应的时间格式（yyyy-MM-dd hh:mm:ss）
-     */
-    fun formateDateLongToString2(longSecond: Long): String {
-        val format = SimpleDateFormat(DATE_TIME_FORMAT, Locale.getDefault())
-        return format.format(longSecond * 1000)
-    }
-
-
-    /**
-     * 将一个毫秒数时间转换为相应的时间格式（yyyy-MM-dd）
-     *
-     * @param longSecond
-     * @return
-     */
-    fun formateDateLongToStringSmall(longSecond: Long): String {
-        val gc = GregorianCalendar()
-        gc.timeInMillis = longSecond
-        val format = SimpleDateFormat(LONG_DATE_FORMAT, Locale.getDefault())
-        return format.format(gc.time)
-    }
-
-    /**
-     * 将一个毫秒数时间转换为相应的时间格式（yyyy-MM-dd）
-     *
-     * @param longSecond
-     * @return
-     */
-    fun formateDateLongToStringSmall2(longSecond: Long): String {
-        val format = SimpleDateFormat(LONG_DATE_FORMAT, Locale.getDefault())
-        return format.format(longSecond * 1000)
-    }
-
-    /**
-     * 时间取出月日显示
-     */
-    fun fomatDateString2MonthDayString(dateStr: String): String {
-        val format = SimpleDateFormat(DATE_TIME_FORMAT, Locale.getDefault())
-        try {
-            // 用parse方法，可能会异常，所以要try-catch
-            val date = format.parse(dateStr)
-            // 获取日期实例
-            val calendar = Calendar.getInstance()
-            // 将日历设置为指定的时间
+/**
+ * 时间取出年月日显示
+ */
+fun String.formatDate(
+    isYear: Boolean = false,
+    isMonth: Boolean = true,
+    isDay: Boolean = true
+): String {
+    val format = SimpleDateFormat(YYYY_MM_DD_HH_MM_SS, Locale.getDefault())
+    try {
+        // 用parse方法，可能会异常，所以要try-catch
+        val date = format.parse(this)
+        // 获取日期实例
+        val calendar = Calendar.getInstance()
+        // 将日历设置为指定的时间
+        if (date != null)
             calendar.time = date
-            // 获取年
-            val year = calendar.get(Calendar.YEAR)
-            // 这里要注意，月份是从0开始。
-            val month = calendar.get(Calendar.MONTH)
-            // 获取天
-            val day = calendar.get(Calendar.DAY_OF_MONTH)
-            var monthStr = ""
-            var dayStr = ""
-            if (month < 9)
-                monthStr = "0" + (month + 1)
-            else
-                monthStr = (month + 1).toString() + ""
-            if (day < 10)
-                dayStr = "0$day"
-            else
-                dayStr = day.toString() + ""
-            return "$monthStr-$dayStr"
-        } catch (e: ParseException) {
-            e.printStackTrace()
-        }
-
-        return ""
+        // 获取年
+        val year = calendar.get(Calendar.YEAR)
+        // 这里要注意，月份是从0开始。
+        val month = calendar.get(Calendar.MONTH)
+        // 获取天
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val monthStr = if (month < 9)
+            "0${month + 1}"
+        else
+            "${month + 1}"
+        val dayStr = if (day < 10)
+            "0$day"
+        else
+            day.toString()
+        return if (isYear && isMonth && isDay) "$year-$monthStr-$dayStr"
+        else if (isYear && isMonth) "$year-$monthStr"
+        else if (isMonth && isDay) "$monthStr-$dayStr"
+        else if (isYear) "$year"
+        else if (isMonth) monthStr
+        else if (isDay) dayStr
+        else ""
+    } catch (e: ParseException) {
+        e.printStackTrace()
     }
+    return ""
+}
 
-    /**
-     * 将日期格式的字符串转换为长整型
-     */
-    fun convert2long(date: String, format: String): Long {
-        var dateFormat = format
-        try {
-            if (date.isNotEmpty()) {
-                if (dateFormat.isEmpty())
-                    dateFormat = LONG_TIME_FORMAT
-                val sf = SimpleDateFormat(dateFormat, Locale.getDefault())
-                return sf.parse(date).time
-            }
-        } catch (e: ParseException) {
-            e.printStackTrace()
-        }
-        return 0L
-    }
-
-    /**
-     * 获取下一天.
-     *
-     * @param currentDate the current date
-     * @return the next date str
-     * @throws ParseException the parse exception
-     */
-    @Throws(ParseException::class)
-    fun getNextDateStr(currentDate: String): String {
-        val sdf = SimpleDateFormat(LONG_DATE_FORMAT2, Locale.getDefault())
-        val date = sdf.parse(currentDate)
-        val calendar = Calendar.getInstance()
+/**
+ * 获取下一天.
+ *
+ * @return the next date str
+ */
+fun String.getNextDay(): String {
+    val sdf = SimpleDateFormat(YYYY_MM_DD_SHORTHAND, Locale.getDefault())
+    val date = sdf.parse(this)
+    val calendar = Calendar.getInstance()
+    if (date != null)
         calendar.time = date
-        calendar.add(Calendar.DATE, 1)
-        return sdf.format(calendar.time)
-    }
+    calendar.add(Calendar.DATE, 1)
+    return sdf.format(calendar.time)
+}
 
-    /**
-     * 获取上一天.
-     *
-     * @param currentDate the current date
-     * @return the next date str
-     * @throws ParseException the parse exception
-     */
-    @Throws(ParseException::class)
-    fun getYesterdayStr(currentDate: String): String {
-        val sdf = SimpleDateFormat(LONG_DATE_FORMAT2, Locale.getDefault())
-        val date = sdf.parse(currentDate)
-        val calendar = Calendar.getInstance()
+/**
+ * 获取上一天.
+ *
+ * @return the next date str
+ */
+fun String.getYesterday(): String {
+    val sdf = SimpleDateFormat(YYYY_MM_DD_SHORTHAND, Locale.getDefault())
+    val date = sdf.parse(this)
+    val calendar = Calendar.getInstance()
+    if (date != null)
         calendar.time = date
-        calendar.add(Calendar.DATE, -1)
-        return sdf.format(calendar.time)
+    calendar.add(Calendar.DATE, -1)
+    return sdf.format(calendar.time)
+}
+
+/**
+ * 根据日期获取星期
+ */
+fun String.getWeekDayByDate(
+    pattern: String = YYYY_MM_DD_HH_MM_SS,
+    weekArrays: Array<String> = arrayOf("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六")
+): String {
+    val sdfInput = SimpleDateFormat(pattern, Locale.getDefault())
+    val calendar = Calendar.getInstance()
+    var date: Date? = null
+    try {
+        date = sdfInput.parse(this)
+    } catch (e: ParseException) {
+        e.printStackTrace()
     }
-
-    /**
-     * 根据日期获取星期
-     *
-     * @param strdate
-     * @param forMat  20150101 ....
-     * @return
-     */
-    fun getWeekDayByDate(strdate: String, forMat: String): String {
-        val dayNames = arrayOf("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六")
-        val sdfInput = SimpleDateFormat(forMat, Locale.getDefault())
-        val calendar = Calendar.getInstance()
-        var date = Date()
-        try {
-            date = sdfInput.parse(strdate)
-        } catch (e: ParseException) {
-            e.printStackTrace()
-        }
-
+    if (date != null)
         calendar.time = date
-        var dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1
-        if (dayOfWeek < 0)
-            dayOfWeek = 0
-        return dayNames[dayOfWeek]
-    }
-
-    fun getDateByDayNumber(day: Int?): Date {
-        val cal = Calendar.getInstance()
-        cal.time = Date()
-        cal.add(Calendar.DATE, day!!)
-        return cal.time
-    }
+    var dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1
+    if (dayOfWeek < 0)
+        dayOfWeek = 0
+    return weekArrays[dayOfWeek]
 }

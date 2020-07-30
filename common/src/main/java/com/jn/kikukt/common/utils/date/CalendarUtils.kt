@@ -141,11 +141,11 @@ object CalendarUtils {
     fun getWeekDayFromDate(year: Int, month: Int): Int {
         val cal = Calendar.getInstance()
         cal.time = getDateFromString(year, month)!!
-        var week_index = cal.get(Calendar.DAY_OF_WEEK) - 1
-        if (week_index < 0) {
-            week_index = 0
+        var weekIndex = cal.get(Calendar.DAY_OF_WEEK) - 1
+        if (weekIndex < 0) {
+            weekIndex = 0
         }
-        return week_index
+        return weekIndex
     }
 
     fun getDateFromString(year: Int, month: Int): Date? {
@@ -167,7 +167,7 @@ object CalendarUtils {
      * @return
      */
     fun getTwoTime(time: Int): String {
-        return (if (time > 9) time else "0$time").toString() + ""
+        return if (time > 9) time.toString() else "0$time"
     }
 
     fun isToday(date: CalendarVO): Boolean {
@@ -228,7 +228,7 @@ object CalendarUtils {
         //NLogUtil.logI("starttime", mDate.getYear()+"-"+mDate.getMonth()+"-"+"1");
         return getTime(
             getStringFormat(
-                mDate.getYear(), mDate.getMonth(), 1, true
+                mDate.year, mDate.month, 1, true
             ), "yyyy-MM-dd HH:mm:ss"
         )
     }
@@ -238,12 +238,12 @@ object CalendarUtils {
      */
     fun getMonthFinally(mDate: CalendarVO): String? {
         //选择月份的最大日期
-        val selectMonthMaxDay = getMonthDays(mDate.getYear(), mDate.getMonth())
+        val selectMonthMaxDay = getMonthDays(mDate.year, mDate.month)
         //NLogUtil.logI("end", mDate.getYear()+"-"+mDate.getMonth()+"-"+selectMonthMaxDay);
         return getTime(
             getStringFormat(
-                mDate.getYear(),
-                mDate.getMonth(), selectMonthMaxDay, false
+                mDate.year,
+                mDate.month, selectMonthMaxDay, false
             ), "yyyy-MM-dd HH:mm:ss"
         )
     }
@@ -254,14 +254,14 @@ object CalendarUtils {
      * @param mDate
      * @return 相等返回 0 ;小于返回 -1；大于返回1
      */
-    fun CompareCurrentMonth(mDate: CalendarVO): Int {
+    fun compareCurrentMonth(mDate: CalendarVO): Int {
         return when {
-            mDate.getYear() < getYear() -> //判断年
+            mDate.year < getYear() -> //判断年
                 -1
-            mDate.getYear() > getYear() -> 1
-            mDate.getMonth() < getMonth() -> //判断月
+            mDate.year > getYear() -> 1
+            mDate.month < getMonth() -> //判断月
                 -1
-            mDate.getMonth() > getMonth() -> 1
+            mDate.month > getMonth() -> 1
             else -> 0
         }
 
@@ -273,17 +273,17 @@ object CalendarUtils {
      * @param mDate
      * @return 相等返回 0 ;小于返回 -1；大于返回1
      */
-    fun CompareCurrentDay(mDate: CalendarVO): Int {
+    fun compareCurrentDay(mDate: CalendarVO): Int {
         return when {
-            mDate.getYear() < getYear() -> //判断年
+            mDate.year < getYear() -> //判断年
                 -1
-            mDate.getYear() > getYear() -> 1
-            mDate.getMonth() < getMonth() -> //年份相等判断月
+            mDate.year > getYear() -> 1
+            mDate.month < getMonth() -> //年份相等判断月
                 -1
-            mDate.getMonth() > getMonth() -> 1
-            mDate.getDay() > getCurrentMonthDay() -> //月份相等判断日
+            mDate.month > getMonth() -> 1
+            mDate.day > getCurrentMonthDay() -> //月份相等判断日
                 1
-            mDate.getDay() < getCurrentMonthDay() -> -1
+            mDate.day < getCurrentMonthDay() -> -1
             else -> 0
         }
     }
@@ -294,20 +294,20 @@ object CalendarUtils {
      * @param mDate2
      * @return   相等返回 0 ;小于返回 -1；大于返回1
      */
-    fun CompareTwoDay(mDate1: CalendarVO, mDate2: CalendarVO): Int {
+    fun compareTwoDay(mDate1: CalendarVO, mDate2: CalendarVO): Int {
         return when {
-            mDate1.getYear() < mDate2.getYear() -> -1
-            mDate1.getYear() > mDate2.getYear() -> 1
+            mDate1.year < mDate2.year -> -1
+            mDate1.year > mDate2.year -> 1
             else -> when {
-                mDate1.getMonth() < mDate2.getMonth() -> -1
-                mDate1.getMonth() > mDate2.getMonth() -> 1
+                mDate1.month < mDate2.month -> -1
+                mDate1.month > mDate2.month -> 1
                 else -> 0
             }
         }
     }
 
     /**
-     * // 将字符串转为时间戳
+     * 将字符串转为时间戳
      *
      * @param timeStr   时间字符串
      * @param dateStyle 转化格式
@@ -315,20 +315,20 @@ object CalendarUtils {
      */
     fun getTime(timeStr: String, dateStyle: String): String? {
         //NLogUtil.logI("日期", timeStr);
-        var re_time: String? = null
+        var reTime: String? = null
         //SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日HH时mm分ss秒");
         val sdf = SimpleDateFormat(dateStyle, Locale.getDefault())
-        val d: Date
+        val d: Date?
         try {
             d = sdf.parse(timeStr)
             val l = d.time
-            re_time = l.toString() + ""
+            reTime = l.toString()
             //NLogUtil.logI("时间戳", re_time);
         } catch (e: ParseException) {
             e.printStackTrace()
         }
 
-        return re_time
+        return reTime
     }
 
 }

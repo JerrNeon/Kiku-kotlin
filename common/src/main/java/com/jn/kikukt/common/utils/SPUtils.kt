@@ -12,7 +12,7 @@ import java.lang.reflect.Method
 object SPUtils {
 
     val context: Context
-        get() = ContextUtils.getContext()
+        get() = ContextUtils.context
 
     /**
      * 保存在手机里面的文件名

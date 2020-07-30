@@ -32,6 +32,7 @@ class VersionUpdateService : Service() {
 
     private val channelId = "VersionUpdateService20190712"
     private val channelName = resources.getString(R.string.app_name)
+
     @RequiresApi(Build.VERSION_CODES.N)
     private val importance = NotificationManager.IMPORTANCE_LOW
 
@@ -74,31 +75,30 @@ class VersionUpdateService : Service() {
 
         //下载
         val downLoadFileName = versionUpdateVO.appName
-        RetrofitManage.instance
-            .getDownloadObservable(
-                versionUpdateVO.downLoadUrl ?: "", object : ProgressListener {
-                    override fun onProgress(
-                        progressBytes: Long,
-                        totalBytes: Long,
-                        progressPercent: Float,
-                        done: Boolean
-                    ) {
-                        //计算每百分之5刷新一下通知栏
-                        val progress2 = progressPercent * 100
-                        if (progress2 - mCurrentProgress > 5) {
-                            mCurrentProgress = progress2
-                            builder.setContentText(
-                                String.format(
-                                    resources.getString(R.string.versionUpdate_downloadProgress),
-                                    progress2.toInt()
-                                )
+        RetrofitManage.getDownloadObservable(
+            versionUpdateVO.downLoadUrl ?: "", object : ProgressListener {
+                override fun onProgress(
+                    progressBytes: Long,
+                    totalBytes: Long,
+                    progressPercent: Float,
+                    done: Boolean
+                ) {
+                    //计算每百分之5刷新一下通知栏
+                    val progress2 = progressPercent * 100
+                    if (progress2 - mCurrentProgress > 5) {
+                        mCurrentProgress = progress2
+                        builder.setContentText(
+                            String.format(
+                                resources.getString(R.string.versionUpdate_downloadProgress),
+                                progress2.toInt()
                             )
-                            builder.setProgress(100, progress2.toInt(), false)
-                            manager.notify(0, builder.build())
-                        }
+                        )
+                        builder.setProgress(100, progress2.toInt(), false)
+                        manager.notify(0, builder.build())
                     }
                 }
-            )
+            }
+        )
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.io())
             .map { responseBody ->
