@@ -71,6 +71,7 @@ abstract class RootRvActivity<T> : RootRefreshActivity(), IRvView<T> {
         super.onCreate(savedInstanceState)
         initRvView()
         onRequest()
+        onObserve()
     }
 
     override fun onRequest() {
@@ -81,6 +82,10 @@ abstract class RootRvActivity<T> : RootRefreshActivity(), IRvView<T> {
     override fun onRefresh(refreshLayout: RefreshLayout) {
         mAdapter.setList(null)//clear data
         super.onRefresh(refreshLayout)
+    }
+
+    override fun onObserve() {
+        viewModel?.liveData?.observe(this, observer)
     }
 
     override fun initRvView() {

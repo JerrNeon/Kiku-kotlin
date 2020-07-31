@@ -34,6 +34,11 @@ interface IRvView<T> : OnItemClickListener, OnItemLongClickListener, OnItemChild
     val observer: Observer<HttpResponse>//Observer
 
     /**
+     * 对LiveData进行observe
+     */
+    fun onObserve()
+
+    /**
      * 初始化刷新相关控件
      */
     fun initRvView()

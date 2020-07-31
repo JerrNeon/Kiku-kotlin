@@ -78,6 +78,10 @@ abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T> {
         super.onRefresh(refreshLayout)
     }
 
+    override fun onObserve() {
+        viewModel?.liveData?.observe(this, observer)
+    }
+
     override fun initRvView() {
         mRecyclerView = view?.rv_common!!
         mRecyclerView.run {

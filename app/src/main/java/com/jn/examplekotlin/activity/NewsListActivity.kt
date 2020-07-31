@@ -25,14 +25,13 @@ class NewsListActivity : RootRvActivity<NewsVO>() {
         NewAdapter(requestManager = requestManager())
     }
 
-    override fun onRequest() {
-        super.onRequest()
-        viewModel.getNewsList(mPageIndex, mPageSize)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTitleText("News ViewModel")
-        viewModel.liveData.observe(this, observer)
+    }
+
+    override fun onRequest() {
+        super.onRequest()
+        viewModel.getNewsList(mPageIndex, mPageSize)
     }
 }

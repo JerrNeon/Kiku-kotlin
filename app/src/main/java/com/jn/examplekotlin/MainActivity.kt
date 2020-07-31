@@ -23,14 +23,14 @@ class MainActivity : RootRvActivity<NewsVO>(), NewsContract.IView {
         NewAdapter(requestManager())
     }
 
-    override fun onRequest() {
-        super.onRequest()
-        presenter.getNewList()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTitleText("新闻列表")
+    }
+
+    override fun onRequest() {
+        super.onRequest()
+        presenter.getNewList()
     }
 
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, item: NewsVO) {

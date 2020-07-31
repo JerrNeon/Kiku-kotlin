@@ -15,16 +15,17 @@ object DisposableManager {
     private var compositeDisposable: CompositeDisposable? = null
 
     fun addDisposable(disposable: Disposable, lifecycleOwner: LifecycleOwner) {
-        if (compositeDisposable == null)
+        if (compositeDisposable == null) {
             compositeDisposable = CompositeDisposable()
-        compositeDisposable?.add(disposable)
-        lifecycleOwner.lifecycle.addObserver(object : LifecycleEventObserver {
-            override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-                if (Lifecycle.Event.ON_DESTROY == event) {
-                    dispose()
+            lifecycleOwner.lifecycle.addObserver(object : LifecycleEventObserver {
+                override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+                    if (Lifecycle.Event.ON_DESTROY == event) {
+                        dispose()
+                    }
                 }
-            }
-        })
+            })
+        }
+        compositeDisposable?.add(disposable)
     }
 
     private fun dispose() {
@@ -32,5 +33,6 @@ object DisposableManager {
             if (!it.isDisposed)
                 it.dispose()
         }
+        compositeDisposable = null
     }
 }
