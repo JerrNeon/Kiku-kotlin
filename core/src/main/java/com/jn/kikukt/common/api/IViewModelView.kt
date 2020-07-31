@@ -1,6 +1,6 @@
 package com.jn.kikukt.common.api
 
-import com.jn.kikukt.net.coroutines.BaseViewModel
+import com.jn.kikukt.mvvm.BaseViewModel
 
 /**
  * Author：Stevie.Chen Time：2020/1/17

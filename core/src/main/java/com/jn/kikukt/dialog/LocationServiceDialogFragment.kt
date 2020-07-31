@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.dialog_locationservice.view.*
  * Author：Stevie.Chen Time：2019/7/15
  * Class Comment：定位服务对话框
  */
-class LocationServiceDialogFragment : RootDialogFragment() {
+class LocationServiceDialogFragment : RootDialogFragment(), View.OnClickListener {
 
     private var onLocationServiceOpenSuccess: (() -> Unit)? = null
     private var onLocationServiceOpenFailure: (() -> Unit)? = null
@@ -34,11 +34,11 @@ class LocationServiceDialogFragment : RootDialogFragment() {
     override val layoutParams: WindowManager.LayoutParams? = mWindow?.attributes?.apply {
         gravity = Gravity.CENTER//中间显示
         width =
-            (mContext.getScreenWidth() * 0.9).toInt()//宽度为屏幕90%
+            (requireContext().getScreenWidth() * 0.9).toInt()//宽度为屏幕90%
     }
 
     override fun initView() {
-        mView?.run {
+        view?.run {
             tv_permissionCancel.setOnClickListener(this@LocationServiceDialogFragment)
             tv_permissionSubmit.setOnClickListener(this@LocationServiceDialogFragment)
         }
@@ -60,7 +60,7 @@ class LocationServiceDialogFragment : RootDialogFragment() {
             onLocationServiceOpenFailure?.invoke()
             this.dismiss()
         } else if (view.id == R.id.tv_permissionSubmit) {
-            mFragment.openLocationService(REQUESTCODE_LOCATIONSERVICE)
+            openLocationService(REQUESTCODE_LOCATIONSERVICE)
         }
     }
 
@@ -68,7 +68,7 @@ class LocationServiceDialogFragment : RootDialogFragment() {
         super.onActivityResult(requestCode, resultCode, data)
         //回调再次判断是否开启定位服务
         if (requestCode == REQUESTCODE_LOCATIONSERVICE && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (mContext.checkLocationServiceOPen()) {
+            if (requireContext().checkLocationServiceOPen()) {
                 onLocationServiceOpenSuccess?.invoke()
             } else {
                 onLocationServiceOpenFailure?.invoke()

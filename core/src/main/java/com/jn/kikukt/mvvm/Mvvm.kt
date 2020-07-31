@@ -1,9 +1,11 @@
-package com.jn.kikukt.net.coroutines
+package com.jn.kikukt.mvvm
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.jn.kikukt.net.coroutines.Failure
+import com.jn.kikukt.net.coroutines.HttpResponse
 import com.jn.kikukt.net.retrofit.exception.OkHttpException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -11,9 +13,12 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 /**
- * Author：Stevie.Chen Time：2020/1/13
+ * Author：Stevie.Chen Time：2020/7/31
  * Class Comment：
  */
+
+open class BaseRepository
+
 open class BaseViewModel(application: Application) : AndroidViewModel(application) {
 
     val liveData by lazy { MutableLiveData<HttpResponse>() }
@@ -61,5 +66,4 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
             tryCatch(tryBlock, catchBlock, finallyBlock)
         }
     }
-
 }

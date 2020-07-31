@@ -14,12 +14,9 @@ import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnItemLongClickListener
 import com.jn.kikukt.R
 import com.jn.kikukt.annonation.*
-import com.jn.kikukt.common.api.IMvpView
 import com.jn.kikukt.common.api.IRvView
 import com.jn.kikukt.common.utils.cast
 import com.jn.kikukt.common.utils.isConnected
-import com.jn.kikukt.mvp.IBPresenter
-import com.jn.kikukt.mvp.IBView
 import com.jn.kikukt.net.coroutines.Failure
 import com.jn.kikukt.net.coroutines.HttpResponse
 import com.jn.kikukt.net.coroutines.Success
@@ -82,13 +79,13 @@ abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T> {
     }
 
     override fun initRvView() {
-        mRecyclerView = mView?.rv_common!!
+        mRecyclerView = view?.rv_common!!
         mRecyclerView.run {
             layoutManager = mLayoutManager
             adapter = mAdapter
         }
 
-        mEmptyView = LayoutInflater.from(mContext)
+        mEmptyView = LayoutInflater.from(context)
             .inflate(R.layout.common_loadingfailure, mFlRootContainer, false)
         mEmptyView.run {
             mIvLoadingFailure = findViewById(R.id.iv_commonLoadingFailure)
@@ -96,7 +93,7 @@ abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T> {
             setOnClickListener { view -> onClickLoadFailure(view) }
         }
         mAdapter.run {
-            recyclerView = mRecyclerView
+            recyclerView = this@RootRvFragment.mRecyclerView
             setEmptyView(mEmptyView)//set empty or failure view
             isUseEmpty = false//don t show empty or failure view first
             setOnItemClickListener(this@RootRvFragment as? OnItemClickListener)
@@ -153,7 +150,7 @@ abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T> {
                     isUseEmpty = true//show empty or failure view
                     setList(null)
                 }
-                if (!mContext.isConnected()) {//no net
+                if (!requireContext().isConnected()) {//no net
                     setLoadFailureResource(R.drawable.ic_kiku_nonet, R.string.kiku_load_nonet)
                 } else {//other reason(connect failure or server error)
                     setLoadFailureResource(R.drawable.ic_kiku_nonet, R.string.kiku_load_failure)
@@ -180,24 +177,5 @@ abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T> {
         mRefreshOperateType = ON_RELOAD
         mPageIndex = mInitPageIndex
         onRequest()
-    }
-}
-
-abstract class RootRvPresenterFragment<P : IBPresenter, T> : RootRvFragment<T>(),
-    IMvpView<P> {
-
-    override var mPresenter: P? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        initPresenter()
-    }
-
-    override fun initPresenter() {
-        super.initPresenter()
-        mPresenter?.let {
-            it.attachView(this as? IBView)
-            lifecycle.addObserver(it)
-        }
     }
 }

@@ -1,6 +1,6 @@
-package com.jn.kikukt.net.coroutines
+package com.jn.kikukt.net.coroutines.manager
 
-import com.jn.kikukt.net.RetrofitApiService
+import com.jn.kikukt.net.coroutines.CoroutinesApiService
 import com.jn.kikukt.net.retrofit.body.UploadRequestBody
 import com.jn.kikukt.net.retrofit.callback.ProgressListener
 import okhttp3.Interceptor
@@ -12,7 +12,7 @@ import okhttp3.Interceptor
 class RetrofitUploadManager(private val baseUrl: String, val listener: ProgressListener?) :
     IBaseRetrofitManager {
 
-    val service by lazy { create(RetrofitApiService::class.java, baseUrl) }
+    val service by lazy { create(CoroutinesApiService::class.java, baseUrl) }
 
     override val interceptor: Interceptor?
         get() = Interceptor { chain ->

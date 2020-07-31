@@ -60,13 +60,13 @@ abstract class RootMainActivity : RootActivity(), IMainView, TabLayout.OnTabSele
         if (mMenuSelectedImgResources != null) {
             for (i in mMenuSelectedImgResources!!.indices) {
                 val menuView =
-                    LayoutInflater.from(mContext)
+                    LayoutInflater.from(this)
                         .inflate(R.layout.common_mainmenu_layout, ll_RootMain, false)
                 val iv = menuView.findViewById<ImageView>(R.id.iv_menu)
                 val tv = menuView.findViewById<TextView>(R.id.tv_menu)
                 tv.setTextColor(
                     ContextCompat.getColor(
-                        mContext,
+                        applicationContext,
                         mMenuSelectedTextColorResources!![i]
                     )
                 )

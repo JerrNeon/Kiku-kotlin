@@ -1,8 +1,8 @@
 package com.jn.examplekotlin.mvp
 
 import com.jn.examplekotlin.entiy.NewsVO
-import com.jn.examplekotlin.request.ApiManager
-import com.jn.examplekotlin.request.RxObserver
+import com.jn.examplekotlin.request.rxjava.ApiManager
+import com.jn.examplekotlin.request.rxjava.RxObserver
 import com.jn.kikukt.common.api.IRefreshView
 import com.jn.kikukt.common.api.IRvView
 import com.jn.kikukt.mvp.*

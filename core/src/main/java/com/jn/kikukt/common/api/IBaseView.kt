@@ -1,6 +1,5 @@
 package com.jn.kikukt.common.api
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import com.jn.kikukt.dialog.ProgressDialogFragment
 
@@ -11,7 +10,6 @@ import com.jn.kikukt.dialog.ProgressDialogFragment
 interface IBaseView {
 
     var mAppCompatActivity: AppCompatActivity
-    var mContext: Context
     var mProgressDialog: ProgressDialogFragment?
 
     /**

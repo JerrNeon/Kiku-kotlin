@@ -5,10 +5,7 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.widget.FrameLayout
 import com.jn.kikukt.R
-import com.jn.kikukt.common.api.IMvpView
 import com.jn.kikukt.common.api.IWvView
-import com.jn.kikukt.mvp.IBPresenter
-import com.jn.kikukt.mvp.IBView
 import com.jn.kikukt.utils.WebViewUtils
 import kotlinx.android.synthetic.main.common_wv_progress.*
 import kotlinx.android.synthetic.main.common_wv_tencent.*
@@ -86,23 +83,5 @@ open class RootWvActivity : RootTbActivity(), IWvView {
             keyCode,
             event
         )
-    }
-}
-
-abstract class RootWvPresenterActivity<P : IBPresenter> : RootWvActivity(), IMvpView<P> {
-
-    override var mPresenter: P? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        initPresenter()
-    }
-
-    override fun initPresenter() {
-        super.initPresenter()
-        mPresenter?.let {
-            it.attachView(this as? IBView)
-            lifecycle.addObserver(it)
-        }
     }
 }

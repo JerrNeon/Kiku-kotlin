@@ -1,4 +1,4 @@
-package com.jn.kikukt.net.retrofit.manager
+package com.jn.kikukt.net.rxjava.manager
 
 import com.google.gson.Gson
 import com.jn.kikukt.net.retrofit.callback.ProgressListener

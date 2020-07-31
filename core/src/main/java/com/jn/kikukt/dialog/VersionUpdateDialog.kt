@@ -16,7 +16,7 @@ import com.jn.kikukt.service.VersionUpdateService
  * Author：Stevie.Chen Time：2019/7/15
  * Class Comment：版本更新对话框
  */
-class VersionUpdateDialog : RootDialogFragment() {
+class VersionUpdateDialog : RootDialogFragment(), View.OnClickListener {
 
     private var mTvVersionUpdateContent: TextView? = null//更新内容
     private var mTvVersionUpdateCancel: TextView? = null//取消
@@ -39,13 +39,13 @@ class VersionUpdateDialog : RootDialogFragment() {
 
     override val layoutParams: WindowManager.LayoutParams? = mWindow?.attributes?.apply {
         gravity = Gravity.CENTER//居中显示
-        width = (mContext.getScreenWidth() * 0.8).toInt()//宽度为屏幕宽度的80%
-        height = (mContext.getScreenWidth() * 0.8).toInt()//高度为屏幕宽度的80%
+        width = (requireContext().getScreenWidth() * 0.8).toInt()//宽度为屏幕宽度的80%
+        height = (requireContext().getScreenWidth() * 0.8).toInt()//高度为屏幕宽度的80%
     }
 
     override fun initView() {
         super.initView()
-        mView?.run {
+        view?.run {
             mTvVersionUpdateContent = findViewById(R.id.tv_versionUpdateContent)
             mTvVersionUpdateCancel = findViewById(R.id.tv_versionUpdateCancel)
             mTvVersionUpdateSubmit = findViewById(R.id.tv_versionUpdateSubmit)
@@ -80,7 +80,7 @@ class VersionUpdateDialog : RootDialogFragment() {
         } else if (viewId == R.id.tv_versionUpdateSubmit) {
             this.dismiss()
             mVersionUpdateVO?.let {
-                val intent = Intent(mContext, VersionUpdateService::class.java)
+                val intent = Intent(requireContext(), VersionUpdateService::class.java)
                 intent.putExtra(VersionUpdateVO::class.java.simpleName, it)
                 activity?.startService(intent)
             }

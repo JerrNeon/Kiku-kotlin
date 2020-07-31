@@ -3,12 +3,9 @@ package com.jn.kikukt.activity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.PagerAdapter
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import com.jn.kikukt.R
 import com.jn.kikukt.adapter.BaseFragmentPagerAdapter
 import com.jn.kikukt.common.api.ITabLayoutView
-import com.jn.kikukt.common.utils.getScreenWidth
 import kotlinx.android.synthetic.main.common_tab_layout_viewpager.*
 
 /**
@@ -38,14 +35,14 @@ abstract class RootTabActivity2 : RootTbActivity(), ITabLayoutView {
             //indicator color
             setSelectedTabIndicatorColor(
                 ContextCompat.getColor(
-                    mContext,
+                    applicationContext,
                     tabIndicatorColorId
                 )
             )
             //text color
             setTabTextColors(
-                ContextCompat.getColor(mContext, tabNormalTextColorId),
-                ContextCompat.getColor(mContext, tabSelectedTextColorId)
+                ContextCompat.getColor(applicationContext, tabNormalTextColorId),
+                ContextCompat.getColor(applicationContext, tabSelectedTextColorId)
             )
             //TabIndicatorFullWidth
             isTabIndicatorFullWidth = this@RootTabActivity2.isTabIndicatorFullWidth

@@ -1,4 +1,4 @@
-package com.jn.kikukt.net.retrofit.observer
+package com.jn.kikukt.net.rxjava.observer
 
 import android.content.Context
 import androidx.annotation.IntDef

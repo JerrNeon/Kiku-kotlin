@@ -5,10 +5,7 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import com.jn.kikukt.R
 import com.jn.kikukt.annonation.*
-import com.jn.kikukt.common.api.IMvpView
 import com.jn.kikukt.common.api.IRefreshView
-import com.jn.kikukt.mvp.IBPresenter
-import com.jn.kikukt.mvp.IBView
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -69,7 +66,7 @@ abstract class RootRefreshFragment : RootFragment(), IRefreshView {
     }
 
     override fun initRefreshView() {
-        mView?.run {
+        view?.run {
             mSmartRefreshLayout = srl_root
             mClassicsHeader = srlH_root
             mClassicsFooter = srlF_root
@@ -77,7 +74,7 @@ abstract class RootRefreshFragment : RootFragment(), IRefreshView {
         }
         if (layoutItemResourceId != 0) {
             mFlRootContainer?.addView(
-                LayoutInflater.from(mContext).inflate(layoutItemResourceId, null, false),
+                LayoutInflater.from(context).inflate(layoutItemResourceId, null, false),
                 FrameLayout.LayoutParams(
                     FrameLayout.LayoutParams.MATCH_PARENT,
                     FrameLayout.LayoutParams.MATCH_PARENT
@@ -108,25 +105,6 @@ abstract class RootRefreshFragment : RootFragment(), IRefreshView {
             setEnableAutoLoadMore(true)//SmartRefreshLayout Api
             setEnableScrollContentWhenLoaded(true)//SmartRefreshLayout Api
             setEnableFooterFollowWhenNoMoreData(true)//SmartRefreshLayout Api
-        }
-    }
-}
-
-abstract class RootRefreshPresenterFragment<P : IBPresenter> : RootRefreshFragment(),
-    IMvpView<P> {
-
-    override var mPresenter: P? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        initPresenter()
-    }
-
-    override fun initPresenter() {
-        super.initPresenter()
-        mPresenter?.let {
-            it.attachView(this as? IBView)
-            lifecycle.addObserver(it)
         }
     }
 }

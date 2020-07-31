@@ -2,9 +2,8 @@ package com.jn.kikukt.mvp
 
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import com.jn.kikukt.common.api.IDisposableView
 import com.jn.kikukt.common.utils.Clazz
-import com.jn.kikukt.net.retrofit.observer.RxBaseObserver
+import com.jn.kikukt.net.rxjava.observer.RxBaseObserver
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 
@@ -27,7 +26,6 @@ interface IBPresenter : IDisposableView, DefaultLifecycleObserver {
 }
 
 open class BaseModel : IBModel
-
 abstract class BasePresenter<V : IBView, M : IBModel> : IBPresenter {
 
     protected lateinit var mView: V
@@ -54,4 +52,23 @@ abstract class RxBasePresenterObserver<T, V>(
         super.onSubscribe(d)
         iBPresenter.addDisposable(d)
     }
+}
+
+interface IDisposableView {
+
+    var mCompositeDisposable: CompositeDisposable?
+
+    fun addDisposable(disposable: Disposable) {
+        if (mCompositeDisposable == null)
+            mCompositeDisposable = CompositeDisposable()
+        mCompositeDisposable?.add(disposable)
+    }
+
+    fun dispose() {
+        mCompositeDisposable?.let {
+            if (!it.isDisposed)
+                it.dispose()
+        }
+    }
+
 }

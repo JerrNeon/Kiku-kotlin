@@ -1,6 +1,5 @@
 package com.jn.kikukt.dialog
 
-import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -8,7 +7,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.jn.kikukt.common.api.IBaseView
@@ -17,15 +15,12 @@ import com.jn.kikukt.common.api.IBaseView
  * Author：Stevie.Chen Time：2019/7/15
  * Class Comment：
  */
-abstract class RootBottomSheetDialogFragment : BottomSheetDialogFragment(),
-    DialogInterface.OnKeyListener, IBaseView, View.OnClickListener {
+abstract class RootBottomSheetDialogFragment : BottomSheetDialogFragment(), IBaseView,
+    DialogInterface.OnKeyListener {
 
     override lateinit var mAppCompatActivity: AppCompatActivity
-    override lateinit var mContext: Context
     override var mProgressDialog: ProgressDialogFragment? = null
-    protected lateinit var mFragment: Fragment
     protected var mWindow: Window? = null
-    protected var mView: View? = null
 
     @CallSuper
     override fun onStart() {
@@ -56,13 +51,12 @@ abstract class RootBottomSheetDialogFragment : BottomSheetDialogFragment(),
             if (animationStyle != 0)
                 window?.attributes?.windowAnimations = animationStyle
         }
-        mView = inflater.inflate(layoutResourceId, container, false)
+        val view = inflater.inflate(layoutResourceId, container, false)
         if (activity is AppCompatActivity)
             mAppCompatActivity = activity as AppCompatActivity
-        mFragment = this
         initView()
         initData()
-        return mView
+        return view
     }
 
     override fun onKey(
@@ -83,6 +77,7 @@ abstract class RootBottomSheetDialogFragment : BottomSheetDialogFragment(),
     }
 
     abstract val layoutResourceId: Int//布局资源
+
     //动画
     open val animationStyle: Int
         get() = 0
@@ -91,18 +86,12 @@ abstract class RootBottomSheetDialogFragment : BottomSheetDialogFragment(),
 
     //对话框是否正在显示
     val isShowing: Boolean
-        get() {
-            return if (dialog != null) dialog?.isShowing ?: false else false
-        }
+        get() = if (dialog != null) dialog?.isShowing ?: false else false
 
     /**
      * 点击物理按键让对话框不消失
      */
     fun setCanceledOnBackPress() {
         dialog?.setOnKeyListener(this)
-    }
-
-    override fun onClick(view: View) {
-
     }
 }

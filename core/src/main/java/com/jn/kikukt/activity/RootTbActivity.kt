@@ -10,9 +10,6 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.IntDef
 import com.jn.kikukt.R
-import com.jn.kikukt.common.api.IMvpView
-import com.jn.kikukt.mvp.IBPresenter
-import com.jn.kikukt.mvp.IBView
 import com.jn.kikukt.utils.setStatusBar
 
 /**
@@ -239,24 +236,5 @@ abstract class RootTbActivity : RootActivity(), View.OnClickListener {
      */
     open fun onClickTitleBar(@TitleBarType titleBarType: Int) {
 
-    }
-}
-
-abstract class RootTbPresenterActivity<P : IBPresenter> : RootTbActivity(),
-    IMvpView<P> {
-
-    override var mPresenter: P? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        initPresenter()
-    }
-
-    override fun initPresenter() {
-        super.initPresenter()
-        mPresenter?.let {
-            it.attachView(this as? IBView)
-            lifecycle.addObserver(it)
-        }
     }
 }

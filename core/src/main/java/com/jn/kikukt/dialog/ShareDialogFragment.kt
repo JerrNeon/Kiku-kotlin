@@ -19,7 +19,7 @@ import com.jn.kikukt.utils.glide.requestManager
  * Author：Stevie.Chen Time：2019/7/15
  * Class Comment：
  */
-class ShareDialogFragment : RootDialogFragment(), OnItemClickListener {
+class ShareDialogFragment : RootDialogFragment(), OnItemClickListener, View.OnClickListener {
 
     private var mRecyclerView: RecyclerView? = null
     private var mTvCancel: TextView? = null
@@ -43,11 +43,11 @@ class ShareDialogFragment : RootDialogFragment(), OnItemClickListener {
     override val isCanceledOnTouchOutsideEnable: Boolean = true
 
     override val layoutParams: WindowManager.LayoutParams? = mWindow?.attributes?.apply {
-        width = (mContext.getScreenWidth() * 0.94).toInt()//宽度
+        width = (requireContext().getScreenWidth() * 0.94).toInt()//宽度
     }
 
     override fun initView() {
-        mView?.run {
+        view?.run {
             mRecyclerView = findViewById(R.id.rv_share)
             mTvCancel = findViewById(R.id.tv_shareCancel)
         }
@@ -69,7 +69,7 @@ class ShareDialogFragment : RootDialogFragment(), OnItemClickListener {
             setOnItemClickListener(this@ShareDialogFragment)
         }
         mRecyclerView?.run {
-            layoutManager = GridLayoutManager(mContext, 4)
+            layoutManager = GridLayoutManager(requireContext(), 4)
             this.adapter = adapter
         }
     }
@@ -96,7 +96,6 @@ class ShareDialogFragment : RootDialogFragment(), OnItemClickListener {
     }
 
     override fun onClick(view: View) {
-        super.onClick(view)
         if (view.id == R.id.tv_shareCancel) {
             this.dismiss()
         }

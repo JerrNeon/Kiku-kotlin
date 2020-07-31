@@ -1,28 +1,21 @@
-package com.jn.examplekotlin.request
+package com.jn.examplekotlin.request.coroutines
 
 import com.jn.examplekotlin.entiy.HttpResult
 import com.jn.examplekotlin.entiy.NewsVO
-import io.reactivex.rxjava3.core.Observable
+import com.jn.examplekotlin.request.ApiConfig
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
 /**
- * Author：Stevie.Chen Time：2019/9/12
+ * Author：Stevie.Chen Time：2020/7/31
  * Class Comment：
  */
 interface Api {
 
     @FormUrlEncoded
     @POST(ApiConfig.GET_NEW_LIST)
-    fun getNewList(
-        @Field("page") pageIndex: Int, @Field("count") pageSize: Int, @Field("type")
-        type: String
-    ): Observable<HttpResult<List<NewsVO>>>
-
-    @FormUrlEncoded
-    @POST(ApiConfig.GET_NEW_LIST)
-    suspend fun getNewList2(
+    suspend fun getNewList(
         @Field("page") pageIndex: Int, @Field("count") pageSize: Int, @Field("type")
         type: String
     ): HttpResult<List<NewsVO>>

@@ -8,8 +8,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.jn.kikukt.R
 import com.jn.kikukt.adapter.BaseFragmentStateAdapter
 import com.jn.kikukt.common.api.ITabLayoutView
-import kotlinx.android.synthetic.main.common_tab_layout_viewpager2.tabLayout_RootTab
-import kotlinx.android.synthetic.main.common_tab_layout_viewpager2.viewpager_RootTab
+import kotlinx.android.synthetic.main.common_tab_layout_viewpager2.*
 
 /**
  * Author：Stevie.Chen Time：2020/7/15
@@ -38,14 +37,14 @@ abstract class RootTabActivity : RootTbActivity(), ITabLayoutView,
             //indicator color
             setSelectedTabIndicatorColor(
                 ContextCompat.getColor(
-                    mContext,
+                    applicationContext,
                     tabIndicatorColorId
                 )
             )
             //text color
             setTabTextColors(
-                ContextCompat.getColor(mContext, tabNormalTextColorId),
-                ContextCompat.getColor(mContext, tabSelectedTextColorId)
+                ContextCompat.getColor(applicationContext, tabNormalTextColorId),
+                ContextCompat.getColor(applicationContext, tabSelectedTextColorId)
             )
             //TabIndicatorFullWidth
             isTabIndicatorFullWidth = this@RootTabActivity.isTabIndicatorFullWidth

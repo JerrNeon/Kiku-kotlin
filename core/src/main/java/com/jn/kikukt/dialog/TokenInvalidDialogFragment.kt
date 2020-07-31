@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.dialog_tokeninvalid.view.*
  * Author：Stevie.Chen Time：2019/7/15
  * Class Comment：Token失效或被顶号对话框
  */
-open class TokenInvalidDialogFragment : RootDialogFragment() {
+open class TokenInvalidDialogFragment : RootDialogFragment(), View.OnClickListener {
 
     companion object {
         fun newInstance(): TokenInvalidDialogFragment = TokenInvalidDialogFragment()
@@ -22,16 +22,15 @@ open class TokenInvalidDialogFragment : RootDialogFragment() {
 
     override val layoutParams: WindowManager.LayoutParams? = mWindow?.attributes?.apply {
         gravity = Gravity.CENTER//居中显示
-        width = (mContext.getScreenWidth() * 0.7).toInt()//宽度为全屏的70%
+        width = (requireContext().getScreenWidth() * 0.7).toInt()//宽度为全屏的70%
     }
 
     override fun initView() {
         super.initView()
-        mView?.tv_commit?.setOnClickListener(this)
+        view?.tv_commit?.setOnClickListener(this)
     }
 
     override fun onClick(view: View) {
-        super.onClick(view)
         if (view.id == R.id.tv_commit) {
             openLoginActivity()
             this.dismiss()

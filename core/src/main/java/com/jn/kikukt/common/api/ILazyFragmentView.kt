@@ -1,16 +1,10 @@
 package com.jn.kikukt.common.api
 
-import androidx.fragment.app.Fragment
-import android.view.View
-
 /**
  * Author：Stevie.Chen Time：2019/7/11
  * Class Comment：Fragment懒加载
  */
 interface ILazyFragmentView {
-
-    var mFragment: Fragment
-    var mView: View?
 
     /**
      * 标志位，标志已经初始化完成，因为setUserVisibleHint是在onCreateView之前调用的，

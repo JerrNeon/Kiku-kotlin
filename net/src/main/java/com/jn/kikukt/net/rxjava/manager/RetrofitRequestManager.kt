@@ -1,4 +1,4 @@
-package com.jn.kikukt.net.retrofit.manager
+package com.jn.kikukt.net.rxjava.manager
 
 import android.os.Build
 import android.util.Log
@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit
  * Author：Stevie.Chen Time：2019/7/15
  * Class Comment：Retrofit请求
  */
-open class RetrofitRequestManager(val base_url: String) : IRetrofitManage {
+open class RetrofitRequestManager(private val base_url: String) : IRetrofitManage {
 
     private val TAG = Retrofit::class.java.simpleName
 

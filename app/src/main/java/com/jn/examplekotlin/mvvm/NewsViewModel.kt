@@ -2,7 +2,7 @@ package com.jn.examplekotlin.mvvm
 
 import android.app.Application
 import com.jn.examplekotlin.entiy.NewsVO
-import com.jn.examplekotlin.request.ApiViewModel
+import com.jn.examplekotlin.request.coroutines.ApiViewModel
 
 /**
  * Author：Stevie.Chen Time：2020/1/15

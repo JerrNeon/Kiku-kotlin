@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.dialog_mapchoice.view.*
  * Author：Stevie.Chen Time：2019/7/15
  * Class Comment：地图选择对话框
  */
-class MapChoiceDialogFragment : RootDialogFragment() {
+class MapChoiceDialogFragment : RootDialogFragment(), View.OnClickListener {
 
     companion object {
         private const val ROUTE_ORIGINLATITUDE = "originLatitude"
@@ -43,7 +43,7 @@ class MapChoiceDialogFragment : RootDialogFragment() {
 
     override fun initView() {
         super.initView()
-        mView?.run {
+        view?.run {
             tv_google.setOnClickListener(this@MapChoiceDialogFragment)
             tv_baiduMap.setOnClickListener(this@MapChoiceDialogFragment)
             tv_autoNavi.setOnClickListener(this@MapChoiceDialogFragment)
@@ -64,7 +64,6 @@ class MapChoiceDialogFragment : RootDialogFragment() {
     }
 
     override fun onClick(view: View) {
-        super.onClick(view)
         when (view.id) {
             R.id.tv_google -> {//Google
                 MapUtils.openGoogleMap(

@@ -12,13 +12,15 @@ import com.jn.kikukt.common.utils.file.FileIOUtils
 import com.jn.kikukt.common.utils.file.FileUtils
 import com.jn.kikukt.common.utils.getInstallIntent
 import com.jn.kikukt.entiy.VersionUpdateVO
-import com.jn.kikukt.net.RetrofitManage
+import com.jn.kikukt.net.coroutines.RetrofitManager
 import com.jn.kikukt.net.retrofit.callback.ProgressListener
+import com.jn.kikukt.net.rxjava.RetrofitManage
 import com.jn.kikukt.receiver.VersionUpdateReceiver
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.*
 import java.io.File
 
 /**
@@ -35,6 +37,8 @@ class VersionUpdateService : Service() {
 
     @RequiresApi(Build.VERSION_CODES.N)
     private val importance = NotificationManager.IMPORTANCE_LOW
+
+    private val scope = MainScope()
 
     override fun onBind(intent: Intent): IBinder? {
         return null
@@ -75,8 +79,21 @@ class VersionUpdateService : Service() {
 
         //下载
         val downLoadFileName = versionUpdateVO.appName
+        val downLoadUrl = versionUpdateVO.downLoadUrl ?: ""
+        //RxJava + Retrofit下载
+        //downloadByRxJava(manager, builder, downLoadUrl, downLoadFileName)
+        //Coroutines + Retrofit下载
+        downloadByCoroutines(manager, builder, downLoadUrl, downLoadFileName)
+    }
+
+    private fun downloadByRxJava(
+        manager: NotificationManager,
+        builder: NotificationCompat.Builder,
+        downLoadUrl: String,
+        downLoadFileName: String?
+    ) {
         RetrofitManage.getDownloadObservable(
-            versionUpdateVO.downLoadUrl ?: "", object : ProgressListener {
+            downLoadUrl, object : ProgressListener {
                 override fun onProgress(
                     progressBytes: Long,
                     totalBytes: Long,
@@ -89,7 +106,7 @@ class VersionUpdateService : Service() {
                         mCurrentProgress = progress2
                         builder.setContentText(
                             String.format(
-                                resources.getString(R.string.versionUpdate_downloadProgress),
+                                getString(R.string.versionUpdate_downloadProgress),
                                 progress2.toInt()
                             )
                         )
@@ -119,7 +136,7 @@ class VersionUpdateService : Service() {
                 override fun onSubscribe(d: Disposable) {
                     builder.setContentText(
                         String.format(
-                            resources.getString(R.string.versionUpdate_downloadProgress),
+                            getString(R.string.versionUpdate_downloadProgress),
                             0
                         )
                     )
@@ -139,14 +156,14 @@ class VersionUpdateService : Service() {
                     builder.run {
                         setContentIntent(pendingIntent)
                         setAutoCancel(true)//设置点击后消失
-                        setContentText(resources.getString(R.string.versionUpdate_downloadComplete))
+                        setContentText(getString(R.string.versionUpdate_downloadComplete))
                         setProgress(100, 100, false)
                     }
                     manager.notify(0, builder.build())
                     val broadcastIntent = Intent(VersionUpdateReceiver.VERSION_UPDATE_ACTION)
                     broadcastIntent.putExtra(
                         VersionUpdateReceiver.VERSION_UPDATE_ACTION,
-                        resources.getString(R.string.versionUpdate_downloadComplete)
+                        getString(R.string.versionUpdate_downloadComplete)
                     )
                     sendBroadcast(broadcastIntent)
                     startActivity(intent)
@@ -156,19 +173,111 @@ class VersionUpdateService : Service() {
                 override fun onError(e: Throwable) {
                     e.printStackTrace()
                     mCurrentProgress = 0f
-                    builder.setContentText(resources.getString(R.string.versionUpdate_downloadFailure))
+                    builder.setContentText(getString(R.string.versionUpdate_downloadFailure))
                     manager.notify(0, builder.build())
                     val broadcastIntent = Intent(VersionUpdateReceiver.VERSION_UPDATE_ACTION)
                     broadcastIntent.putExtra(
                         VersionUpdateReceiver.VERSION_UPDATE_ACTION,
-                        resources.getString(R.string.versionUpdate_downloadFailure)
+                        getString(R.string.versionUpdate_downloadFailure)
                     )
                     sendBroadcast(broadcastIntent)
                 }
 
                 override fun onComplete() {
-
                 }
             })
+    }
+
+    private fun downloadByCoroutines(
+        manager: NotificationManager,
+        builder: NotificationCompat.Builder,
+        downLoadUrl: String,
+        downLoadFileName: String?
+    ) {
+        scope.launch {
+            try {
+                //设置下载开始通知栏进度
+                builder.setContentText(
+                    String.format(
+                        getString(R.string.versionUpdate_downloadProgress),
+                        0
+                    )
+                )
+                mCurrentProgress = 0f
+                mNotification = builder.build()
+                manager.notify(0, mNotification)
+                //开始下载
+                val filePathDeferred = async(Dispatchers.IO) {
+                    val responseBody =
+                        RetrofitManager.download(downLoadUrl) { _, _, progressPercent, _ ->
+                            //计算每百分之5刷新一下通知栏
+                            val progress2 = progressPercent * 100
+                            if (progress2 - mCurrentProgress > 5) {
+                                mCurrentProgress = progress2
+                                builder.setContentText(
+                                    String.format(
+                                        getString(R.string.versionUpdate_downloadProgress),
+                                        progress2.toInt()
+                                    )
+                                )
+                                builder.setProgress(100, progress2.toInt(), false)
+                                manager.notify(0, builder.build())
+                            }
+                        }
+                    //下载完成(保存文件到手机)
+                    var fileSuffix = ""
+                    responseBody.contentType()?.run {
+                        val mimeType = type + File.separator + subtype
+                        fileSuffix = FileUtils.getFileSuffix(mimeType)//文件后缀名
+                    }
+                    val filePath =
+                        FileUtils.getFileCacheFile().absolutePath + File.separator + downLoadFileName + "." + fileSuffix
+                    FileIOUtils.writeFileFromIS(filePath, responseBody.byteStream())
+                    filePath
+                }
+                val filePath = filePathDeferred.await()
+                //设置点击通知栏进行Apk的安装
+                val intent = this@VersionUpdateService.getInstallIntent(filePath)
+                val pendingIntent = PendingIntent.getActivity(
+                    this@VersionUpdateService,
+                    0,
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                )
+                builder.run {
+                    setContentIntent(pendingIntent)
+                    setAutoCancel(true)//设置点击后消失
+                    setContentText(getString(R.string.versionUpdate_downloadComplete))
+                    setProgress(100, 100, false)
+                }
+                manager.notify(0, builder.build())
+                //发送下载完成的广播
+                val broadcastIntent = Intent(VersionUpdateReceiver.VERSION_UPDATE_ACTION)
+                broadcastIntent.putExtra(
+                    VersionUpdateReceiver.VERSION_UPDATE_ACTION,
+                    getString(R.string.versionUpdate_downloadComplete)
+                )
+                sendBroadcast(broadcastIntent)
+                startActivity(intent)
+                stopSelf()
+            } catch (e: Throwable) {
+                //下载失败
+                e.printStackTrace()
+                mCurrentProgress = 0f
+                builder.setContentText(getString(R.string.versionUpdate_downloadFailure))
+                manager.notify(0, builder.build())
+                val broadcastIntent = Intent(VersionUpdateReceiver.VERSION_UPDATE_ACTION)
+                broadcastIntent.putExtra(
+                    VersionUpdateReceiver.VERSION_UPDATE_ACTION,
+                    resources.getString(R.string.versionUpdate_downloadFailure)
+                )
+                sendBroadcast(broadcastIntent)
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        scope.cancel()
+        super.onDestroy()
     }
 }

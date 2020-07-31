@@ -14,12 +14,9 @@ import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnItemLongClickListener
 import com.jn.kikukt.R
 import com.jn.kikukt.annonation.*
-import com.jn.kikukt.common.api.IMvpView
 import com.jn.kikukt.common.api.IRvView
 import com.jn.kikukt.common.utils.cast
 import com.jn.kikukt.common.utils.isConnected
-import com.jn.kikukt.mvp.IBPresenter
-import com.jn.kikukt.mvp.IBView
 import com.jn.kikukt.net.coroutines.Failure
 import com.jn.kikukt.net.coroutines.HttpResponse
 import com.jn.kikukt.net.coroutines.Success
@@ -93,7 +90,7 @@ abstract class RootRvActivity<T> : RootRefreshActivity(), IRvView<T> {
             adapter = mAdapter
         }
 
-        mEmptyView = LayoutInflater.from(mContext)
+        mEmptyView = LayoutInflater.from(this)
             .inflate(R.layout.common_loadingfailure, mFlRootContainer, false)
         mEmptyView.run {
             mIvLoadingFailure = findViewById(R.id.iv_commonLoadingFailure)
@@ -101,7 +98,7 @@ abstract class RootRvActivity<T> : RootRefreshActivity(), IRvView<T> {
             setOnClickListener { view -> onClickLoadFailure(view) }
         }
         mAdapter.run {
-            recyclerView = mRecyclerView
+            recyclerView = this@RootRvActivity.mRecyclerView
             setEmptyView(mEmptyView)//set empty or failure view
             isUseEmpty = false//don t show empty or failure view first
             setOnItemClickListener(this@RootRvActivity as? OnItemClickListener)
@@ -185,24 +182,5 @@ abstract class RootRvActivity<T> : RootRefreshActivity(), IRvView<T> {
         mRefreshOperateType = ON_RELOAD
         mPageIndex = mInitPageIndex
         onRequest()
-    }
-}
-
-abstract class RootRvPresenterActivity<P : IBPresenter, T> : RootRvActivity<T>(),
-    IMvpView<P> {
-
-    override var mPresenter: P? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        initPresenter()
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun initPresenter() {
-        super.initPresenter()
-        mPresenter?.let {
-            it.attachView(this as? IBView)
-            lifecycle.addObserver(it)
-        }
     }
 }

@@ -1,4 +1,4 @@
-package com.jn.kikukt.net.retrofit.observer
+package com.jn.kikukt.net.rxjava.observer
 
 import android.app.Activity
 import android.content.Context

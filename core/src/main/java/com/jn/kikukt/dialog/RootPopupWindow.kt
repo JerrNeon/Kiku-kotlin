@@ -11,7 +11,7 @@ import com.jn.kikukt.common.utils.getScreenWidth
  * Author：Stevie.Chen Time：2019/7/15
  * Class Comment：
  */
-abstract class RootPopupWindow : View.OnClickListener {
+abstract class RootPopupWindow {
 
     protected var mActivity: Activity? = null
     protected var mFragment: Fragment? = null
@@ -69,15 +69,8 @@ abstract class RootPopupWindow : View.OnClickListener {
     }
 
     open fun initData() {
-
     }
 
     open fun setListener() {
-
     }
-
-    override fun onClick(view: View) {
-
-    }
-
 }

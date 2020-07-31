@@ -1,4 +1,4 @@
-package com.jn.kikukt.net.coroutines
+package com.jn.kikukt.net.coroutines.manager
 
 import android.os.Build
 import android.util.Log

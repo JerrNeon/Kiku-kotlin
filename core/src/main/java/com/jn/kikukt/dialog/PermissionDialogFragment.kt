@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.dialog_permission.view.*
  * Author：Stevie.Chen Time：2019/7/15
  * Class Comment：
  */
-class PermissionDialogFragment : RootDialogFragment() {
+class PermissionDialogFragment : RootDialogFragment(), View.OnClickListener {
 
     companion object {
         private const val APP_NAME = "appName"
@@ -35,11 +35,11 @@ class PermissionDialogFragment : RootDialogFragment() {
 
     override val layoutParams: WindowManager.LayoutParams? = mWindow?.attributes?.apply {
         gravity = Gravity.CENTER//中间显示
-        width = (mContext.getScreenWidth() * 0.9).toInt()//宽度为屏幕90%
+        width = (requireContext().getScreenWidth() * 0.9).toInt()//宽度为屏幕90%
     }
 
     override fun initView() {
-        mView?.run {
+        view?.run {
             tv_permissionCancel.setOnClickListener(this@PermissionDialogFragment)
             tv_permissionSubmit.setOnClickListener(this@PermissionDialogFragment)
         }
@@ -49,7 +49,7 @@ class PermissionDialogFragment : RootDialogFragment() {
         val bundle = arguments
         val appName = bundle?.getString(APP_NAME, "")
         val permissionName = bundle?.getString(PERMISSION_NAME, "")
-        mView?.run {
+        view?.run {
             tv_permissionMessage.text =
                 String.format(
                     resources.getString(R.string.permission_content),
@@ -65,7 +65,7 @@ class PermissionDialogFragment : RootDialogFragment() {
             this.dismiss()
         } else if (view.id == R.id.tv_permissionSubmit) {
             this.dismiss()
-            mContext.openApplicationSetting()
+            requireContext().openApplicationSetting()
         }
     }
 }

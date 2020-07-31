@@ -1,6 +1,7 @@
-package com.jn.examplekotlin.request
+package com.jn.examplekotlin.request.rxjava
 
 import com.jn.examplekotlin.entiy.HttpResult
+import com.jn.examplekotlin.request.ApiStatus
 import com.jn.kikukt.mvp.IBPresenter
 import com.jn.kikukt.mvp.RxBasePresenterObserver
 import com.jn.kikukt.net.retrofit.exception.OkHttpException

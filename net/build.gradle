@@ -52,9 +52,9 @@ dependencies {
     implementation project(':common')
     api dep["retrofit"]
     api dep["retrofit-converter-gson"]
-    api dep["retrofit-adapter-rxjava"]
     api dep["okhttp3"]
     api dep["okhttp3-logging-interceptor"]
+    api dep["retrofit-adapter-rxjava"]
     api dep["rxjava"]
     api dep["rxandroid"]
     api depKt["activity-ktx"]

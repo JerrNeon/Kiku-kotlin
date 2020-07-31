@@ -1,4 +1,4 @@
-package com.jn.kikukt.net.retrofit.manager
+package com.jn.kikukt.net.rxjava.manager
 
 import com.jn.kikukt.net.retrofit.body.DownloadResponseBody
 import com.jn.kikukt.net.retrofit.callback.ProgressListener

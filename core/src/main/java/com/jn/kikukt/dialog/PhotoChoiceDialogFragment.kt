@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.dialog_photochoicedialog.view.*
  * Author：Stevie.Chen Time：2019/7/15
  * Class Comment：
  */
-class PhotoChoiceDialogFragment : RootDialogFragment() {
+class PhotoChoiceDialogFragment : RootDialogFragment(), View.OnClickListener {
 
     private var mTakePhotoOnClickListener: View.OnClickListener? = null
     private var mAlbumOnClickListener: View.OnClickListener? = null
@@ -26,7 +26,7 @@ class PhotoChoiceDialogFragment : RootDialogFragment() {
 
     override fun initView() {
         super.initView()
-        mView?.run {
+        view?.run {
             tv_takePhoto.setOnClickListener(this@PhotoChoiceDialogFragment)
             tv_album.setOnClickListener(this@PhotoChoiceDialogFragment)
             tv_cancel.setOnClickListener(this@PhotoChoiceDialogFragment)
@@ -44,7 +44,6 @@ class PhotoChoiceDialogFragment : RootDialogFragment() {
     }
 
     override fun onClick(view: View) {
-        super.onClick(view)
         when (view.id) {
             R.id.tv_takePhoto -> {
                 mTakePhotoOnClickListener?.onClick(view)

@@ -1,4 +1,4 @@
-package com.jn.examplekotlin.request
+package com.jn.examplekotlin.request.rxjava
 
 import androidx.lifecycle.Observer
 import com.jn.kikukt.common.api.IBaseView
