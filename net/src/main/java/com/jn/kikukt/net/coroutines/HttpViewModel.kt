@@ -1,14 +1,9 @@
-package com.jn.examplekotlin.request.coroutines
+package com.jn.kikukt.net.coroutines
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.jn.examplekotlin.entiy.HttpResult
-import com.jn.examplekotlin.request.ApiStatus
-import com.jn.kikukt.common.utils.Clazz
 import com.jn.kikukt.common.utils.log
 import com.jn.kikukt.common.utils.showToast
-import com.jn.kikukt.mvvm.BaseViewModel
-import com.jn.kikukt.net.coroutines.*
 import com.jn.kikukt.net.retrofit.exception.OkHttpErrorHelper
 import com.jn.kikukt.net.retrofit.exception.OkHttpException
 import kotlinx.coroutines.CancellationException
@@ -18,42 +13,51 @@ import kotlinx.coroutines.CoroutineScope
  * Author：Stevie.Chen Time：2020/1/15
  * Class Comment：
  */
-open class ApiViewModel<T>(application: Application) : BaseViewModel(application) {
+open class HttpViewModel(application: Application) : CoroutineViewModel(application) {
 
-    val repository: T by lazy { Clazz.getClass<T>(this).newInstance() }
+    open val liveData by lazy { MutableLiveData<HttpResponse>() }
 
-    override fun defaultCatchBlock(e: Throwable, isToastAll: Boolean, error: ((Failure) -> Unit)?) {
-        super.defaultCatchBlock(e, isToastAll, error)
+    open fun onFailure(
+        e: Throwable,
+        isToastAll: Boolean = true,
+        error: ((Failure) -> Unit)? = null
+    ) {
+        val showErrorMsg = {
+            val application = getApplication<Application>()
+            val errorMsg = OkHttpErrorHelper.getMessage(e, application)
+            if (errorMsg != null && errorMsg.isNotEmpty()) {
+                application.showToast(errorMsg)
+            }
+        }
         when (e) {
             is CancellationException -> {
                 e.log()
             }
+            is OkHttpException -> {
+                error?.invoke(Failure(e))
+                if (isToastAll) {
+                    showErrorMsg.invoke()
+                }
+            }
             else -> {
-                if (!isToastAll && (e is OkHttpException)) {
-                    return
-                }
-                val application = getApplication<Application>()
-                val errorMsg = OkHttpErrorHelper.getMessage(e, application)
-                if (errorMsg != null && errorMsg.isNotEmpty()) {
-                    application.showToast(errorMsg)
-                }
+                showErrorMsg.invoke()
             }
         }
     }
 
-    fun <R> HttpResult<R>.execute(
+    fun <R> BaseHttpResult<R>.execute(
         success: ((Success<R>) -> Unit)?,
         error: ((Failure) -> Unit)? = null
     ) {
         val result: HttpResponse
-        if (code.toString() != ApiStatus.CODE_200) {
-            OkHttpException(code.toString(), message ?: "").let {
+        if (rCode.toString() != HttpStatus.CODE_200) {
+            OkHttpException(rCode.toString(), rMessage ?: "").let {
                 result = Failure(it)
                 error?.invoke(result)
                 throw Throwable(it)
             }
         } else {
-            result = Success(this.result)
+            result = Success(this.rData)
             success?.invoke(result)
         }
     }
@@ -93,12 +97,15 @@ open class ApiViewModel<T>(application: Application) : BaseViewModel(application
             startBlock = block
         }
 
-        fun request(block: suspend CoroutineScope.() -> HttpResult<R>?) {
+        fun request(
+            isToastAll: Boolean = true,
+            block: suspend CoroutineScope.() -> BaseHttpResult<R>?
+        ) {
             startBlock?.invoke()
             launchOnMain(tryBlock = {
                 block()?.execute(successBlock)
             }, catchBlock = { e ->
-                defaultCatchBlock(e, error = {
+                onFailure(e, isToastAll, error = {
                     failureBlock?.invoke(it)
                 })
                 exceptionBlock?.invoke(e)

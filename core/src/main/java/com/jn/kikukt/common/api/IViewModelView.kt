@@ -1,6 +1,6 @@
 package com.jn.kikukt.common.api
 
-import com.jn.kikukt.mvvm.BaseViewModel
+import com.jn.kikukt.net.coroutines.HttpViewModel
 
 /**
  * Author：Stevie.Chen Time：2020/1/17
@@ -8,5 +8,5 @@ import com.jn.kikukt.mvvm.BaseViewModel
  */
 interface IViewModelView {
 
-    val viewModel: BaseViewModel?
+    val viewModel: HttpViewModel?
 }

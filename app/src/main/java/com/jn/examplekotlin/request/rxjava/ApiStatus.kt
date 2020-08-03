@@ -1,4 +1,4 @@
-package com.jn.examplekotlin.request
+package com.jn.examplekotlin.request.rxjava
 
 /**
  * Author：Stevie.Chen Time：2019/9/12

@@ -92,29 +92,28 @@ class VersionUpdateService : Service() {
         downLoadUrl: String,
         downLoadFileName: String?
     ) {
-        RetrofitManage.getDownloadObservable(
-            downLoadUrl, object : ProgressListener {
-                override fun onProgress(
-                    progressBytes: Long,
-                    totalBytes: Long,
-                    progressPercent: Float,
-                    done: Boolean
-                ) {
-                    //计算每百分之5刷新一下通知栏
-                    val progress2 = progressPercent * 100
-                    if (progress2 - mCurrentProgress > 5) {
-                        mCurrentProgress = progress2
-                        builder.setContentText(
-                            String.format(
-                                getString(R.string.versionUpdate_downloadProgress),
-                                progress2.toInt()
-                            )
+        RetrofitManage.download(downLoadUrl, object : ProgressListener {
+            override fun onProgress(
+                progressBytes: Long,
+                totalBytes: Long,
+                progressPercent: Float,
+                done: Boolean
+            ) {
+                //计算每百分之5刷新一下通知栏
+                val progress2 = progressPercent * 100
+                if (progress2 - mCurrentProgress > 5) {
+                    mCurrentProgress = progress2
+                    builder.setContentText(
+                        String.format(
+                            getString(R.string.versionUpdate_downloadProgress),
+                            progress2.toInt()
                         )
-                        builder.setProgress(100, progress2.toInt(), false)
-                        manager.notify(0, builder.build())
-                    }
+                    )
+                    builder.setProgress(100, progress2.toInt(), false)
+                    manager.notify(0, builder.build())
                 }
             }
+        }
         )
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.io())

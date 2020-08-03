@@ -2,13 +2,13 @@ package com.jn.examplekotlin.mvvm
 
 import android.app.Application
 import com.jn.examplekotlin.entiy.NewsVO
-import com.jn.examplekotlin.request.coroutines.ApiViewModel
+import com.jn.kikukt.mvvm.BaseViewModel
 
 /**
  * Author：Stevie.Chen Time：2020/1/15
  * Class Comment：
  */
-class NewsViewModel(application: Application) : ApiViewModel<NewsRepository>(application) {
+class NewsViewModel(application: Application) : BaseViewModel<NewsRepository>(application) {
 
     fun getNewsList(pageIndex: Int, pageSize: Int) {
         launch<List<NewsVO>>(block = {
@@ -50,7 +50,7 @@ class NewsViewModel(application: Application) : ApiViewModel<NewsRepository>(app
                 liveData.value = it
             })
         }, catchBlock = { e ->
-            defaultCatchBlock(e, error = {
+            onFailure(e, error = {
                 liveData.value = it
             })
         })

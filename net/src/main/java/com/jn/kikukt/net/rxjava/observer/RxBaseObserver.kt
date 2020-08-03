@@ -3,6 +3,7 @@ package com.jn.kikukt.net.rxjava.observer
 import android.content.Context
 import androidx.annotation.IntDef
 import com.jn.kikukt.common.utils.ContextUtils
+import com.jn.kikukt.common.utils.log
 import com.jn.kikukt.common.utils.showToast
 import com.jn.kikukt.net.retrofit.exception.OkHttpErrorHelper
 import io.reactivex.rxjava3.core.Observer
@@ -12,7 +13,7 @@ import io.reactivex.rxjava3.disposables.Disposable
  * Author：Stevie.Chen Time：2019/7/15
  * Class Comment：
  */
-abstract class RxBaseObserver<T, V>(@ErrorType val mErrorType: Int) : Observer<T> {
+abstract class RxBaseObserver<T, V>(@ErrorType val mErrorType: Int = EXCEPTION) : Observer<T> {
 
     val context: Context
         get() = ContextUtils.context
@@ -40,21 +41,17 @@ abstract class RxBaseObserver<T, V>(@ErrorType val mErrorType: Int) : Observer<T
 
     override fun onSubscribe(d: Disposable) {}
 
-    override fun onNext(tXaResult: T) {
-
-    }
+    override fun onNext(result: T) {}
 
     override fun onError(e: Throwable) {
-        e.printStackTrace()
+        e.log()
         var errorMsg = ""
         if (mErrorType != NONE)
             errorMsg = OkHttpErrorHelper.getMessage(e, context) ?: ""
         onFailure(e, errorMsg)
     }
 
-    override fun onComplete() {
-
-    }
+    override fun onComplete() {}
 
     /**
      * 请求成功
@@ -62,9 +59,7 @@ abstract class RxBaseObserver<T, V>(@ErrorType val mErrorType: Int) : Observer<T
      */
     abstract fun onSuccess(v: V)
 
-    fun onResponse(t: T) {
-
-    }
+    fun onResponse(t: T) {}
 
     /**
      * 请求失败

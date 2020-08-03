@@ -22,14 +22,14 @@ object RetrofitManage {
      * @param listener 进度监听器
      * @return
      */
-    fun getDownloadObservable(url: String, listener: ProgressListener?): Observable<ResponseBody> {
-        val retrofit = RetrofitDownloadManager(url.getDomain(), listener).createRetrofit()
-        val apiService = retrofit.create(RxJavaApiService::class.java)
+    fun download(url: String, listener: ProgressListener?): Observable<ResponseBody> {
+        val retrofit = RetrofitDownloadManager(listener)
+        val apiService = retrofit.create(RxJavaApiService::class.java, url.getDomain())
         return apiService.download(url)
     }
 
     /**
-     * 获取上传多张图片的Observable
+     * 获取上传文件的Observable
      *
      * @param url 上传地址
      * @param fileParams 文件参数
@@ -37,15 +37,15 @@ object RetrofitManage {
      * @param listener 进度监听器
      * @return
      */
-    fun getUploadObservable(
+    fun upload(
         url: String,
         fileParams: Map<String, File>,
         params: Map<String, String>? = null,
         listener: ProgressListener? = null
     ): Observable<ResponseBody> {
-        val retrofit = RetrofitUploadManager(url.getDomain(), listener).createRetrofit()
+        val retrofit = RetrofitUploadManager(listener)
         val requestBody = RetrofitBodyHelp.getFileUploadRequestBody(fileParams, params)
-        val apiService = retrofit.create(RxJavaApiService::class.java)
+        val apiService = retrofit.create(RxJavaApiService::class.java, url.getDomain())
         return apiService.upload(url, requestBody)
     }
 }

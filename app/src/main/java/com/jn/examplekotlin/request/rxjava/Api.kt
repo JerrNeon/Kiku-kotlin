@@ -1,6 +1,6 @@
 package com.jn.examplekotlin.request.rxjava
 
-import com.jn.examplekotlin.entiy.HttpResult
+import com.jn.examplekotlin.entiy.ApiResult
 import com.jn.examplekotlin.entiy.NewsVO
 import com.jn.examplekotlin.request.ApiConfig
 import io.reactivex.rxjava3.core.Observable
@@ -19,6 +19,6 @@ interface Api {
     fun getNewList(
         @Field("page") pageIndex: Int, @Field("count") pageSize: Int, @Field("type")
         type: String
-    ): Observable<HttpResult<List<NewsVO>>>
+    ): Observable<ApiResult<List<NewsVO>>>
 
 }

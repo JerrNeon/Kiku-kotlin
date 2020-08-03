@@ -1,4 +1,4 @@
-package com.jn.kikukt.net.coroutines.manager
+package com.jn.kikukt.net.rxjava.manager
 
 import android.os.Build
 import android.util.Log
@@ -10,6 +10,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.reflect.Modifier
 import java.util.concurrent.TimeUnit
@@ -18,7 +19,7 @@ import java.util.concurrent.TimeUnit
  * Author：Stevie.Chen Time：2020/1/15
  * Class Comment：
  */
-interface IBaseRetrofitManager {
+interface IRetrofitManager {
 
     val TAG: String
         get() = Retrofit::class.java.simpleName
@@ -40,6 +41,7 @@ interface IBaseRetrofitManager {
         get() = Retrofit.Builder()
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
 
     /**
      * Gson配置
@@ -75,8 +77,8 @@ interface IBaseRetrofitManager {
                 client.addInterceptor(it)
             }
             interceptors?.let {
-                interceptors!!.forEach {
-                    client.addInterceptor(it)
+                it.forEach { interceptor ->
+                    client.addInterceptor(interceptor)
                 }
             }
             return client

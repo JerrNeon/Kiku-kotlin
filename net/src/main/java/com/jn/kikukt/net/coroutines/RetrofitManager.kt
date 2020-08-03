@@ -1,10 +1,10 @@
 package com.jn.kikukt.net.coroutines
 
 import com.jn.kikukt.common.utils.getDomain
+import com.jn.kikukt.net.coroutines.manager.RetrofitDownloadManager
+import com.jn.kikukt.net.coroutines.manager.RetrofitUploadManager
 import com.jn.kikukt.net.retrofit.body.RetrofitBodyHelp
 import com.jn.kikukt.net.retrofit.callback.ProgressListener
-import com.jn.kikukt.net.rxjava.manager.RetrofitDownloadManager
-import com.jn.kikukt.net.rxjava.manager.RetrofitUploadManager
 import okhttp3.ResponseBody
 import java.io.File
 
@@ -25,7 +25,7 @@ object RetrofitManager {
         url: String,
         onProgress: ((progressBytes: Long, totalBytes: Long, progressPercent: Float, done: Boolean) -> Unit)? = null
     ): ResponseBody {
-        val retrofit = RetrofitDownloadManager(url.getDomain(), object : ProgressListener {
+        val manager = RetrofitDownloadManager(object : ProgressListener {
             override fun onProgress(
                 progressBytes: Long,
                 totalBytes: Long,
@@ -34,8 +34,8 @@ object RetrofitManager {
             ) {
                 onProgress?.invoke(progressBytes, totalBytes, progressPercent, done)
             }
-        }).createRetrofit()
-        val apiService = retrofit.create(CoroutinesApiService::class.java)
+        })
+        val apiService = manager.create(CoroutinesApiService::class.java, url.getDomain())
         return apiService.download(url)
     }
 
@@ -54,7 +54,7 @@ object RetrofitManager {
         params: Map<String, String>? = null,
         onProgress: ((progressBytes: Long, totalBytes: Long, progressPercent: Float, done: Boolean) -> Unit)? = null
     ): ResponseBody {
-        val retrofit = RetrofitUploadManager(url.getDomain(), object : ProgressListener {
+        val manager = RetrofitUploadManager(object : ProgressListener {
             override fun onProgress(
                 progressBytes: Long,
                 totalBytes: Long,
@@ -63,9 +63,9 @@ object RetrofitManager {
             ) {
                 onProgress?.invoke(progressBytes, totalBytes, progressPercent, done)
             }
-        }).createRetrofit()
+        })
         val requestBody = RetrofitBodyHelp.getFileUploadRequestBody(fileParams, params)
-        val apiService = retrofit.create(CoroutinesApiService::class.java)
+        val apiService = manager.create(CoroutinesApiService::class.java, url.getDomain())
         return apiService.upload(url, requestBody)
     }
 }

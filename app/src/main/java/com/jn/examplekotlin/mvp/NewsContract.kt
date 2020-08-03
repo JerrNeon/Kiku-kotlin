@@ -51,7 +51,7 @@ class NewsPresenter : BasePresenter<NewsContract.IView, NewsModel>(),
 class NewsModel : BaseModel(), NewsContract.IModel {
 
     override fun getNewList(pageIndex: Int, pageSize: Int, observer: RxObserver<List<NewsVO>>) {
-        ApiManager.instance.getApiService()
+        ApiManager.service
             .getNewList(pageIndex, pageSize, "video")
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

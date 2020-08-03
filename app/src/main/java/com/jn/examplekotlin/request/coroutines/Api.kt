@@ -1,6 +1,6 @@
 package com.jn.examplekotlin.request.coroutines
 
-import com.jn.examplekotlin.entiy.HttpResult
+import com.jn.examplekotlin.entiy.ApiResult
 import com.jn.examplekotlin.entiy.NewsVO
 import com.jn.examplekotlin.request.ApiConfig
 import retrofit2.http.Field
@@ -18,5 +18,5 @@ interface Api {
     suspend fun getNewList(
         @Field("page") pageIndex: Int, @Field("count") pageSize: Int, @Field("type")
         type: String
-    ): HttpResult<List<NewsVO>>
+    ): ApiResult<List<NewsVO>>
 }
