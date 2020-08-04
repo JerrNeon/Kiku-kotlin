@@ -41,6 +41,7 @@ open class HttpViewModel(application: Application) : CoroutineViewModel(applicat
                 }
             }
             else -> {
+                error?.invoke(Failure(OkHttpException(e)))
                 showErrorMsg.invoke()
             }
         }
@@ -55,7 +56,7 @@ open class HttpViewModel(application: Application) : CoroutineViewModel(applicat
             OkHttpException(rCode.toString(), rMessage ?: "").let {
                 result = Failure(it)
                 error?.invoke(result)
-                throw Throwable(it)
+                throw it
             }
         } else {
             result = Success(this.rData)
