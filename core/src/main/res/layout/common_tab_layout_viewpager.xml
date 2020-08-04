@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout_RootTab"
@@ -13,17 +13,17 @@
         app:tabIndicatorColor="@color/colorPrimary"
         app:tabMode="fixed"
         app:tabSelectedTextColor="@color/colorPrimary"
-        app:tabTextColor="@color/c_333333"/>
+        app:tabTextColor="@color/c_333333" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_0.5"
-        android:background="@color/c_EEEEEE"/>
+        android:background="@color/c_EEEEEE" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager_RootTab"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
 </LinearLayout>

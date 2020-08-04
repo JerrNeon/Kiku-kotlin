@@ -19,7 +19,7 @@
         android:background="@drawable/rectangle_whitebg_greyline_corner2"
         android:gravity="center"
         android:padding="@dimen/dp_14"
-        android:text="取消"
+        android:text="@string/image_cancel"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/sp_14" />
 

@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/c_FFFFFF"
-              android:orientation="vertical"
-              android:padding="@dimen/dp_14">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c_FFFFFF"
+    android:orientation="vertical"
+    android:padding="@dimen/dp_14">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/locationService_title"
         android:textSize="@dimen/sp_16"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tv_permissionMessage"
@@ -19,14 +20,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_10"
         android:text="@string/locationService_content"
-        android:textSize="@dimen/sp_14"
-        android:textColor="@color/c_333333"/>
+        android:textColor="@color/c_333333"
+        android:textSize="@dimen/sp_14" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:ignore="RtlHardcoded">
 
         <TextView
             android:id="@+id/tv_permissionCancel"
@@ -35,7 +37,7 @@
             android:padding="@dimen/dp_14"
             android:text="@string/permission_negative"
             android:textColor="@color/c_009788"
-            android:textSize="@dimen/sp_12"/>
+            android:textSize="@dimen/sp_12" />
 
         <TextView
             android:id="@+id/tv_permissionSubmit"
@@ -44,7 +46,7 @@
             android:padding="@dimen/dp_14"
             android:text="@string/permission_positive"
             android:textColor="@color/c_009788"
-            android:textSize="@dimen/sp_12"/>
+            android:textSize="@dimen/sp_12" />
     </LinearLayout>
 
 </LinearLayout>
