@@ -1,6 +1,6 @@
 package com.jn.examplekotlin.entiy
 
-import com.jn.kikukt.net.coroutines.BaseHttpResult
+import com.jn.kikukt.net.retrofit.BaseHttpResult
 import kotlinx.serialization.Serializable
 
 /**

@@ -16,7 +16,7 @@ import com.jn.kikukt.adapter.BaseRvAdapter
 import com.jn.kikukt.annonation.ERROR
 import com.jn.kikukt.annonation.LoadCompleteType
 import com.jn.kikukt.annonation.SUCCESS
-import com.jn.kikukt.net.coroutines.HttpResponse
+import com.jn.kikukt.net.retrofit.HttpResponse
 
 /**
  * Author：Stevie.Chen Time：2019/7/10

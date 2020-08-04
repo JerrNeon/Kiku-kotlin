@@ -17,9 +17,9 @@ import com.jn.kikukt.annonation.*
 import com.jn.kikukt.common.api.IRvView
 import com.jn.kikukt.common.utils.cast
 import com.jn.kikukt.common.utils.isConnected
-import com.jn.kikukt.net.coroutines.Failure
-import com.jn.kikukt.net.coroutines.HttpResponse
-import com.jn.kikukt.net.coroutines.Success
+import com.jn.kikukt.net.retrofit.Failure
+import com.jn.kikukt.net.retrofit.HttpResponse
+import com.jn.kikukt.net.retrofit.Success
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import kotlinx.android.synthetic.main.common_rv.*
 

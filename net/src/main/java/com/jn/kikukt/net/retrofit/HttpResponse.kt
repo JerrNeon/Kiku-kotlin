@@ -1,4 +1,4 @@
-package com.jn.kikukt.net.coroutines
+package com.jn.kikukt.net.retrofit
 
 import com.jn.kikukt.net.retrofit.exception.OkHttpException
 
