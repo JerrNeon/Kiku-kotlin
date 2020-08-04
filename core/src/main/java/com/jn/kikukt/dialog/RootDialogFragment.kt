@@ -53,7 +53,7 @@ abstract class RootDialogFragment : AppCompatDialogFragment(), IBaseView,
             if (animationStyle != 0)
                 window?.attributes?.windowAnimations = animationStyle
         }
-        val view = inflater.inflate(layoutResourceId, container, false)
+        val view = inflater.inflate(layoutResId, container, false)
         if (activity is AppCompatActivity)
             mAppCompatActivity = activity as AppCompatActivity
         initView()
@@ -78,7 +78,7 @@ abstract class RootDialogFragment : AppCompatDialogFragment(), IBaseView,
 
     }
 
-    abstract val layoutResourceId: Int//布局资源
+    abstract val layoutResId: Int//布局资源
 
     //动画
     open val animationStyle: Int

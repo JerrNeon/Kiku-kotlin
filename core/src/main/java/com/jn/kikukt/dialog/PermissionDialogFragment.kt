@@ -29,7 +29,7 @@ class PermissionDialogFragment : RootDialogFragment(), View.OnClickListener {
         }
     }
 
-    override val layoutResourceId: Int = R.layout.dialog_permission
+    override val layoutResId: Int = R.layout.dialog_permission
 
     override val isCanceledOnTouchOutsideEnable: Boolean = true
 

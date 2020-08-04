@@ -35,7 +35,7 @@ class VersionUpdateDialog : RootDialogFragment(), View.OnClickListener {
         }
     }
 
-    override val layoutResourceId: Int = R.layout.dialog_versionupdate
+    override val layoutResId: Int = R.layout.dialog_versionupdate
 
     override val layoutParams: WindowManager.LayoutParams? = mWindow?.attributes?.apply {
         gravity = Gravity.CENTER//居中显示

@@ -20,7 +20,7 @@ class PhotoChoiceDialogFragment : RootDialogFragment(), View.OnClickListener {
         }
     }
 
-    override val layoutResourceId: Int = R.layout.dialog_photochoicedialog
+    override val layoutResId: Int = R.layout.dialog_photochoicedialog
 
     override val animationStyle: Int = R.style.bottom_in_out
 

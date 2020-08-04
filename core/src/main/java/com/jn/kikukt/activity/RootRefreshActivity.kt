@@ -28,7 +28,7 @@ abstract class RootRefreshActivity : RootTbActivity(), IRefreshView {
     override var mClassicsFooter: ClassicsFooter? = null//load more layout
     override var mFlRootContainer: FrameLayout? = null//show content layout
 
-    override val layoutResourceId: Int = R.layout.common_refresh_layout
+    override val layoutResId: Int = R.layout.common_refresh_layout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,9 +68,9 @@ abstract class RootRefreshActivity : RootTbActivity(), IRefreshView {
         mClassicsHeader = srlH_root
         mClassicsFooter = srlF_root
         mFlRootContainer = fl_rootContainer
-        if (layoutItemResourceId != 0) {
+        if (layoutItemResId != 0) {
             mFlRootContainer?.addView(
-                LayoutInflater.from(this).inflate(layoutItemResourceId, null, false),
+                LayoutInflater.from(this).inflate(layoutItemResId, mSmartRefreshLayout, false),
                 FrameLayout.LayoutParams(
                     FrameLayout.LayoutParams.MATCH_PARENT,
                     FrameLayout.LayoutParams.MATCH_PARENT

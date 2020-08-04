@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.jn.kikukt.common.api.IBaseView
@@ -28,8 +27,7 @@ abstract class RootFragment : Fragment(), IBaseView, IViewModelView, IMvpView, I
     override var mIsFragmentViewCreated: Boolean = false
     override var mIsFragmentVisible: Boolean = false//标志当前页面是否可见
 
-    @LayoutRes
-    abstract fun getLayoutResourceId(): Int
+    abstract val layoutResId: Int
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +35,7 @@ abstract class RootFragment : Fragment(), IBaseView, IViewModelView, IMvpView, I
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        val view = inflater.inflate(getLayoutResourceId(), container, false)
+        val view = inflater.inflate(layoutResId, container, false)
         if (activity is AppCompatActivity)
             mAppCompatActivity = activity as AppCompatActivity
         return view

@@ -1,34 +1,25 @@
 package com.jn.kikukt.common.api
 
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemChildClickListener
-import com.chad.library.adapter.base.listener.OnItemChildLongClickListener
-import com.chad.library.adapter.base.listener.OnItemClickListener
-import com.chad.library.adapter.base.listener.OnItemLongClickListener
 import com.jn.kikukt.adapter.BaseRvAdapter
 import com.jn.kikukt.annonation.ERROR
 import com.jn.kikukt.annonation.LoadCompleteType
 import com.jn.kikukt.annonation.SUCCESS
 import com.jn.kikukt.net.retrofit.HttpResponse
+import kotlinx.android.synthetic.main.common_loadingfailure.view.*
 
 /**
  * Author：Stevie.Chen Time：2019/7/10
  * Class Comment：
  */
-interface IRvView<T> : OnItemClickListener, OnItemLongClickListener, OnItemChildClickListener,
-    OnItemChildLongClickListener {
+interface IRvView<T> {
 
     var mRecyclerView: RecyclerView//RecyclerView
-    var mEmptyView: View//empty or failure view
-    var mIvLoadingFailure: ImageView?//empty or failure icon
-    var mTvLoadingFailure: TextView?//empty or failure hint text
+    val emptyViewResId: Int//empty or failure view id
     val mAdapter: BaseRvAdapter<T>//adapter
     val mLayoutManager: RecyclerView.LayoutManager//LayoutManager
     val observer: Observer<HttpResponse>//Observer
@@ -85,8 +76,10 @@ interface IRvView<T> : OnItemClickListener, OnItemLongClickListener, OnItemChild
         @DrawableRes loadFailureDrawableRes: Int,
         @StringRes loadFailureStringRes: Int
     ) {
-        mIvLoadingFailure?.setImageResource(loadFailureDrawableRes)
-        mTvLoadingFailure?.setText(loadFailureStringRes)
+        mAdapter.emptyLayout?.run {
+            iv_commonLoadingFailure.setImageResource(loadFailureDrawableRes)
+            tv_commonLoadingFailure.setText(loadFailureStringRes)
+        }
     }
 
     /**
@@ -95,107 +88,4 @@ interface IRvView<T> : OnItemClickListener, OnItemLongClickListener, OnItemChild
      * @param view
      */
     fun onClickLoadFailure(view: View)
-
-    /**
-     * 子项点击事件
-     *
-     * @param adapter
-     * @param view
-     */
-    override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-        val item = mAdapter.getItemOrNull(position)
-        if (item != null)
-            onItemClick(adapter, view, item)
-    }
-
-    /**
-     * 子项长按时间
-     *
-     * @param adapter
-     * @param view
-     * @return
-     */
-    override fun onItemLongClick(
-        adapter: BaseQuickAdapter<*, *>,
-        view: View,
-        position: Int
-    ): Boolean {
-        val item = mAdapter.getItemOrNull(position)
-        return if (item != null) onItemLongClick(
-            adapter,
-            view,
-            item
-        ) else false
-    }
-
-    /**
-     * 子项控件点击事件
-     *
-     * @param adapter
-     * @param view
-     */
-    override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-        val item = mAdapter.getItemOrNull(position)
-        if (item != null)
-            onItemChildClick(adapter, view, item)
-    }
-
-    /**
-     * 子项控件长按时间
-     *
-     * @param adapter
-     * @param view
-     * @return
-     */
-    override fun onItemChildLongClick(
-        adapter: BaseQuickAdapter<*, *>,
-        view: View,
-        position: Int
-    ): Boolean {
-        val item = mAdapter.getItemOrNull(position)
-        return if (item != null)
-            onItemChildLongClick(adapter, view, item) else false
-    }
-
-    /**
-     * 子项点击事件
-     *
-     * @param adapter
-     * @param view
-     * @param item
-     */
-    fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, item: T) {}
-
-    /**
-     * 子项长按时间
-     *
-     * @param adapter
-     * @param view
-     * @param item
-     * @return
-     */
-    fun onItemLongClick(adapter: BaseQuickAdapter<*, *>, view: View, item: T): Boolean {
-        return false
-    }
-
-    /**
-     * 子项控件点击事件
-     *
-     * @param adapter
-     * @param view
-     * @param item
-     */
-    fun onItemChildClick(adapter: BaseQuickAdapter<*, *>, view: View, item: T) {}
-
-    /**
-     * 子项控件长按时间
-     *
-     * @param adapter
-     * @param view
-     * @param item
-     * @return
-     */
-    fun onItemChildLongClick(adapter: BaseQuickAdapter<*, *>, view: View, item: T): Boolean {
-        return false
-    }
 }

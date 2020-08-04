@@ -1,17 +1,10 @@
 package com.jn.kikukt.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.chad.library.adapter.base.listener.OnItemChildClickListener
-import com.chad.library.adapter.base.listener.OnItemChildLongClickListener
-import com.chad.library.adapter.base.listener.OnItemClickListener
-import com.chad.library.adapter.base.listener.OnItemLongClickListener
 import com.jn.kikukt.R
 import com.jn.kikukt.annonation.*
 import com.jn.kikukt.common.api.IRvView
@@ -30,9 +23,8 @@ import kotlinx.android.synthetic.main.common_rv.view.*
 abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T> {
 
     override lateinit var mRecyclerView: RecyclerView//RecyclerView
-    override lateinit var mEmptyView: View//empty or failure view
-    override var mIvLoadingFailure: ImageView? = null//empty or failure icon
-    override var mTvLoadingFailure: TextView? = null//empty or failure hint text
+    override val emptyViewResId: Int
+        get() = R.layout.common_loadingfailure//empty or failure view id
 
     //RecyclerView.LayoutManager
     override val mLayoutManager: RecyclerView.LayoutManager by lazy { LinearLayoutManager(context) }
@@ -51,7 +43,7 @@ abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T> {
         }
     }
 
-    override val layoutItemResourceId: Int = R.layout.common_rv
+    override val layoutItemResId: Int = R.layout.common_rv
 
     override val isLoadMoreEnable: Boolean
         get() = when (mLoadMoreEnableType) {
@@ -88,22 +80,11 @@ abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T> {
             layoutManager = mLayoutManager
             adapter = mAdapter
         }
-
-        mEmptyView = LayoutInflater.from(context)
-            .inflate(R.layout.common_loadingfailure, mFlRootContainer, false)
-        mEmptyView.run {
-            mIvLoadingFailure = findViewById(R.id.iv_commonLoadingFailure)
-            mTvLoadingFailure = findViewById(R.id.tv_commonLoadingFailure)
-            setOnClickListener { view -> onClickLoadFailure(view) }
-        }
         mAdapter.run {
             recyclerView = this@RootRvFragment.mRecyclerView
-            setEmptyView(mEmptyView)//set empty or failure view
+            setEmptyView(emptyViewResId)//set empty or failure view
+            emptyLayout?.setOnClickListener { view -> onClickLoadFailure(view) }
             isUseEmpty = false//don t show empty or failure view first
-            setOnItemClickListener(this@RootRvFragment as? OnItemClickListener)
-            setOnItemChildClickListener(this@RootRvFragment as? OnItemChildClickListener)
-            setOnItemLongClickListener(this@RootRvFragment as? OnItemLongClickListener)
-            setOnItemChildLongClickListener(this@RootRvFragment as? OnItemChildLongClickListener)
         }
     }
 
@@ -143,7 +124,7 @@ abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T> {
                     mSmartRefreshLayout.finishLoadMoreWithNoMoreData()//all data load complete
                 }
             }
-            mEmptyView.isEnabled = false//enable false
+            mAdapter.emptyLayout?.isEnabled = false//enable false
         } else if (loadCompleteType == ERROR) {//no net or load failure
             if (mPageIndex == mInitPageIndex) {//first page
                 mSmartRefreshLayout.run {
@@ -159,7 +140,7 @@ abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T> {
                 } else {//other reason(connect failure or server error)
                     setLoadFailureResource(R.drawable.ic_kiku_nonet, R.string.kiku_load_failure)
                 }
-                mEmptyView.isEnabled = true//enable true
+                mAdapter.emptyLayout?.isEnabled = true//enable true
             } else {
                 if (refreshViewType == ONLY_LOADMORE || refreshViewType == ALL) {
                     mPageIndex--//reset pageIndex when load more failure

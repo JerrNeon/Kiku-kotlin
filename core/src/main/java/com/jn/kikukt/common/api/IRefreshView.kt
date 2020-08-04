@@ -37,7 +37,7 @@ interface IRefreshView : OnRefreshLoadMoreListener {
     var mClassicsFooter: ClassicsFooter?//load more layout
     var mFlRootContainer: FrameLayout?//show content layout
 
-    val layoutItemResourceId: Int//获取主区域内容布局Id
+    val layoutItemResId: Int//获取主区域内容布局Id
 
     /**
      * 初始化刷新相关控件

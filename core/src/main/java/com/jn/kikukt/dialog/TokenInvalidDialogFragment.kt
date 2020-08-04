@@ -18,7 +18,7 @@ open class TokenInvalidDialogFragment : RootDialogFragment(), View.OnClickListen
         fun newInstance(): TokenInvalidDialogFragment = TokenInvalidDialogFragment()
     }
 
-    override val layoutResourceId: Int = R.layout.dialog_tokeninvalid
+    override val layoutResId: Int = R.layout.dialog_tokeninvalid
 
     override val layoutParams: WindowManager.LayoutParams? = mWindow?.attributes?.apply {
         gravity = Gravity.CENTER//居中显示

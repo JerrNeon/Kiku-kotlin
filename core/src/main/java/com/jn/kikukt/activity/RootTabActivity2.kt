@@ -22,7 +22,7 @@ abstract class RootTabActivity2 : RootTbActivity(), ITabLayoutView {
             get() = this@RootTabActivity2.fragments
     }
 
-    override val layoutResourceId: Int = R.layout.common_tab_layout_viewpager
+    override val layoutResId: Int = R.layout.common_tab_layout_viewpager
 
     override fun initTabView() {
         viewpager_RootTab.adapter = mAdapter

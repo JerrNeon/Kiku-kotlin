@@ -27,7 +27,7 @@ class LocationServiceDialogFragment : RootDialogFragment(), View.OnClickListener
         fun newInstance(): LocationServiceDialogFragment = LocationServiceDialogFragment()
     }
 
-    override val layoutResourceId: Int = R.layout.dialog_locationservice
+    override val layoutResId: Int = R.layout.dialog_locationservice
 
     override val isCanceledOnTouchOutsideEnable: Boolean = true
 

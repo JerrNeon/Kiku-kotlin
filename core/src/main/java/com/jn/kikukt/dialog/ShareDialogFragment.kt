@@ -36,7 +36,7 @@ class ShareDialogFragment : RootDialogFragment(), OnItemClickListener, View.OnCl
         WeChat, WxCircle, Sina, QQ
     }
 
-    override val layoutResourceId: Int = R.layout.dialog_share
+    override val layoutResId: Int = R.layout.dialog_share
 
     override val animationStyle: Int = R.style.bottom_in_out
 

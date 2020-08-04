@@ -21,7 +21,7 @@ abstract class BasePagerAdapter<T> : PagerAdapter() {
     private var mOnItemClickListener: OnItemClickListener<T>? = null
     private var mOnItemLongClickListener: OnItemLongClickListener<T>? = null
 
-    abstract val layoutResourceId: Int
+    abstract val layoutResId: Int
 
     abstract fun getView(view: View?, position: Int, bean: T?)
 
@@ -44,7 +44,7 @@ abstract class BasePagerAdapter<T> : PagerAdapter() {
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         var view: View? = mViews?.get(position)
         if (view == null) {
-            view = LayoutInflater.from(container.context).inflate(layoutResourceId, null, false)
+            view = LayoutInflater.from(container.context).inflate(layoutResId, null, false)
             mViews?.put(position, view)
         }
         getView(view, position, mList?.get(position))

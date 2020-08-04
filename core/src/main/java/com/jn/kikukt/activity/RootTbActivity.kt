@@ -41,7 +41,7 @@ abstract class RootTbActivity : RootActivity(), View.OnClickListener {
     protected var mTvTitleBarRight: TextView? = null//right text
     protected var mViewTitleBarDivider: View? = null//divider
 
-    abstract val layoutResourceId: Int
+    abstract val layoutResId: Int
 
     @IntDef(ROOT_LAYOUT, IV_LEFT, TV_TITLE, IV_RIGHT, TV_RIGHT, VIEW_DIVIDER)
     @Retention(AnnotationRetention.SOURCE)
@@ -64,7 +64,7 @@ abstract class RootTbActivity : RootActivity(), View.OnClickListener {
      * init titleBar Parent View
      */
     open fun initRootTbParentView() {
-        if (layoutResourceId != 0) {
+        if (layoutResId != 0) {
             mLlTitleBar = findViewById(R.id.ll_commonTitleBar)
             mVsTitleBar = findViewById(R.id.vs_commonTitleBar)
             mViewTitleBarDivider = findViewById(R.id.view_commonTitleBarDivider)
@@ -75,7 +75,7 @@ abstract class RootTbActivity : RootActivity(), View.OnClickListener {
      * init titleBar View
      */
     open fun initRootTbView() {
-        if (layoutResourceId != 0) {
+        if (layoutResId != 0) {
             mVsTitleBar?.inflate()
             mRlTitleBar = findViewById(R.id.rl_commonTitleBar)
             mIvTitleBarLeft = findViewById(R.id.iv_commonTitleBar_left)
@@ -93,9 +93,9 @@ abstract class RootTbActivity : RootActivity(), View.OnClickListener {
      * set main content View
      */
     open fun setRootContainerView() {
-        if (layoutResourceId != 0) {
+        if (layoutResId != 0) {
             val contentView =
-                LayoutInflater.from(this).inflate(layoutResourceId, null, false)
+                LayoutInflater.from(this).inflate(layoutResId, null, false)
             val drawable = contentView.background
             if (drawable == null) {
                 contentView.setBackgroundResource(R.color.white)

@@ -25,7 +25,7 @@ abstract class RootTabActivity : RootTbActivity(), ITabLayoutView,
             get() = this@RootTabActivity.fragments
     }
 
-    override val layoutResourceId: Int = R.layout.common_tab_layout_viewpager2
+    override val layoutResId: Int = R.layout.common_tab_layout_viewpager2
 
     override fun initTabView() {
         viewpager_RootTab.adapter = mAdapter

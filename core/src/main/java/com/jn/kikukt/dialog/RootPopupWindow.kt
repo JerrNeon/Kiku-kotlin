@@ -20,7 +20,7 @@ abstract class RootPopupWindow {
     protected var mPopupWindow: PopupWindow? = null
     protected var mWindow: Window? = null
 
-    abstract val layoutResourceId: Int//LayoutResourceId
+    abstract val layoutResId: Int//LayoutResId
     abstract val width: Int//popupWindow width
     abstract val height: Int//popupWindow height
 
@@ -44,7 +44,7 @@ abstract class RootPopupWindow {
     }
 
     protected fun initView() {
-        mView = LayoutInflater.from(mContext).inflate(layoutResourceId, null, false)
+        mView = LayoutInflater.from(mContext).inflate(layoutResId, null, false)
         mPopupWindow = PopupWindow(mView).apply {
             width = if (width == 0)
                 mContext?.getScreenWidth() ?: ViewGroup.LayoutParams.WRAP_CONTENT

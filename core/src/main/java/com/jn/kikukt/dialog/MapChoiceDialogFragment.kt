@@ -37,7 +37,7 @@ class MapChoiceDialogFragment : RootDialogFragment(), View.OnClickListener {
     private lateinit var originLl: LatLng//初始地
     private lateinit var destinationLl: LatLng//目的地
 
-    override val layoutResourceId: Int = R.layout.dialog_mapchoice
+    override val layoutResId: Int = R.layout.dialog_mapchoice
 
     override val animationStyle: Int = R.style.bottom_in_out
 
