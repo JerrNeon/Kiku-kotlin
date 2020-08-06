@@ -25,6 +25,9 @@
         <activity
             android:name=".activity.NewsListActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.NewsViewPager2Activity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

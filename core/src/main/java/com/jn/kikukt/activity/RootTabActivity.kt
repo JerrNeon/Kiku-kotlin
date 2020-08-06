@@ -1,5 +1,6 @@
 package com.jn.kikukt.activity
 
+import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -26,6 +27,12 @@ abstract class RootTabActivity : RootTbActivity(), ITabLayoutView,
     }
 
     override val layoutResId: Int = R.layout.common_tab_layout_viewpager2
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initTabView()
+        setTabLayoutAttribute()
+    }
 
     override fun initTabView() {
         viewpager_RootTab.adapter = mAdapter

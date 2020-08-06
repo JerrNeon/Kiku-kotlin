@@ -5,7 +5,8 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import com.jn.kikukt.adapter.BaseRvAdapter
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.jn.kikukt.annonation.ERROR
 import com.jn.kikukt.annonation.LoadCompleteType
 import com.jn.kikukt.annonation.SUCCESS
@@ -20,7 +21,7 @@ interface IRvView<T> {
 
     var mRecyclerView: RecyclerView//RecyclerView
     val emptyViewResId: Int//empty or failure view id
-    val mAdapter: BaseRvAdapter<T>//adapter
+    val mAdapter: BaseQuickAdapter<T, out BaseViewHolder>//adapter
     val mLayoutManager: RecyclerView.LayoutManager//LayoutManager
     val observer: Observer<HttpResponse>//Observer
 
