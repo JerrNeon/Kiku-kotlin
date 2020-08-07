@@ -1,6 +1,5 @@
 package com.jn.examplekotlin.activity
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import com.jn.examplekotlin.adapter.NewAdapter
@@ -8,6 +7,7 @@ import com.jn.examplekotlin.entiy.NewsVO
 import com.jn.examplekotlin.mvvm.NewsViewModel
 import com.jn.kikukt.activity.RootRvActivity
 import com.jn.kikukt.adapter.listener
+import com.jn.kikukt.common.ext.startActivity
 import com.jn.kikukt.utils.glide.requestManager
 
 /**
@@ -31,12 +31,7 @@ class NewsListActivity : RootRvActivity<NewsVO>() {
         setTitleText("News ViewModel")
         mAdapter.listener {
             onItemClick { _, _, _, _ ->
-                startActivity(
-                    Intent(
-                        this@NewsListActivity,
-                        NewsViewPager2Activity::class.java
-                    )
-                )
+                startActivity<NewsListActivity>()
             }
         }
     }
