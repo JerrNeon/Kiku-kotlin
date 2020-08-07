@@ -18,10 +18,8 @@ abstract class RootTabActivity2 : RootTbActivity(), ITabLayoutView {
     abstract val fragments: MutableList<Fragment>
     abstract val titles: MutableList<String>
 
-    open var mAdapter: PagerAdapter = object : BaseFragmentPagerAdapter(supportFragmentManager) {
-        override val fragments: List<Fragment>
-            get() = this@RootTabActivity2.fragments
-    }
+    open val mAdapter: PagerAdapter
+        get() = BaseFragmentPagerAdapter(supportFragmentManager, fragments)
 
     override val layoutResId: Int = R.layout.common_tab_layout_viewpager
 

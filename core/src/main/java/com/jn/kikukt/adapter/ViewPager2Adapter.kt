@@ -3,8 +3,6 @@ package com.jn.kikukt.adapter
 import android.util.SparseArray
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
 /**
@@ -12,20 +10,21 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
  * Class Comment：ViewPager2Adapter
  */
 
-abstract class BaseFragmentStateAdapter : FragmentStateAdapter {
+class BaseFragmentStateAdapter : FragmentStateAdapter {
 
-    protected val array: SparseArray<Fragment> = SparseArray()
+    private val array: SparseArray<Fragment> = SparseArray()
 
-    abstract val fragments: List<Fragment>
+    private var fragments: List<Fragment>
 
-    constructor(fragment: Fragment) : super(fragment)
+    constructor(fragment: Fragment, fragments: List<Fragment>) : super(fragment) {
+        this.fragments = fragments
+    }
 
-    constructor(fragmentActivity: FragmentActivity) : super(fragmentActivity)
-
-    constructor(fragmentManager: FragmentManager, lifecycle: Lifecycle) : super(
-        fragmentManager,
-        lifecycle
-    )
+    constructor(fragmentActivity: FragmentActivity, fragments: List<Fragment>) : super(
+        fragmentActivity
+    ) {
+        this.fragments = fragments
+    }
 
     override fun getItemCount(): Int = fragments.size
 

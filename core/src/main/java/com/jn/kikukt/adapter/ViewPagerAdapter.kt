@@ -14,27 +14,18 @@ import androidx.viewpager.widget.PagerAdapter
  * Author：Stevie.Chen Time：2020/7/15
  * Class Comment：ViewPagerAdapter
  */
-abstract class BasePagerAdapter<T> : PagerAdapter() {
+abstract class BasePagerAdapter<T>(
+    private val layoutResId: Int,
+    var list: MutableList<T> = mutableListOf()
+) : PagerAdapter() {
 
-    private var mList: MutableList<T>? = mutableListOf()
-    private var mViews: SparseArray<View>? = SparseArray()
-    private var mOnItemClickListener: OnItemClickListener<T>? = null
-    private var mOnItemLongClickListener: OnItemLongClickListener<T>? = null
-
-    abstract val layoutResId: Int
-
-    abstract fun getView(view: View?, position: Int, bean: T?)
-
-    interface OnItemClickListener<T> {
-        fun onItemCLick(position: Int, bean: T?)
-    }
-
-    interface OnItemLongClickListener<T> {
-        fun onItemLongClick(position: Int, bean: T?)
-    }
+    private var mViews: SparseArray<View?> = SparseArray()
+    var onItemCLick: ((position: Int, bean: T) -> Unit)? = null
+    var onItemLongClick: ((position: Int, bean: T) -> Unit)? = null
+    open val onView: ((view: View?, position: Int, bean: T) -> Unit)? = null
 
     override fun getCount(): Int {
-        return mList?.size ?: 0
+        return list.size
     }
 
     override fun isViewFromObject(p0: View, p1: Any): Boolean {
@@ -42,69 +33,41 @@ abstract class BasePagerAdapter<T> : PagerAdapter() {
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        var view: View? = mViews?.get(position)
-        if (view == null) {
-            view = LayoutInflater.from(container.context).inflate(layoutResId, null, false)
-            mViews?.put(position, view)
+        val view: View = if (mViews.get(position) != null) {
+            mViews.get(position)!!
+        } else {
+            val view1 =
+                LayoutInflater.from(container.context).inflate(layoutResId, container, false)
+            mViews.put(position, view1)
+            view1
+        }.apply {
+            setOnClickListener {
+                onItemCLick?.invoke(position, list[position])
+            }
+            setOnLongClickListener(View.OnLongClickListener {
+                onItemLongClick?.invoke(position, list[position])
+                return@OnLongClickListener onItemLongClick != null
+            })
         }
-        getView(view, position, mList?.get(position))
+        onView?.invoke(view, position, list[position])
         container.addView(view)
-        view!!.setOnClickListener {
-            mOnItemClickListener?.onItemCLick(position, mList?.get(position))
-        }
-        view.setOnLongClickListener(View.OnLongClickListener {
-            mOnItemLongClickListener?.onItemLongClick(position, mList?.get(position))
-            return@OnLongClickListener mOnItemLongClickListener != null
-        })
         return view
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
         super.destroyItem(container, position, `object`)
-        container.removeView(mViews?.get(position))
-    }
-
-    fun getData(): List<T>? {
-        return mList
-    }
-
-    fun add(bean: T) {
-        mList?.add(bean)
-    }
-
-    fun addAll(beans: List<T>) {
-        if (beans.isNotEmpty()) {
-            mList?.addAll(beans)
-        }
-    }
-
-    fun remove(position: Int): T? {
-        return if (position in 0 until count) {
-            mList?.removeAt(position)
-        } else null
-    }
-
-    fun clear() {
-        mList?.clear()
-    }
-
-    fun isEmpty(): Boolean? {
-        return mList?.isEmpty()
-    }
-
-    fun isNotEmpty(): Boolean? {
-        return mList?.isNotEmpty()
+        container.removeView(mViews.get(position))
     }
 }
 
-abstract class BaseFragmentPagerAdapter(
-    fm: FragmentManager, behavior: Int = BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+class BaseFragmentPagerAdapter(
+    fm: FragmentManager,
+    private val fragments: List<Fragment>,
+    behavior: Int = BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
 ) :
     FragmentPagerAdapter(fm, behavior) {
 
-    protected val array: SparseArray<Fragment> = SparseArray()
-
-    abstract val fragments: List<Fragment>
+    private val array: SparseArray<Fragment> = SparseArray()
 
     override fun getItem(position: Int): Fragment {
         if (position in 0..count) {
@@ -129,14 +92,14 @@ abstract class BaseFragmentPagerAdapter(
     }
 }
 
-abstract class BaseFragmentStatePagerAdapter(
-    fm: FragmentManager, behavior: Int = BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+class BaseFragmentStatePagerAdapter(
+    fm: FragmentManager,
+    private val fragments: List<Fragment>,
+    behavior: Int = BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
 ) :
     FragmentStatePagerAdapter(fm, behavior) {
 
-    protected val array: SparseArray<Fragment> = SparseArray()
-
-    abstract val fragments: List<Fragment>
+    private val array: SparseArray<Fragment> = SparseArray()
 
     override fun getItem(position: Int): Fragment {
         if (position in 0..count) {

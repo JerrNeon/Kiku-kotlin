@@ -21,10 +21,8 @@ abstract class RootTabActivity : RootTbActivity(), ITabLayoutView,
     abstract val fragments: MutableList<Fragment>
     abstract val titles: MutableList<String>
 
-    open var mAdapter: FragmentStateAdapter = object : BaseFragmentStateAdapter(this) {
-        override val fragments: List<Fragment>
-            get() = this@RootTabActivity.fragments
-    }
+    open val mAdapter: FragmentStateAdapter
+        get() = BaseFragmentStateAdapter(this, fragments)
 
     override val layoutResId: Int = R.layout.common_tab_layout_viewpager2
 
