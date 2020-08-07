@@ -3,7 +3,6 @@ package com.jn.kikukt.dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,7 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.jn.kikukt.R
+import com.jn.kikukt.common.leak.WeakHandler
 import com.jn.kikukt.widget.imageview.SpinBlackView
 
 /**
@@ -79,7 +79,7 @@ class ProgressDialogFragment : DialogFragment() {
         startedShowing = false
         mStopMillisecond = java.lang.Long.MAX_VALUE
 
-        val handler = Handler()
+        val handler = WeakHandler(this)
         handler.postDelayed({
             if (mStopMillisecond > System.currentTimeMillis())
                 showDialogAfterDelay(fm, tag)
@@ -107,7 +107,7 @@ class ProgressDialogFragment : DialogFragment() {
 
     private fun cancelWhenShowing() {
         if (mStopMillisecond < mStartMillisecond + DELAY_MILLISECOND.toLong() + SHOW_MIN_MILLISECOND.toLong()) {
-            val handler = Handler()
+            val handler = WeakHandler(this)
             handler.postDelayed({ dismissAllowingStateLoss() }, SHOW_MIN_MILLISECOND.toLong())
         } else {
             dismissAllowingStateLoss()
@@ -115,7 +115,7 @@ class ProgressDialogFragment : DialogFragment() {
     }
 
     private fun cancelWhenNotShowing() {
-        val handler = Handler()
+        val handler = WeakHandler(this)
         handler.postDelayed({ dismissAllowingStateLoss() }, DELAY_MILLISECOND.toLong())
     }
 }

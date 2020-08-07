@@ -1,10 +1,11 @@
 package com.jn.kikukt.activity
 
+import android.app.Activity
 import android.os.Bundle
-import android.os.Handler
 import android.os.Message
 import com.jn.kikukt.common.SPManage
 import com.jn.kikukt.common.api.ISplashView
+import com.jn.kikukt.common.leak.WeakHandler
 import com.jn.kikukt.common.utils.statusbar.setTransparent
 import com.jn.kikukt.utils.RxPermissionsManager
 
@@ -12,14 +13,25 @@ import com.jn.kikukt.utils.RxPermissionsManager
  * Author：Stevie.Chen Time：2019/7/11
  * Class Comment：
  */
-abstract class RootSplashActivity : RootActivity(), ISplashView, Handler.Callback {
+abstract class RootSplashActivity : RootActivity(), ISplashView {
 
     companion object {
         private const val SKIP_WHAT = 0x01
         private const val SKIP_TIME = 3000L//splash countDowner 3s
     }
 
-    protected var mHandler = Handler(this)
+    protected var mHandler = WeakHandler(this, handleMessage)
+
+    open val handleMessage
+        get() = { activity: Activity, msg: Message ->
+            if (msg.what == SKIP_WHAT) {
+                if (SPManage.instance.isFirstGuide)
+                    openGuideActivity(activity)//open splash first
+                else
+                    openMainActivity(activity)
+                finish()
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,16 +52,5 @@ abstract class RootSplashActivity : RootActivity(), ISplashView, Handler.Callbac
             this,
             getAllPermissions()
         ) { mHandler.sendEmptyMessageDelayed(SKIP_WHAT, SKIP_TIME) }
-    }
-
-    override fun handleMessage(msg: Message?): Boolean {
-        if (msg?.what == SKIP_WHAT) {
-            if (SPManage.instance.isFirstGuide)
-                openGuideActivity()//open splash first
-            else
-                openMainActivity()
-            finish()
-        }
-        return false
     }
 }

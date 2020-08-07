@@ -5,7 +5,6 @@ import android.view.View
 import android.view.WindowManager
 import com.jn.kikukt.R
 import com.jn.kikukt.common.utils.getScreenWidth
-import com.jn.kikukt.utils.dialog.DialogFragmentUtils
 import kotlinx.android.synthetic.main.dialog_tokeninvalid.view.*
 
 /**
@@ -34,23 +33,13 @@ open class TokenInvalidDialogFragment : RootDialogFragment(), View.OnClickListen
         if (view.id == R.id.tv_commit) {
             openLoginActivity()
             this.dismiss()
-            DialogFragmentUtils.onDestroyTokenValidDialog()
         }
     }
 
     /**
      * 打开登录界面并更新用户信息
      *
-     *
      * 更新用户可以用EventBus或BroadCastReceiver,是具体情况而定
-     *
      */
-    open fun openLoginActivity() {
-
-    }
-
-    override fun onDestroyView() {
-        DialogFragmentUtils.onDestroyTokenValidDialog()
-        super.onDestroyView()
-    }
+    open fun openLoginActivity() {}
 }

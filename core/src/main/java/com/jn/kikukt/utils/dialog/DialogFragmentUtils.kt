@@ -1,9 +1,11 @@
 package com.jn.kikukt.utils.dialog
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
+import com.jn.kikukt.common.leak.Weak
 import com.jn.kikukt.dialog.TokenInvalidDialogFragment
-import java.lang.ref.WeakReference
 
 /**
  * Author：Stevie.Chen Time：2019/7/15
@@ -11,26 +13,24 @@ import java.lang.ref.WeakReference
  */
 object DialogFragmentUtils {
 
-    private var mTokenInvalidDialogWR: WeakReference<TokenInvalidDialogFragment>? = null
+    private var tokenInvalidDialog: TokenInvalidDialogFragment? by Weak()
 
     /**
      * 显示Token失效对话框
-     *
-     * @param context
      */
-    fun showTokenValidDialog(context: Context) {
-        if (mTokenInvalidDialogWR == null && context is AppCompatActivity) {
-            mTokenInvalidDialogWR = WeakReference(TokenInvalidDialogFragment.newInstance())
-            mTokenInvalidDialogWR?.get()?.show(
-                context.supportFragmentManager, TokenInvalidDialogFragment::class.java.simpleName
-            )
+    fun showTokenValidDialog(activity: AppCompatActivity) {
+        if (tokenInvalidDialog == null) {
+            tokenInvalidDialog = TokenInvalidDialogFragment.newInstance()
+            activity.lifecycle.addObserver(object : LifecycleEventObserver {
+                override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+                    if (Lifecycle.Event.ON_DESTROY == event) {
+                        tokenInvalidDialog = null
+                    }
+                }
+            })
         }
-    }
-
-    /**
-     * 释放Token失效对话框资源
-     */
-    fun onDestroyTokenValidDialog() {
-        mTokenInvalidDialogWR?.clear()
+        tokenInvalidDialog?.show(
+            activity.supportFragmentManager, TokenInvalidDialogFragment::class.java.simpleName
+        )
     }
 }
