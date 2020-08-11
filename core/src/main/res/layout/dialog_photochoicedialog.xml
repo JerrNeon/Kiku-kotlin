@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/dp_10"
-    android:paddingRight="@dimen/dp_10">
+    android:paddingHorizontal="@dimen/dp_10">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,8 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingTop="@dimen/dp_14"
-            android:paddingBottom="@dimen/dp_14"
+            android:paddingVertical="@dimen/dp_14"
             android:text="@string/image_takePhoto"
             android:textColor="@color/c_3D84CA"
             android:textSize="@dimen/sp_16" />
@@ -34,8 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingTop="@dimen/dp_14"
-            android:paddingBottom="@dimen/dp_14"
+            android:paddingVertical="@dimen/dp_14"
             android:text="@string/image_album"
             android:textColor="@color/c_3D84CA"
             android:textSize="@dimen/sp_16" />
@@ -52,8 +49,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/rectangle_whitebg_corner10"
         android:gravity="center_horizontal"
-        android:paddingTop="@dimen/dp_14"
-        android:paddingBottom="@dimen/dp_14"
+        android:paddingVertical="@dimen/dp_14"
         android:text="@string/image_cancel"
         android:textColor="@color/c_3D84CA"
         android:textSize="@dimen/sp_16" />
