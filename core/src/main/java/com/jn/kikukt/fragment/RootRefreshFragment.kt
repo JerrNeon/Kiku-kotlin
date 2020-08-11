@@ -1,8 +1,8 @@
 package com.jn.kikukt.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.widget.FrameLayout
+import android.view.View
+import android.view.ViewGroup
 import com.jn.kikukt.R
 import com.jn.kikukt.annonation.*
 import com.jn.kikukt.common.api.IRefreshView
@@ -26,12 +26,11 @@ abstract class RootRefreshFragment : RootFragment(), IRefreshView {
     override lateinit var mSmartRefreshLayout: SmartRefreshLayout//root layout
     override var mClassicsHeader: ClassicsHeader? = null//refresh layout
     override var mClassicsFooter: ClassicsFooter? = null//load more layout
-    override var mFlRootContainer: FrameLayout? = null//show content layout
 
     override val layoutResId: Int = R.layout.common_refresh_layout
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         mRefreshOperateType = ON_CREATE
         initRefreshView()
     }
@@ -68,15 +67,11 @@ abstract class RootRefreshFragment : RootFragment(), IRefreshView {
             mSmartRefreshLayout = srl_root
             mClassicsHeader = srlH_root
             mClassicsFooter = srlF_root
-            mFlRootContainer = fl_rootContainer
         }
         if (layoutItemResId != 0) {
-            mFlRootContainer?.addView(
-                LayoutInflater.from(context).inflate(layoutItemResId, mSmartRefreshLayout, false),
-                FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT,
-                    FrameLayout.LayoutParams.MATCH_PARENT
-                )
+            mSmartRefreshLayout.setRefreshContent(
+                layoutInflater.inflate(layoutItemResId, mSmartRefreshLayout, false),
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
             )
         }
 

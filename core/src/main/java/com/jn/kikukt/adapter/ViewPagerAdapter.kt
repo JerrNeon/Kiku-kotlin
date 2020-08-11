@@ -63,6 +63,7 @@ abstract class BasePagerAdapter<T>(
 class BaseFragmentPagerAdapter(
     fm: FragmentManager,
     private val fragments: List<Fragment>,
+    private val titles: List<String>,
     behavior: Int = BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
 ) :
     FragmentPagerAdapter(fm, behavior) {
@@ -83,6 +84,10 @@ class BaseFragmentPagerAdapter(
         return array[0]
     }
 
+    override fun getPageTitle(position: Int): CharSequence? {
+        return titles[position]
+    }
+
     override fun getCount(): Int {
         return fragments.size
     }
@@ -95,6 +100,7 @@ class BaseFragmentPagerAdapter(
 class BaseFragmentStatePagerAdapter(
     fm: FragmentManager,
     private val fragments: List<Fragment>,
+    private val titles: List<String>,
     behavior: Int = BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
 ) :
     FragmentStatePagerAdapter(fm, behavior) {
@@ -113,6 +119,10 @@ class BaseFragmentStatePagerAdapter(
             return fragment
         }
         return array[0]
+    }
+
+    override fun getPageTitle(position: Int): CharSequence? {
+        return titles[position]
     }
 
     override fun getCount(): Int {

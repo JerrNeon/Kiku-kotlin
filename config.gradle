@@ -42,7 +42,7 @@ ext {
             "recyclerview-v7"                    : "androidx.recyclerview:recyclerview:${android.androidXSdkVersion}",
             "cardview-v7"                        : "androidx.cardview:cardview:${android.androidXSdkVersion}",
             "appcompat-v7"                       : "androidx.appcompat:appcompat:1.1.0",
-            "constraint-layout"                  : 'androidx.constraintlayout:constraintlayout:1.1.3',
+            "constraint-layout"                  : 'androidx.constraintlayout:constraintlayout:2.0.0-rc1',
             "room"                               : "androidx.room:room-runtime:${android.roomSdkVersion}",
             "room-annotationProcessor"           : "androidx.room:room-compiler:${android.roomSdkVersion}",
             "lifecycle"                          : "androidx.lifecycle:lifecycle-extensions:${android.lifecycleSdkVersion}",

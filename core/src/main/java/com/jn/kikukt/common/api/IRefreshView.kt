@@ -1,6 +1,5 @@
 package com.jn.kikukt.common.api
 
-import android.widget.FrameLayout
 import com.jn.kikukt.annonation.*
 import com.jn.kikukt.common.Config
 import com.scwang.smart.refresh.footer.ClassicsFooter
@@ -35,7 +34,6 @@ interface IRefreshView : OnRefreshLoadMoreListener {
     var mSmartRefreshLayout: SmartRefreshLayout//root layout
     var mClassicsHeader: ClassicsHeader?//refresh layout
     var mClassicsFooter: ClassicsFooter?//load more layout
-    var mFlRootContainer: FrameLayout?//show content layout
 
     val layoutItemResId: Int//获取主区域内容布局Id
 

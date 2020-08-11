@@ -31,7 +31,7 @@ class NewsListActivity : RootRvActivity<NewsVO>() {
         setTitleText("News ViewModel")
         mAdapter.listener {
             onItemClick { _, _, _, _ ->
-                startActivity<NewsListActivity>()
+                startActivity<NewsViewPager2Activity>()
             }
         }
     }

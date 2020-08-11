@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TitleBarLayout">
+        <attr name="titleBackground" format="color" />
+        <attr name="titleHeight" format="dimension" />
+        <attr name="titleLeading" format="reference" />
+        <attr name="titleTextSize" format="dimension" />
+        <attr name="titleTextColor" format="color" />
+        <attr name="titleMenuLayoutResId" format="reference" />
+        <attr name="dividerColor" format="color" />
+        <attr name="dividerHeight" format="dimension" />
+        <attr name="dividerVisibility">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="1" />
+            <enum name="gone" value="2" />
+        </attr>
+        <attr name="contentLayoutResId" format="reference" />
+    </declare-styleable>
+</resources>

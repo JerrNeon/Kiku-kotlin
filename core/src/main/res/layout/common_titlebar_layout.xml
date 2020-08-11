@@ -1,21 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ll_commonTitleBar"
+<com.jn.kikukt.widget.TitleBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tbl_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:orientation="vertical">
-
-    <ViewStub
-        android:id="@+id/vs_commonTitleBar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout="@layout/include_common_titlebar_layout" />
-
-    <View
-        android:id="@+id/view_commonTitleBarDivider"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_0.5"
-        android:background="@color/c_E9E9E9"
-        android:visibility="gone" />
-</LinearLayout>
+    app:titleBackground="@color/colorPrimary"
+    app:dividerVisibility="visible"
+    app:titleTextColor="@color/white"/>

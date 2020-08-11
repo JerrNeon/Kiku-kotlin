@@ -19,7 +19,7 @@ abstract class RootTabActivity2 : RootTbActivity(), ITabLayoutView {
     abstract val titles: MutableList<String>
 
     open val mAdapter: PagerAdapter
-        get() = BaseFragmentPagerAdapter(supportFragmentManager, fragments)
+        get() = BaseFragmentPagerAdapter(supportFragmentManager, fragments, titles)
 
     override val layoutResId: Int = R.layout.common_tab_layout_viewpager
 
@@ -27,6 +27,7 @@ abstract class RootTabActivity2 : RootTbActivity(), ITabLayoutView {
         super.onCreate(savedInstanceState)
         initTabView()
         setTabLayoutAttribute()
+        setOffscreenPageLimit()
     }
 
     override fun initTabView() {

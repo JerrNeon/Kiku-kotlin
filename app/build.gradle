@@ -54,6 +54,4 @@ dependencies {
     androidTestImplementation dep["espresso-core"]
 
     implementation project(':core')
-
-    implementation dep["constraint-layout"]
 }

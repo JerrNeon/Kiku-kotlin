@@ -71,11 +71,13 @@ dependencies {
 
     api dep["support-v4"]
     api dep["viewpager2"]
+    api dep["constraint-layout"]
+
     api dep["eventbus"]
     api dep["glide"]
     api dep["glide-transformations"]
     api dep["rxpermissions"]
-
+    
     api dep["BaseRecyclerViewAdapterHelper"]
     api dep["SmartRefreshLayout"]
     api dep["SmartRefreshLayout-header-classics"]

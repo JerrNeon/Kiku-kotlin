@@ -52,9 +52,13 @@ abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T> {
             else -> super.isLoadMoreEnable
         }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initRvView()
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        initRvView()
         //非懒加载Fragment在onActivityCreated方法中发起请求
         if (!isLazyLoad) {
             onRequest()
