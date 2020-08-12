@@ -112,7 +112,7 @@ fun Activity.requestManager() = Glide.with(this)
 fun Fragment.requestManager() = Glide.with(this)
 fun Context.requestManager() = Glide.with(this)
 
-fun ImageView.displayImage(
+fun ImageView.loadImage(
     context: Any,
     url: String,
     placeholderResourceId: Int = R.drawable.ic_default_placeholder,
@@ -140,7 +140,7 @@ fun ImageView.displayImage(
                     RoundedBitmapDrawableFactory.create(resources, resource).apply {
                         isCircular = true
                     }
-                this@displayImage.setImageDrawable(circularBitmapDrawable)
+                this@loadImage.setImageDrawable(circularBitmapDrawable)
             }
         }
         requestBuilder.apply(requestOptions).into(circleBitmapImageViewTarget)
@@ -154,7 +154,7 @@ fun ImageView.displayImage(
     }
 }
 
-fun ImageView.displayImage(
+fun ImageView.loadImage(
     context: Any,
     url: String,
     placeholderResourceId: Int = R.drawable.ic_default_placeholder,
@@ -166,7 +166,7 @@ fun ImageView.displayImage(
     requestManager.load(url).apply(requestOptions).into(drawableImageViewTarget)
 }
 
-fun ImageView.displayImage(
+fun ImageView.loadImage(
     context: Any,
     url: String,
     placeholderResourceId: Int = R.drawable.ic_default_placeholder,

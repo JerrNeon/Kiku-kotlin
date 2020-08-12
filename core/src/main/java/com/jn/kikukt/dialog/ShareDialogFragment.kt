@@ -13,7 +13,6 @@ import com.jn.kikukt.R
 import com.jn.kikukt.adapter.BaseRvAdapter
 import com.jn.kikukt.common.utils.getScreenWidth
 import com.jn.kikukt.entiy.ShareVO
-import com.jn.kikukt.utils.glide.requestManager
 
 /**
  * Author：Stevie.Chen Time：2019/7/15
@@ -53,9 +52,7 @@ class ShareDialogFragment : RootDialogFragment(), OnItemClickListener, View.OnCl
         }
         mTvCancel?.setOnClickListener(this)
 
-        val adapter = object :
-            BaseRvAdapter<ShareVO>(requestManager(), layoutResId = R.layout.dialog_item_share) {
-
+        val adapter = object : BaseRvAdapter<ShareVO>(R.layout.dialog_item_share) {
             override fun convert(holder: BaseViewHolder, item: ShareVO) {
                 holder.setImageResource(R.id.iv_share, item.img)
                 holder.setText(R.id.tv_share, item.title)

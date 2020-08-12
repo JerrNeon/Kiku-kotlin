@@ -14,8 +14,8 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
  * Class Comment：RecyclerViewAdapter
  */
 abstract class BaseRvAdapter<T>(
-    protected val requestManager: RequestManager? = null,
     @LayoutRes layoutResId: Int,
+    protected val requestManager: RequestManager? = null,
     data: MutableList<T>? = null
 ) :
     BaseQuickAdapter<T, BaseViewHolder>(layoutResId, data)

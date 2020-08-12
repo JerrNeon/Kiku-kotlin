@@ -8,7 +8,6 @@ import com.jn.examplekotlin.mvvm.NewsViewModel
 import com.jn.kikukt.activity.RootRvActivity
 import com.jn.kikukt.adapter.listener
 import com.jn.kikukt.common.ext.startActivity
-import com.jn.kikukt.utils.glide.requestManager
 
 /**
  * Author：Stevie.Chen Time：2020/1/17
@@ -23,7 +22,7 @@ class NewsListActivity : RootRvActivity<NewsVO>() {
 //    }
 
     override val mAdapter by lazy {
-        NewAdapter(requestManager = requestManager())
+        NewAdapter()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

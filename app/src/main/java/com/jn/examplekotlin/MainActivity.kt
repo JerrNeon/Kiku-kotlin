@@ -10,7 +10,6 @@ import com.jn.kikukt.activity.RootRvActivity
 import com.jn.kikukt.adapter.listener
 import com.jn.kikukt.common.ext.startActivity
 import com.jn.kikukt.mvp.presenters
-import com.jn.kikukt.utils.glide.requestManager
 
 
 class MainActivity : RootRvActivity<NewsVO>(), NewsContract.IView {
@@ -18,7 +17,7 @@ class MainActivity : RootRvActivity<NewsVO>(), NewsContract.IView {
     override val presenter by presenters<NewsPresenter>()
 
     override val mAdapter by lazy {
-        NewAdapter(requestManager())
+        NewAdapter()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

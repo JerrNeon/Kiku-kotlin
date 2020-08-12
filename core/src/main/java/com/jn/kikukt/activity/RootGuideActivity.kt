@@ -4,11 +4,10 @@ import android.os.Bundle
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.jn.kikukt.R
 import com.jn.kikukt.adapter.BaseRvAdapter
-import com.jn.kikukt.adapter.displayImage
+import com.jn.kikukt.adapter.loadImage
 import com.jn.kikukt.common.SPManage
 import com.jn.kikukt.common.api.IGuideView
 import com.jn.kikukt.entiy.GuidePageVO
-import com.jn.kikukt.utils.glide.requestManager
 import kotlinx.android.synthetic.main.common_guide_layout.*
 
 /**
@@ -44,24 +43,22 @@ abstract class RootGuideActivity : RootActivity(), IGuideView {
         vp_RootGuide.adapter = mAdapter
     }
 
-    open fun getAdapter(): BaseRvAdapter<GuidePageVO> = object : BaseRvAdapter<GuidePageVO>(
-        requestManager(),
-        layoutResId = R.layout.common_guideitem_layout
-    ) {
-        override fun convert(holder: BaseViewHolder, item: GuidePageVO) {
-            item.run {
-                if (imgType == 0)
-                    holder.displayImage(R.id.iv_rootGuide, requestManager, imgUrl ?: "")
-                else
-                    holder.setImageResource(R.id.iv_rootGuide, imgRes)
+    open fun getAdapter(): BaseRvAdapter<GuidePageVO> =
+        object : BaseRvAdapter<GuidePageVO>(R.layout.common_guideitem_layout) {
+            override fun convert(holder: BaseViewHolder, item: GuidePageVO) {
+                item.run {
+                    if (imgType == 0)
+                        holder.loadImage(R.id.iv_rootGuide, imgUrl ?: "")
+                    else
+                        holder.setImageResource(R.id.iv_rootGuide, imgRes)
+                }
+            }
+        }.apply {
+            setOnItemClickListener { _, _, position ->
+                if (mAdapter.getItemOrNull(position)?.isLast == true)
+                    handlerSkipEvent()
             }
         }
-    }.apply {
-        setOnItemClickListener { _, _, position ->
-            if (mAdapter.getItemOrNull(position)?.isLast == true)
-                handlerSkipEvent()
-        }
-    }
 
     open fun handlerSkipEvent() {
         openMainActivity()
