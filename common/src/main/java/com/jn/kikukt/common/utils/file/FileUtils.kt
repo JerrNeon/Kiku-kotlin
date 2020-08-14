@@ -1,6 +1,5 @@
 package com.jn.kikukt.common.utils.file
 
-import android.app.Application
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -27,7 +26,6 @@ object FileUtils {
     private const val VIDEO_CACHE_DIR = "video"//视频缓存目录
     private const val FILE_CACHE_DIR = "file"//文件缓存目录
     private const val CRASH_CACHE_DIR = "crash"//异常信息目录
-    private const val IMAGE_COMPRESSTEMP_FILENAME = "temp"//图片压缩临时文件名
 
     //MIME (Multipurpose Internet Mail Extensions) 是描述消息内容类型的因特网标准。
     private val MIME_TYPE_MAP = HashMap<String, String>()
@@ -67,141 +65,67 @@ object FileUtils {
         FILE_TYPE_MAP["avi"] = "video/x-msvideo"
     }
 
-    /**
-     * 获取图片压缩临时路径
-     *
-     * @return
-     */
-    fun getImageCompressTempCachePath(): String {
-        return getImageCachePath(IMAGE_COMPRESSTEMP_FILENAME)
-    }
-
-    /**
-     * 获取图片缓存路径
-     *
-     * @param imageName 图片名
-     * @return 图片路径
-     */
-    fun getImageCachePath(imageName: String): String {
-        val path = getImageCacheFile().absolutePath + File.separator + imageName + ".png"
-        val file = File(path)
-        file.deleteOnExit()
-        return path
-    }
-
-    /**
-     * 获取视频缓存路径
-     *
-     * @return
-     */
-    fun getVideoCachePath(): String {
-        return getVideoCacheFile().absolutePath
-    }
-
-    /**
-     * 获取异常信息路径
-     *
-     * @param logName 文件名
-     * @return log文件
-     */
-    fun getCrashPath(logName: String): String {
-        return getCrashFile().absolutePath + File.separator + logName + ".txt"
-    }
-
-    /**
-     * 获取图片缓存目录
-     *
-     * @return File
-     */
-    fun getImageCacheFile(): File {
-        val result = File(
-            getCacheRootFile()?.absoluteFile.toString() + "/" + APP_CACHE_DIR + "/" + IMAGE_CACHE_DIR
-        )
-        if (!result.exists())
-            result.mkdirs()
-        return result
-    }
-
-    /**
-     * 获取视频缓存目录
-     *
-     * @return
-     */
-    fun getVideoCacheFile(): File {
-        val result = File(
-            getCacheRootFile()?.absoluteFile.toString() + "/" + APP_CACHE_DIR + "/" + VIDEO_CACHE_DIR
-        )
-        if (!result.exists())
-            result.mkdirs()
-        return result
-    }
-
-    /**
-     * 获取文件缓存目录
-     *
-     * @return File
-     */
-    fun getFileCacheFile(): File {
-        val result = File(
-            getCacheRootFile()?.absoluteFile.toString() + "/" + APP_CACHE_DIR + "/" + FILE_CACHE_DIR
-        )
-        if (!result.exists())
-            result.mkdirs()
-        return result
-    }
-
-    /**
-     * 获取异常信息目录
-     *
-     * @return File
-     */
-    fun getCrashFile(): File {
-        val result = File(
-            getCacheRootFile()?.absoluteFile.toString() + "/" + APP_CACHE_DIR + "/" + CRASH_CACHE_DIR
-        )
-        if (!result.exists())
-            result.mkdirs()
-        return result
-    }
-
-    /**
-     * 获取缓存根目录
-     */
-    fun getCacheRootFile(): File? {
-        return getCacheRootFile(ContextUtils.application)
-    }
-
-    /**
-     * 获取缓存根目录
-     *
-     *
-     * 有SDcard放在/mnt/sdcard/Android目录下
-     * 没有sdcard 放在 data/data/packagename/file 目录下
-     *
-     *
-     * @param application Application
-     * @return
-     */
-    fun getCacheRootFile(application: Application): File? {
-        var result: File?
-        result = if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {// SD卡已经挂载
-            application.getExternalFilesDir(null)
-        } else {
-            application.filesDir
+    //获取存储根目录
+    //有SDCard放在/mnt/sdcard/Android目录下
+    //没有sdcard 放在 data/data/packageName/file 目录下
+    val rootDir: File
+        get() {
+            val application = ContextUtils.application
+            return if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {// SD卡已经挂载
+                application.getExternalFilesDir(null) ?: application.filesDir
+            } else {
+                application.filesDir
+            }
         }
-        if (result == null)
-            result = application.filesDir
-        return result
-    }
+
+    val rootPath: String
+        get() = rootDir.absoluteFile.toString()
+    val cacheDir: File
+        get() = File("$rootPath${File.separator}$APP_CACHE_DIR").apply {
+            if (!exists())
+                mkdirs()
+        }
+    val cachePath: String
+        get() = cacheDir.absolutePath
+    val imageDir: File
+        get() = File("$cachePath${File.separator}$IMAGE_CACHE_DIR").apply {
+            if (!exists())
+                mkdirs()
+        }
+    val imagePath: String
+        get() = imageDir.absolutePath
+    val videoDir: File
+        get() = File("$cachePath${File.separator}$VIDEO_CACHE_DIR").apply {
+            if (!exists())
+                mkdirs()
+        }
+    val videoPath: String
+        get() = videoDir.absolutePath
+    val fileDir: File
+        get() = File("$cachePath${File.separator}$FILE_CACHE_DIR").apply {
+            if (!exists())
+                mkdirs()
+        }
+    val filePath: String
+        get() = fileDir.absolutePath
+    val crashDir: File
+        get() = File("$cachePath${File.separator}$CRASH_CACHE_DIR").apply {
+            if (!exists())
+                mkdirs()
+        }
+    val crashPath: String
+        get() = crashDir.absolutePath
+
+    fun getImagePath(fileName: String): String = "$imagePath${File.separator}$fileName.png"
+    fun getCrashPath(fileName: String): String = "$crashPath${File.separator}$fileName.txt"
 
     /**
-     * 压缩图片
-     *
-     * @param filePath   原图片路径
-     * @param targetPath 目标图片路径
+     * 清除缓存目录中的文件
      */
-    fun compressImage(filePath: String, targetPath: String): String {
-        return compressImage(filePath, targetPath, 80)
+    fun clearCacheDir() {
+        val cache = cacheDir
+        if (cache.exists())
+            deleteAllFiles(cache)
     }
 
     /**
@@ -211,7 +135,7 @@ object FileUtils {
      * @param targetPath 目标图片路径
      * @param quality    质量
      */
-    fun compressImage(filePath: String, targetPath: String, quality: Int): String {
+    fun compressImage(filePath: String, targetPath: String, quality: Int = 80): String {
         var bm: Bitmap? = getSmallBitmap(filePath)//获取一定尺寸的图片
         val degree = readPictureDegree(filePath)//获取相片拍摄角度
         if (degree != 0) {//旋转照片角度，防止头像横着显示
@@ -260,24 +184,19 @@ object FileUtils {
         val height = options.outHeight
         val width = options.outWidth
         var inSampleSize = 1
-
         if (height > reqHeight || width > reqWidth) {
-
             // Calculate ratios of height and width to requested height and
             // width
             val heightRatio = (height.toFloat() / reqHeight.toFloat()).roundToInt()
             val widthRatio = (width.toFloat() / reqWidth.toFloat()).roundToInt()
-
             // Choose the smallest ratio as inSampleSize value, this will
             // guarantee
             // a final image with both dimensions larger than or equal to the
             // requested height and width.
             inSampleSize = if (heightRatio < widthRatio) heightRatio else widthRatio
         }
-
         return inSampleSize
     }
-
 
     /**
      * 获取照片角度
@@ -305,7 +224,6 @@ object FileUtils {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
         return degree
     }
 
@@ -328,20 +246,17 @@ object FileUtils {
 
     /**
      * 保存本地资源文件到手机中
-     */
-    fun saveLocalResourceFile(resourceId: Int, fileName: String): String? {
-        return saveLocalResourceFile(ContextUtils.context, resourceId, fileName)
-    }
-
-    /**
-     * 保存本地资源文件到手机中
      *
      * @param context
      * @param resourceId
      * @param fileName
      * @return
      */
-    fun saveLocalResourceFile(context: Context, resourceId: Int, fileName: String): String? {
+    fun saveLocalResourceFile(
+        resourceId: Int,
+        fileName: String,
+        context: Context = ContextUtils.context
+    ): String? {
         val bitmap = BitmapFactory.decodeStream(context.resources.openRawResource(resourceId))
         return saveBitmap(bitmap, fileName)
     }
@@ -355,8 +270,8 @@ object FileUtils {
      */
     fun saveBitmap(bitmap: Bitmap, fileName: String): String? {
         return try {
-            val path = getImageCachePath(fileName)
-            val outputFile = File(getImageCachePath(fileName))
+            val path = getImagePath(fileName)
+            val outputFile = File(getImagePath(fileName))
             if (!outputFile.exists()) {
                 outputFile.parentFile?.mkdirs()
             } else {
@@ -395,14 +310,6 @@ object FileUtils {
         canvas.drawColor(backgroundColor)
         scrollView.draw(canvas)
         return saveBitmap(bitmap, fileName)
-    }
-
-    /**
-     * 清除用户上传图片时保存的临时文件
-     */
-    fun clearTempImage() {
-        if (getImageCacheFile().exists())
-            deleteAllFiles(getImageCacheFile())
     }
 
     fun makeDir(dir: File?) {
@@ -457,10 +364,8 @@ object FileUtils {
     /**
      * 获取当前时间作为文件名称
      */
-    fun getToDayStrAsFileName(): String {
-        val sdf = SimpleDateFormat("yyyyMMddHHmmssSSS", Locale.getDefault())
-        return sdf.format(Date())
-    }
+    fun getToDayStrAsFileName(): String =
+        SimpleDateFormat("yyyyMMddHHmmssSSS", Locale.getDefault()).format(Date())
 
     /**
      * 删除单个文件

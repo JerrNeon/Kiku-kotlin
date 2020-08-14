@@ -124,7 +124,7 @@ class VersionUpdateService : Service() {
                     fileSuffix = FileUtils.getFileSuffix(mimeType)//文件后缀名
                 }
                 val filePath =
-                    FileUtils.getFileCacheFile().absolutePath + File.separator + downLoadFileName + "." + fileSuffix
+                    FileUtils.filePath + File.separator + downLoadFileName + "." + fileSuffix
                 FileIOUtils.writeFileFromIS(filePath, responseBody.byteStream())
                 filePath
             }
@@ -230,7 +230,7 @@ class VersionUpdateService : Service() {
                         fileSuffix = FileUtils.getFileSuffix(mimeType)//文件后缀名
                     }
                     val filePath =
-                        FileUtils.getFileCacheFile().absolutePath + File.separator + downLoadFileName + "." + fileSuffix
+                        FileUtils.filePath + File.separator + downLoadFileName + "." + fileSuffix
                     FileIOUtils.writeFileFromIS(filePath, responseBody.byteStream())
                     filePath
                 }
