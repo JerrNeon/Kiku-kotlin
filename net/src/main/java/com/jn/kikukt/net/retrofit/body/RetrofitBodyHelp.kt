@@ -1,8 +1,7 @@
 package com.jn.kikukt.net.retrofit.body
 
-import kotlinx.serialization.ImplicitReflectionSerializer
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.stringify
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -58,9 +57,8 @@ object RetrofitBodyHelp {
      * @param object 请求参数对象
      * @return RequestBody
      */
-    @ImplicitReflectionSerializer
     fun getJsonRequestBody(`object`: Any?): RequestBody? {
-        return if (`object` != null) Json.stringify(`object`)
+        return if (`object` != null) Json.encodeToString(`object`)
             .toRequestBody(MediaTypeConstants.JSON.toMediaTypeOrNull()) else null
     }
 }

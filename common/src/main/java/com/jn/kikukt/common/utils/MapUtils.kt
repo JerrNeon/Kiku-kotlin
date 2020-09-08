@@ -3,9 +3,9 @@ package com.jn.kikukt.common.utils
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Parcel
 import android.os.Parcelable
 import android.widget.Toast
+import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 /**
@@ -138,24 +138,5 @@ object MapUtils {
 
 }
 
-data class LatLng(var latitude: Double, var longitude: Double) : Parcelable {
-    constructor(source: Parcel) : this(
-        source.readDouble(),
-        source.readDouble()
-    )
-
-    override fun describeContents() = 0
-
-    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
-        writeDouble(latitude)
-        writeDouble(longitude)
-    }
-
-    companion object {
-        @JvmField
-        val CREATOR: Parcelable.Creator<LatLng> = object : Parcelable.Creator<LatLng> {
-            override fun createFromParcel(source: Parcel): LatLng = LatLng(source)
-            override fun newArray(size: Int): Array<LatLng?> = arrayOfNulls(size)
-        }
-    }
-}
+@Parcelize
+data class LatLng(var latitude: Double, var longitude: Double) : Parcelable

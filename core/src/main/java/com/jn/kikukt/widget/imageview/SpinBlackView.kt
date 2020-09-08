@@ -16,9 +16,9 @@ class SpinBlackView : AppCompatImageView {
     private var mNeedToUpdateView: Boolean = false
     private var mUpdateViewRunnable: Runnable? = null
 
-    constructor(context: Context?) : super(context)
+    constructor(context: Context) : super(context)
 
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
     init {
         //setImageResource(R.drawable.ic_kiku_progress)

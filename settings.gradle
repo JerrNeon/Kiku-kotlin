@@ -1,1 +1,1 @@
-include ':app', ':core', ':common', ':net'
+include ':app', ':core', ':common', ':net', ':tripart'

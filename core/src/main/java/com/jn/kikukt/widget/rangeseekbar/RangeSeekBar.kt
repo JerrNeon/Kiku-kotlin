@@ -7,12 +7,12 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Parcelable
-import androidx.annotation.ColorRes
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
+import androidx.annotation.ColorRes
 import androidx.appcompat.widget.AppCompatImageView
 import com.jn.kikukt.R
 import com.jn.kikukt.common.utils.NumberUtils
@@ -145,15 +145,15 @@ class RangeSeekBar<T : Number> : AppCompatImageView {
         }
     }
 
-    constructor(context: Context?) : super(context) {
+    constructor(context: Context) : super(context) {
         init(context, null)
     }
 
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         init(context, attrs)
     }
 
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         init(context, attrs)
     }
 

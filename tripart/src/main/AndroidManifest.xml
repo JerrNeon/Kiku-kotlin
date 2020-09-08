@@ -1,0 +1,114 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.jn.kiku.ttp">
+
+    <!-- 网络 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission
+        android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!--suppress DeprecatedClassUsageInspection （允许程序获取当前或最近运行的应用）-->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
+    <!-- =============================BaiDuMap================================ -->
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <!-- 监听来电状态 -->
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+    <!-- 允许一个程序访问精良位置(如GPS) -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- 允许一个程序访问CellID或WiFi热点来获取粗略的位置 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- 允许应用程序访问额外的位置提供命令 -->
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+
+    <uses-feature android:name="android.hardware.nfc.hce" />
+    <uses-feature android:name="android.hardware.location.gps" />
+
+    <application>
+        <!-- WeChat 注：需要在module中注册微信的Activity-->
+        <!--suppress AndroidDomInspection -->
+        <!--<activity-->
+        <!--android:name="${applicationId}.wxapi.WXEntryActivity"-->
+        <!--android:exported="true"-->
+        <!--android:launchMode="singleInstance"-->
+        <!--android:screenOrientation="portrait"-->
+        <!--android:theme="@style/TranslucentFullScreenTheme"-->
+        <!--android:windowSoftInputMode="adjustPan|adjustUnspecified|stateHidden" />-->
+        <!--&lt;!&ndash;suppress AndroidDomInspection &ndash;&gt;-->
+        <!--<activity-->
+        <!--android:name="${applicationId}.wxapi.WXPayEntryActivity"-->
+        <!--android:exported="true"-->
+        <!--android:launchMode="singleInstance"-->
+        <!--android:screenOrientation="portrait"-->
+        <!--android:theme="@style/TranslucentFullScreenTheme"-->
+        <!--android:windowSoftInputMode="adjustPan|adjustUnspecified|stateHidden" />-->
+        <!-- ======================QQ begin============================ -->
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="tencent101581810" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!-- ======================QQ end============================ -->
+        <!-- ======================JPush begin============================ -->
+        <!-- Since JCore2.0.0 Required SDK核心功能-->
+        <service
+            android:name=".jpush.JPushMsgService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":pushcore">
+            <intent-filter>
+                <action android:name="cn.jiguang.user.service.action" />
+            </intent-filter>
+        </service>
+
+        <!--<receiver
+            android:name=".jpush.JPushMsgReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
+                <category android:name="${applicationId}" />
+            </intent-filter>
+        </receiver>-->
+        <!-- ======================JPush end============================ -->
+        <!-- ======================BaiDuMap begin============================ -->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="XWl9Di3aEk3r05cNIHvN1XboKSuVpWxZ" />
+
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" />
+        <!-- ======================BaiDuMap end============================ -->
+    </application>
+</manifest>
+

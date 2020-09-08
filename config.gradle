@@ -11,38 +11,38 @@ ext {
     multiDexEnabled = true
 
     android = [
-            androidXSdkVersion                     : "1.1.0",
+            androidXSdkVersion                     : "1.2.1",
             roomSdkVersion                         : "2.1.0",
             lifecycleSdkVersion                    : "2.2.0",
 
             butterknifeSdkVersion                  : "10.1.0",
             retrofitSdkVersion                     : "2.9.0",
             okhttpSdkVersion                       : "2.5.0",
-            okhttp3SdkVersion                      : "4.8.0",
+            okhttp3SdkVersion                      : "4.8.1",
             eventbusSdkVersion                     : "3.2.0",
             gsonSdkVersion                         : "2.8.6",
             glideSdkVersion                        : "4.11.0",
             greendaoSdkVersion                     : "3.2.2",
             BaseRecyclerViewAdapterHelperSdkVersion: "3.0.4",
             SmartRefreshLayoutSdkVersion           : "2.0.1",
-            rxjavaSdkVersion                       : "3.0.4",
+            rxjavaSdkVersion                       : "3.0.6",
             rxandroidSdkVersion                    : "3.0.0",
             rxpermissionsSdkVersion                : "0.12",
             rxbindingSdkVersion                    : "4.0.0",
             rxlifecycleSdkVersion                  : "2.2.1",
             dagger2SdkVersion                      : "2.8",
             espressoSdkVersion                     : "2.2.2",
-            kotlinxCoroutinesSdkVersion            : "1.3.7",
+            kotlinxCoroutinesSdkVersion            : "1.3.9",
     ]
 
     dep = [
             "junit"                              : "junit:junit:4.13",
             "support-v4"                         : "androidx.legacy:legacy-support-v4:1.0.0",
             "design"                             : "com.google.android.material:material:${android.androidXSdkVersion}",
-            "recyclerview-v7"                    : "androidx.recyclerview:recyclerview:${android.androidXSdkVersion}",
+            "recyclerview-v7"                    : "androidx.recyclerview:recyclerview:1.1.0",
             "cardview-v7"                        : "androidx.cardview:cardview:${android.androidXSdkVersion}",
-            "appcompat-v7"                       : "androidx.appcompat:appcompat:1.1.0",
-            "constraint-layout"                  : 'androidx.constraintlayout:constraintlayout:2.0.0-rc1',
+            "appcompat-v7"                       : "androidx.appcompat:appcompat:1.2.0",
+            "constraint-layout"                  : 'androidx.constraintlayout:constraintlayout:2.0.1',
             "room"                               : "androidx.room:room-runtime:${android.roomSdkVersion}",
             "room-annotationProcessor"           : "androidx.room:room-compiler:${android.roomSdkVersion}",
             "lifecycle"                          : "androidx.lifecycle:lifecycle-extensions:${android.lifecycleSdkVersion}",
@@ -131,25 +131,25 @@ ext {
             "observablescrollview"               : 'com.github.ksoichiro:android-observablescrollview:1.6.0',//带动画交互效果的scrollview
             "Recyclerview-animators"             : 'jp.wasabeef:recyclerview-animators:2.2.6',//RecyclerView动画
 
-            "wechat-sdk"                         : 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:1.0.2',
-            "sinaWeiBo-sdk"                      : 'com.sina.weibo.sdk:core:4.2.7:openDefaultRelease@aar',//新浪微博
-            "jpush-sdk"                          : 'cn.jiguang.sdk:jpush:3.1.1',  // JPush
-            "jpush-core"                         : 'cn.jiguang.sdk:jcore:1.1.9',
+            "wechat-sdk"                         : 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.4.0',
+            "sinaWeiBo-sdk"                      : 'com.sina.weibo.sdk:core:4.4.1:openDefaultRelease@aar',//新浪微博
+            "jpush-sdk"                          : 'cn.jiguang.sdk:jpush:3.3.4',  // JPush
+            "jpush-core"                         : 'cn.jiguang.sdk:jcore:2.1.2',
             //以下都是Ping++平台的
-            "pingpp"                             : 'com.pingxx:pingpp-core:2.1.17', // Ping++必须添加
+            "pingpp"                             : 'com.pingxx:pingpp-android:2.2.2', // Ping++必须添加
             "pingpp-wechat"                      : 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+', // 使用微信支付时添加,具体版本参考微信官方文档
-            "pingpp-alipay"                      : 'com.pingxx:pingpp-alipay:2.1.17', // 使用支付宝时添加
-            "pingpp-upacp"                       : 'com.pingxx:pingpp-upacp:2.1.17', // 使用银联支付时添加
-            "pingpp-qpay"                        : 'com.pingxx:pingpp-qpay:2.1.17', // 使用QQ钱包时添加
-            "pingpp-cmbwallet"                   : 'com.pingxx:pingpp-cmbwallet:2.1.17', // 使用招行一网通时添加
+            "pingpp-alipay"                      : 'com.pingxx:pingpp-android-alipay:2.2.0', // 使用支付宝时添加
+            "pingpp-upacp"                       : 'com.pingxx:pingpp-android-upacp:2.2.0', // 使用银联支付时添加
+            "pingpp-qpay"                        : 'com.pingxx:pingpp-qpay:2.1.19', // 使用QQ钱包时添加
+            "pingpp-cmbwallet"                   : 'com.pingxx:pingpp-cmbwallet:2.1.19', // 使用招行一网通时添加
 
             "zhugeio-integration"                : "com.zhuge.analysis:zhugeio:latest.integration",//诸葛ioSDK
             "mob_kefu"                           : 'com.hyphenate:kefu-easeui-android:latest.release', //环信客服SDK
-            "umeng-common"                       : "com.umeng.sdk:common:latest.integration",//统计的基础服务包
-            "umeng-analytics"                    : "com.umeng.sdk:analytics:latest.integration",//统计包
+            "umeng-common"                       : "com.umeng.umsdk:common:2.0.0",//友盟统计的基础服务包
+            "umeng-analytics"                    : "com.umeng.umsdk:analytics:8.0.0",//友盟统计包
             "mtj-sdk"                            : 'com.baidu.mobstat:mtj-sdk:latest.integration',//百度标准统计SDK
-            "bugtags-debug"                      : 'com.bugtags.library:bugtags-lib:latest.integration',//Bugtags-Debug
-            "bugtags-release"                    : 'com.bugtags.metrics:bugtags-lib:latest.integration',//Bugtags-release
+            "bugtags-debug"                      : 'com.bugtags.library:bugtags-lib:3.0.0',//Bugtags-Debug
+            "bugtags-release"                    : 'com.bugtags.metrics:bugtags-lib:2.4.1',//Bugtags-release
 
             "picasso"                            : "com.squareup.picasso:picasso:2.5.2",//图片加载
             "nineoldandroids"                    : "com.nineoldandroids:library:2.4.0",//动画(兼容Android 3.0以下)
@@ -159,8 +159,8 @@ ext {
             "jsoup"                              : "org.jsoup:jsoup:1.13.1",//Html解析
 
             /*--------------------------------- test ---------------------------------*/
-            "runner"                             : 'androidx.test:runner:1.2.0',
-            "espresso-core"                      : 'androidx.test.espresso:espresso-core:3.2.0',
+            "runner"                             : 'androidx.test:runner:1.3.0',
+            "espresso-core"                      : 'androidx.test.espresso:espresso-core:3.3.0',
             "espresso-contrib"                   : ("com.android.support.test.espresso:espresso-contrib:${android.espressoSdkVersion}"),
             "espresso-intents"                   : "com.android.support.test.espresso:espresso-intents:${android.espressoSdkVersion}",
             "mockito-core"                       : "org.mockito:mockito-core:1.+",
@@ -200,8 +200,8 @@ ext {
     ]
 
     depKt = [
-            "kotlin"                         : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.72",
-            "kotlinx-serialization"          : "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0",
+            "kotlin"                         : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.0",
+            "kotlinx-serialization"          : "org.jetbrains.kotlinx:kotlinx-serialization-runtime:1.0-M1-1.4.0-rc",
             "kotlinx-coroutines-core"        : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${android.kotlinxCoroutinesSdkVersion}",
             "kotlinx-coroutines-android"     : "org.jetbrains.kotlinx:kotlinx-coroutines-android:${android.kotlinxCoroutinesSdkVersion}",
 

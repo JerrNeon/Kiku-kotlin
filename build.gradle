@@ -20,11 +20,16 @@ buildscript {
 
 allprojects {
     repositories {
+        flatDir {
+            dirs 'libs', '../tripart/libs'
+        }
         google()
         jcenter()
         maven { url "https://jitpack.io" }
         mavenCentral()
-        maven { url "https://dl.bintray.com/thelasterstar/maven/" }
+        maven { url "https://dl.bintray.com/thelasterstar/maven/" }//新浪微博
+        maven { url 'https://dl.bintray.com/umsdk/release' }//友盟
+        maven { url "https://dl.bintray.com/pingxx/maven" }//ping++
     }
 }
 

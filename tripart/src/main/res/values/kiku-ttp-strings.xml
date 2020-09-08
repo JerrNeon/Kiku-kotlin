@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">kiku-ttp</string>
+
+    <!--QQ或微信分享描述-->
+    <string name="share_QQ_WeChat">我在某某网发现了一个不错的商品，赶紧来看看吧。</string>
+    <!--新浪微博分享描述 占位符1：名称，占位符2：链接地址-->
+    <string name="share_sina" formatted="false">我在某某网发现了一个不错的商品：%s 点击查看：%s @盛时网</string>
+</resources>
