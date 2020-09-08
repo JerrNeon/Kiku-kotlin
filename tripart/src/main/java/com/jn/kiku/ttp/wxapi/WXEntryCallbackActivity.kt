@@ -17,7 +17,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler
  * Author：Stevie.Chen Time：2019/8/2
  * Class Comment：微信回调
  */
-class WXEntryCallbackActivity : AppCompatActivity(), IWXAPIEventHandler {
+open class WXEntryCallbackActivity : AppCompatActivity(), IWXAPIEventHandler {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WeChatManage.instance.handleIntent(intent, this)

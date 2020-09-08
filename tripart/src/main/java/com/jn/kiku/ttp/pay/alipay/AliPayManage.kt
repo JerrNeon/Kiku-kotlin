@@ -179,7 +179,7 @@ class AliPayManage private constructor() : Handler.Callback, DefaultLifecycleObs
     override fun handleMessage(msg: Message): Boolean {
         when (msg.what) {
             SDK_PAY_FLAG -> {
-                val aliPayResult = AliPayResult(msg.obj as Map<String?, String?>)
+                val aliPayResult = AliPayResult(msg.obj as? Map<String?, String?>)
                 /*
                  对于支付结果，请商户依赖服务端的异步通知结果。同步通知结果，仅作为支付结束的通知。
                  9000 	订单支付成功
