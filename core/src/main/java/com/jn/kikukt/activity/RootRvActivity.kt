@@ -82,9 +82,11 @@ abstract class RootRvActivity<T> : RootRefreshActivity(), IRvView<T> {
 
     override fun initRvView() {
         mRecyclerView = rv_common
-        mRecyclerView.run {
-            layoutManager = mLayoutManager
-            adapter = mAdapter
+        mRecyclerView.let {
+            if (null == it.layoutManager) {
+                it.layoutManager = mLayoutManager
+            }
+            it.adapter = mAdapter
         }
         mAdapter.run {
             recyclerView = this@RootRvActivity.mRecyclerView
