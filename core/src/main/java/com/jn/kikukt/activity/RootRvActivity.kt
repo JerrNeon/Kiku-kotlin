@@ -27,11 +27,8 @@ abstract class RootRvActivity<T> : RootRefreshActivity(), IRvView<T> {
         get() = R.layout.common_loadingfailure//empty or failure view id
 
     //RecyclerView.LayoutManager
-    override val mLayoutManager: RecyclerView.LayoutManager by lazy {
-        LinearLayoutManager(
-            applicationContext
-        )
-    }
+    override val mLayoutManager: RecyclerView.LayoutManager
+        get() = LinearLayoutManager(applicationContext)
 
     //[Observer]
     override val observer: Observer<HttpResponse> by lazy {
@@ -83,9 +80,7 @@ abstract class RootRvActivity<T> : RootRefreshActivity(), IRvView<T> {
     override fun initRvView() {
         mRecyclerView = rv_common
         mRecyclerView.let {
-            if (null == it.layoutManager) {
-                it.layoutManager = mLayoutManager
-            }
+            it.layoutManager = mLayoutManager
             it.adapter = mAdapter
         }
         mAdapter.run {

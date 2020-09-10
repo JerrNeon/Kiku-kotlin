@@ -27,7 +27,8 @@ abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T> {
         get() = R.layout.common_loadingfailure//empty or failure view id
 
     //RecyclerView.LayoutManager
-    override val mLayoutManager: RecyclerView.LayoutManager by lazy { LinearLayoutManager(context) }
+    override val mLayoutManager: RecyclerView.LayoutManager
+        get() = LinearLayoutManager(context)
     override val observer: Observer<HttpResponse> by lazy {
         Observer<HttpResponse> {
             when (it) {
@@ -83,9 +84,7 @@ abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T> {
     override fun initRvView() {
         mRecyclerView = view?.rv_common!!
         mRecyclerView.let {
-            if (null == it.layoutManager) {
-                it.layoutManager = mLayoutManager
-            }
+            it.layoutManager = mLayoutManager
             it.adapter = mAdapter
         }
         mAdapter.run {
