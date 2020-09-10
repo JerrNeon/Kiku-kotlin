@@ -3,7 +3,6 @@ package com.jn.kikukt.activity
 import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -152,8 +151,7 @@ abstract class RootMainActivity : RootActivity(), IMainView, TabLayout.OnTabSele
         if (mVersionUpdateDialog == null) {
             mVersionUpdateDialog = VersionUpdateDialog.newInstance(mVersionUpdateVO!!)
         }
-        mVersionUpdateDialog?.show(supportFragmentManager, "",
-            View.OnClickListener { showProgressDialog() })
+        mVersionUpdateDialog?.show(supportFragmentManager, "") { showProgressDialog() }
     }
 
     override fun onTabReselected(tab: TabLayout.Tab?) {

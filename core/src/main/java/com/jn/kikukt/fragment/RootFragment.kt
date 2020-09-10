@@ -42,7 +42,7 @@ abstract class RootFragment : Fragment(), IBaseView, IViewModelView, IMvpView, I
 
     override fun onResume() {
         super.onResume()
-        if (!isFirstLoad && !isHidden) {
+        if (!isFirstLoad && !isHidden && isLazyLoad) {
             onRequest()
             isFirstLoad = true
         }
