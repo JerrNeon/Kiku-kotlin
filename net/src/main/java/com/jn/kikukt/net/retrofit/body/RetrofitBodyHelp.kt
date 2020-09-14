@@ -1,7 +1,7 @@
 package com.jn.kikukt.net.retrofit.body
 
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -34,7 +34,10 @@ object RetrofitBodyHelp {
      * @param params     额外参数信息
      * @return RequestBody
      */
-    fun getFileUploadRequestBody(fileParams: Map<String, File>, params: Map<String, String>?): RequestBody {
+    fun getFileUploadRequestBody(
+        fileParams: Map<String, File>,
+        params: Map<String, String>?
+    ): RequestBody {
         val build = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
         if (fileParams.isNotEmpty()) {
@@ -54,11 +57,11 @@ object RetrofitBodyHelp {
     /**
      * 获取Json类型的RequestBody
      *
-     * @param object 请求参数对象
+     * @param map 请求参数对象
      * @return RequestBody
      */
-    fun getJsonRequestBody(`object`: Any?): RequestBody? {
-        return if (`object` != null) Json.encodeToString(`object`)
-            .toRequestBody(MediaTypeConstants.JSON.toMediaTypeOrNull()) else null
+    fun getJsonRequestBody(map: MutableMap<String, String?>): RequestBody? {
+        return Json.encodeToString(serializer(), map)
+            .toRequestBody(MediaTypeConstants.JSON.toMediaTypeOrNull())
     }
 }

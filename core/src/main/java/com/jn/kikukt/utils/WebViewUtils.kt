@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.PixelFormat
+import android.net.Uri
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import android.widget.ProgressBar
 import com.jn.kikukt.common.utils.logI
 import com.tencent.smtt.sdk.QbSdk
 import com.tencent.smtt.sdk.TbsListener
+import com.tencent.smtt.sdk.ValueCallback
 import org.jsoup.Jsoup
 import java.util.*
 
@@ -117,7 +119,10 @@ object WebViewUtils {
             }
         } else if (webView is com.tencent.smtt.sdk.WebView) {
             webView.webViewClient = object : com.tencent.smtt.sdk.WebViewClient() {
-                override fun shouldOverrideUrlLoading(p0: com.tencent.smtt.sdk.WebView?, s: String): Boolean {
+                override fun shouldOverrideUrlLoading(
+                    p0: com.tencent.smtt.sdk.WebView?,
+                    s: String
+                ): Boolean {
                     webView.loadUrl(s)
                     return true
                 }
@@ -125,9 +130,20 @@ object WebViewUtils {
         }
     }
 
-    fun setWebChromeClient(webView: Any, progressBar: ProgressBar) {
+    fun setWebChromeClient(
+        webView: Any,
+        progressBar: ProgressBar,
+        client1: WebChromeClient? = null,
+        client2: com.tencent.smtt.sdk.WebChromeClient? = null
+    ) {
         if (webView is WebView) {
             webView.webChromeClient = object : WebChromeClient() {
+
+                override fun onReceivedTitle(view: WebView?, title: String?) {
+                    super.onReceivedTitle(view, title)
+                    client1?.onReceivedTitle(view, title)
+                }
+
                 override fun onProgressChanged(view: WebView, newProgress: Int) {
                     progressBar.progress = newProgress
                     if (newProgress == 100) {
@@ -135,17 +151,50 @@ object WebViewUtils {
                     } else {
                         progressBar.visibility = View.VISIBLE
                     }
+                    client1?.onProgressChanged(view, newProgress)
+                }
+
+                override fun onShowFileChooser(
+                    webView: WebView?,
+                    filePathCallback: android.webkit.ValueCallback<Array<Uri>>?,
+                    fileChooserParams: FileChooserParams?
+                ): Boolean {
+                    val result =
+                        client1?.onShowFileChooser(webView, filePathCallback, fileChooserParams)
+                    return result ?: super.onShowFileChooser(
+                        webView,
+                        filePathCallback,
+                        fileChooserParams
+                    )
                 }
             }
         } else if (webView is com.tencent.smtt.sdk.WebView) {
             webView.webChromeClient = object : com.tencent.smtt.sdk.WebChromeClient() {
-                override fun onProgressChanged(view: com.tencent.smtt.sdk.WebView?, newProgress: Int) {
+                override fun onReceivedTitle(p0: com.tencent.smtt.sdk.WebView?, p1: String?) {
+                    super.onReceivedTitle(p0, p1)
+                    client2?.onReceivedTitle(p0, p1)
+                }
+
+                override fun onProgressChanged(
+                    view: com.tencent.smtt.sdk.WebView?,
+                    newProgress: Int
+                ) {
                     progressBar.progress = newProgress
                     if (newProgress == 100) {
                         progressBar.visibility = View.GONE
                     } else {
                         progressBar.visibility = View.VISIBLE
                     }
+                    client2?.onProgressChanged(view, newProgress)
+                }
+
+                override fun onShowFileChooser(
+                    p0: com.tencent.smtt.sdk.WebView?,
+                    p1: ValueCallback<Array<Uri>>?,
+                    p2: FileChooserParams?
+                ): Boolean {
+                    val result = client2?.onShowFileChooser(p0, p1, p2)
+                    return result ?: super.onShowFileChooser(p0, p1, p2)
                 }
             }
         }

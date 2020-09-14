@@ -25,7 +25,7 @@ fun <T> BaseQuickAdapter<T, *>.listener(block: BaseQuickAdapterListener<T>.() ->
             }
         }
         onItemChildClick?.let {
-            setOnItemClickListener { adapter, view, position ->
+            setOnItemChildClickListener { adapter, view, position ->
                 it.invoke(
                     adapter,
                     view,
