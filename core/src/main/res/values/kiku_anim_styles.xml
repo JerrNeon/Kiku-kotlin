@@ -10,4 +10,9 @@
         <item name="android:windowEnterAnimation">@anim/center_in</item>
         <item name="android:windowExitAnimation">@anim/center_out</item>
     </style>
+
+    <style name="popup_in_out">
+        <item name="android:windowEnterAnimation">@anim/popup_set_in</item>
+        <item name="android:windowExitAnimation">@anim/popup_set_in</item>
+    </style>
 </resources>
