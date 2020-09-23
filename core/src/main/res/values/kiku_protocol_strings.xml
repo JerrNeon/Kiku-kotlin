@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dialog_protocolTitle">用户声明</string>
+    <string name="dialog_protocolContent1">感谢您选择</string>
+    <string name="dialog_protocolContent2">APP！</string>
+    <string name="dialog_protocolContent3">我们非常重视您的个人信息和隐私保护。为了更好地保障您的个人权益，在您使用我们的产品前，</string>
+    <string name="dialog_protocolContent4">请务必审慎阅读</string>
+    <string name="dialog_protocolContent5"> 《用户协议》 </string>
+    <string name="dialog_protocolContent6">与</string>
+    <string name="dialog_protocolContent7"> 《隐私政策》 </string>
+    <string name="dialog_protocolContent8">内的所有条款。您点击“同意并继续”的行为即表示您已阅读完毕并同意以上协议的全部内容。</string>
+    <string name="dialog_protocolContent9">如您同意以上协议内容，请点击“同意并继续”，开始使用我们的产品和服务!</string>
+    <string name="dialog_protocolNegative">不同意</string>
+    <string name="dialog_protocolPositive">同意并继续</string>
+</resources>
