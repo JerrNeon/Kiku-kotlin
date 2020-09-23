@@ -105,7 +105,7 @@ ext {
 
             "alertview"                          : 'com.bigkoo:alertview:1.0.3',//对话框
             "pickerview"                         : 'com.bigkoo:pickerview:2.1.1',//日期时间选择、三级联动
-            "Android-PickerView"                 : 'com.contrarywind:Android-PickerView:3.2.5',//日期时间选择、三级联动
+            "Android-PickerView"                 : 'com.contrarywind:Android-PickerView:4.1.9',//日期时间选择、三级联动
             "banner"                             : 'com.youth.banner:banner:2.1.0',//banner图
             "convenientbanner"                   : 'com.bigkoo:convenientbanner:2.0.5',//banner图
             "view-pager-transforms"              : 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar',//banner动画
