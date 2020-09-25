@@ -47,7 +47,6 @@
         <!--android:name="${applicationId}.wxapi.WXEntryActivity"-->
         <!--android:exported="true"-->
         <!--android:launchMode="singleInstance"-->
-        <!--android:screenOrientation="portrait"-->
         <!--android:theme="@style/TranslucentFullScreenTheme"-->
         <!--android:windowSoftInputMode="adjustPan|adjustUnspecified|stateHidden" />-->
         <!--&lt;!&ndash;suppress AndroidDomInspection &ndash;&gt;-->
@@ -55,7 +54,6 @@
         <!--android:name="${applicationId}.wxapi.WXPayEntryActivity"-->
         <!--android:exported="true"-->
         <!--android:launchMode="singleInstance"-->
-        <!--android:screenOrientation="portrait"-->
         <!--android:theme="@style/TranslucentFullScreenTheme"-->
         <!--android:windowSoftInputMode="adjustPan|adjustUnspecified|stateHidden" />-->
         <!-- ======================QQ begin============================ -->

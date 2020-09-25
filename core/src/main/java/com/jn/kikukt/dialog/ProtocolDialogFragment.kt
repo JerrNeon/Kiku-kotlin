@@ -121,7 +121,7 @@ class ProtocolDialogFragment private constructor() : RootDialogFragment() {
         }
         view?.findViewById<TextView>(R.id.tv_protocolPositive)
             ?.setOnClickListener {
-                dismissProgressDialog()
+                dismissAllowingStateLoss()
                 onPositiveBlock?.invoke()
             }
     }
