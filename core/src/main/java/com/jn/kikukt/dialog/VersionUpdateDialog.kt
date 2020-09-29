@@ -37,11 +37,13 @@ class VersionUpdateDialog : RootDialogFragment(), View.OnClickListener {
 
     override val layoutResId: Int = R.layout.dialog_versionupdate
 
-    override val layoutParams: WindowManager.LayoutParams? = mWindow?.attributes?.apply {
-        gravity = Gravity.CENTER//居中显示
-        width = (requireContext().getScreenWidth() * 0.8).toInt()//宽度为屏幕宽度的80%
-        height = (requireContext().getScreenWidth() * 0.8).toInt()//高度为屏幕宽度的80%
-    }
+    override val layoutParams: WindowManager.LayoutParams?
+        get() = mWindow?.attributes?.apply {
+            gravity = Gravity.CENTER//居中显示
+            val screenWidth = context?.getScreenWidth()?.toFloat() ?: 0f
+            width = (screenWidth * 0.8f).toInt()//宽度为屏幕宽度的80%
+            height = (screenWidth * 0.8f).toInt()//高度为屏幕宽度的80%
+        }
 
     override fun initView() {
         super.initView()

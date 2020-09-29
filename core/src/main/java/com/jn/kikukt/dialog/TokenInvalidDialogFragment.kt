@@ -19,10 +19,12 @@ open class TokenInvalidDialogFragment : RootDialogFragment(), View.OnClickListen
 
     override val layoutResId: Int = R.layout.dialog_tokeninvalid
 
-    override val layoutParams: WindowManager.LayoutParams? = mWindow?.attributes?.apply {
-        gravity = Gravity.CENTER//居中显示
-        width = (requireContext().getScreenWidth() * 0.7).toInt()//宽度为全屏的70%
-    }
+    override val layoutParams: WindowManager.LayoutParams?
+        get() = mWindow?.attributes?.apply {
+            gravity = Gravity.CENTER//居中显示
+            val screenWidth = context?.getScreenWidth()?.toFloat() ?: 0f
+            width = (screenWidth * 0.7f).toInt()//宽度为全屏的70%
+        }
 
     override fun initView() {
         super.initView()

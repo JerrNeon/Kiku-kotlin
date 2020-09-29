@@ -41,9 +41,11 @@ class ShareDialogFragment : RootDialogFragment(), OnItemClickListener, View.OnCl
 
     override val isCanceledOnTouchOutsideEnable: Boolean = true
 
-    override val layoutParams: WindowManager.LayoutParams? = mWindow?.attributes?.apply {
-        width = (requireContext().getScreenWidth() * 0.94).toInt()//宽度
-    }
+    override val layoutParams: WindowManager.LayoutParams?
+        get() = mWindow?.attributes?.apply {
+            val screenWidth = context?.getScreenWidth()?.toFloat() ?: 0f
+            width = (screenWidth * 0.94f).toInt()//宽度
+        }
 
     override fun initView() {
         view?.run {
