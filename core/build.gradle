@@ -73,8 +73,7 @@ dependencies {
     api dep["eventbus"]
     api dep["glide"]
     api dep["glide-transformations"]
-    api dep["rxpermissions"]
-    
+
     api dep["BaseRecyclerViewAdapterHelper"]
     api dep["SmartRefreshLayout"]
     api dep["SmartRefreshLayout-header-classics"]

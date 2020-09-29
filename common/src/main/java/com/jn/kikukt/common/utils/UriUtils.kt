@@ -18,17 +18,16 @@ import java.io.File
  */
 object UriUtils {
 
+    val context: Context
+        get() = ContextUtils.context
+
     /**
      * 获取Uri
-     *
      * 适配android7.0
-     *
-     * @param context  Context
      * @param filePath 文件路径
-     * @return
      */
-    fun getUri(context: Context, filePath: String): Uri? {
-        return getUri(context, filePath, ContextUtils.application.packageName)
+    fun getUri(filePath: String): Uri? {
+        return getUri(filePath, ContextUtils.application.packageName)
     }
 
     /**
@@ -36,27 +35,23 @@ object UriUtils {
      *
      * 适配android7.0
      *
-     * @param context        Context
      * @param filePath       文件路径
      * @param application_id 应用包名
      * @return
      */
-    fun getUri(context: Context, filePath: String, application_id: String): Uri? {
+    fun getUri(filePath: String, application_id: String): Uri? {
         try {
-            var uri: Uri? = null
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                uri = FileProvider.getUriForFile(
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                FileProvider.getUriForFile(
                     context,
                     "$application_id.fileprovider",
                     File(filePath)
                 )
             } else
-                uri = Uri.fromFile(File(filePath))
-            return uri
+                Uri.fromFile(File(filePath))
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
         return null
     }
 
@@ -64,12 +59,10 @@ object UriUtils {
      * 手机相册中返回的Uri格式可能不是以.jpg/.png结尾的格式
      * 获取手机中uri的真实路径(选取手机相册返回的uri统一经过此方法获得图片路径)
      *
-     * @param context The context.
      * @param uri     The Uri to query.
-     * @author paulburke
      */
     @SuppressLint("NewApi")
-    fun getPathFromUri(context: Context, uri: Uri): String? {
+    fun getPathFromUri(uri: Uri): String? {
         val isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
         // DocumentProvider
         if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
@@ -88,7 +81,7 @@ object UriUtils {
                     Uri.parse("content://downloads/public_downloads"),
                     java.lang.Long.valueOf(id)
                 )
-                return getDataColumn(context, contentUri, null, null)
+                return getDataColumn(contentUri, null, null)
             } else if (isMediaDocument(uri)) {
                 val docId = DocumentsContract.getDocumentId(uri)
                 val split = docId.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
@@ -104,11 +97,11 @@ object UriUtils {
                 }
                 val selection = "_id=?"
                 val selectionArgs = arrayOf(split[1])
-                return getDataColumn(context, contentUri, selection, selectionArgs)
+                return getDataColumn(contentUri, selection, selectionArgs)
             }// MediaProvider
             // DownloadsProvider
         } else if ("content".equals(uri.scheme!!, ignoreCase = true)) {
-            return getDataColumn(context, uri, null, null)
+            return getDataColumn(uri, null, null)
         } else if ("file".equals(uri.scheme!!, ignoreCase = true)) {
             return uri.path
         }// File
@@ -120,14 +113,12 @@ object UriUtils {
      * Get the value of the data column for this Uri. This is useful for
      * MediaStore Uris, and other file-based ContentProviders.
      *
-     * @param context       The context.
      * @param uri           The Uri to query.
      * @param selection     (Optional) Filter used in the query.
      * @param selectionArgs (Optional) Selection arguments used in the query.
      * @return The value of the _data column, which is typically a file path.
      */
     fun getDataColumn(
-        context: Context,
         uri: Uri?,
         selection: String?,
         selectionArgs: Array<String>?

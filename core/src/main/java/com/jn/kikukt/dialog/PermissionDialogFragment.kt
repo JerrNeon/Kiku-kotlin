@@ -6,8 +6,8 @@ import android.view.View
 import android.view.WindowManager
 import com.jn.kikukt.R
 import com.jn.kikukt.common.utils.getScreenWidth
-import com.jn.kikukt.common.utils.openApplicationSetting
 import kotlinx.android.synthetic.main.dialog_permission.view.*
+import requestApplicationSettings
 
 /**
  * Author：Stevie.Chen Time：2019/7/15
@@ -33,9 +33,19 @@ class PermissionDialogFragment : RootDialogFragment(), View.OnClickListener {
 
     override val isCanceledOnTouchOutsideEnable: Boolean = true
 
-    override val layoutParams: WindowManager.LayoutParams? = mWindow?.attributes?.apply {
-        gravity = Gravity.CENTER//中间显示
-        width = (requireContext().getScreenWidth() * 0.9).toInt()//宽度为屏幕90%
+    override val layoutParams: WindowManager.LayoutParams?
+        get() = mWindow?.attributes?.apply {
+            gravity = Gravity.CENTER//中间显示
+            val screenWidth = context?.getScreenWidth()?.toFloat() ?: 0f
+            width = (screenWidth * 0.9f).toInt()//宽度为屏幕90%
+        }
+
+    private var applicationBlock: (() -> Unit)? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        applicationBlock = requestApplicationSettings {
+        }
     }
 
     override fun initView() {
@@ -65,7 +75,7 @@ class PermissionDialogFragment : RootDialogFragment(), View.OnClickListener {
             this.dismiss()
         } else if (view.id == R.id.tv_permissionSubmit) {
             this.dismiss()
-            requireContext().openApplicationSetting()
+            applicationBlock?.invoke()
         }
     }
 }

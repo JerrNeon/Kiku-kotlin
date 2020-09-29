@@ -21,5 +21,5 @@ interface ICmblifeListener {
      * @param requestCode 请求码，与唤起掌上生活时传入的参数一致
      * @param resultMap 返回参数
      */
-    fun onCmblifeCallBack(requestCode: String?, resultMap: Map<String?, String?>?)
+    fun onCmblifeCallBack(requestCode: String?, resultMap: Map<String, String>?)
 }

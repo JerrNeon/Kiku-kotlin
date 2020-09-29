@@ -7,7 +7,7 @@ import com.jn.kikukt.common.SPManage
 import com.jn.kikukt.common.api.ISplashView
 import com.jn.kikukt.common.leak.WeakHandler
 import com.jn.kikukt.common.utils.statusbar.setTransparent
-import com.jn.kikukt.utils.RxPermissionsManager
+import requestMultiplePermissions
 
 /**
  * Author：Stevie.Chen Time：2019/7/11
@@ -48,9 +48,8 @@ abstract class RootSplashActivity : RootActivity(), ISplashView {
     }
 
     override fun requestAllPermission() {
-        RxPermissionsManager.requestPermission(
-            this,
-            getAllPermissions()
-        ) { mHandler.sendEmptyMessageDelayed(SKIP_WHAT, SKIP_TIME) }
+        requestMultiplePermissions(getAllPermissions()) {
+            mHandler.sendEmptyMessageDelayed(SKIP_WHAT, SKIP_TIME)
+        }
     }
 }

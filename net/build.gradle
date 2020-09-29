@@ -54,8 +54,6 @@ dependencies {
     api dep["retrofit-adapter-rxjava"]
     api dep["rxjava"]
     api dep["rxandroid"]
-    api depKt["activity-ktx"]
-    api depKt["fragment-ktx"]
     api depKt["lifecycle-viewmodel-ktx"]
     api depKt["kotlinx-coroutines-core"]
     api depKt["kotlinx-coroutines-android"]

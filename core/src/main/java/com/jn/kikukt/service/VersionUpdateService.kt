@@ -8,9 +8,9 @@ import android.os.IBinder
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.jn.kikukt.R
+import com.jn.kikukt.common.utils.IntentUtils
 import com.jn.kikukt.common.utils.file.FileIOUtils
 import com.jn.kikukt.common.utils.file.FileUtils
-import com.jn.kikukt.common.utils.getInstallIntent
 import com.jn.kikukt.entiy.VersionUpdateVO
 import com.jn.kikukt.net.coroutines.RetrofitManager
 import com.jn.kikukt.net.retrofit.callback.ProgressListener
@@ -47,7 +47,7 @@ class VersionUpdateService : Service() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         val versionUpdateVO =
             intent.getParcelableExtra<VersionUpdateVO>(VersionUpdateVO::class.java.simpleName)
-        downloadFile(versionUpdateVO!!)
+        versionUpdateVO?.let { downloadFile(it) }
         return super.onStartCommand(intent, flags, startId)
     }
 
@@ -145,7 +145,7 @@ class VersionUpdateService : Service() {
                 }
 
                 override fun onNext(filePath: String) {
-                    val intent = this@VersionUpdateService.getInstallIntent(filePath)
+                    val intent = IntentUtils.getInstallIntent(filePath)
                     val pendingIntent = PendingIntent.getActivity(
                         this@VersionUpdateService,
                         0,
@@ -236,7 +236,7 @@ class VersionUpdateService : Service() {
                 }
                 val filePath = filePathDeferred.await()
                 //设置点击通知栏进行Apk的安装
-                val intent = this@VersionUpdateService.getInstallIntent(filePath)
+                val intent = IntentUtils.getInstallIntent(filePath)
                 val pendingIntent = PendingIntent.getActivity(
                     this@VersionUpdateService,
                     0,

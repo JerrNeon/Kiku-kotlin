@@ -67,4 +67,7 @@ dependencies {
     api dep["lifecycle-java8"]
     //GSon
     api dep["gson"]
+    //kotlin
+    api depKt["activity-ktx"]
+    api depKt["fragment-ktx"]
 }

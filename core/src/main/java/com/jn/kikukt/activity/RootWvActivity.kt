@@ -1,6 +1,5 @@
 package com.jn.kikukt.activity
 
-import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
@@ -11,16 +10,15 @@ import android.webkit.WebView
 import android.widget.FrameLayout
 import com.jn.kikukt.R
 import com.jn.kikukt.common.api.IWvView
+import com.jn.kikukt.common.utils.IntentUtils
 import com.jn.kikukt.common.utils.file.FileUtils
-import com.jn.kikukt.common.utils.openAlbum
-import com.jn.kikukt.common.utils.openCamera
 import com.jn.kikukt.dialog.PhotoChoiceDialogFragment
-import com.jn.kikukt.utils.PERMISSION_CAMERA
-import com.jn.kikukt.utils.PERMISSION_WRITE_EXTERNAL_STORAGE
-import com.jn.kikukt.utils.RxPermissionsManager
 import com.jn.kikukt.utils.WebViewUtils
 import kotlinx.android.synthetic.main.common_wv_progress.*
 import kotlinx.android.synthetic.main.common_wv_tencent.*
+import requestCameraPermission
+import requestStoragePermission
+import startActivityForResult
 import java.io.File
 
 /**
@@ -38,11 +36,6 @@ open class RootWvActivity : RootTbActivity(), IWvView {
     private var mWebViewHeight: Int = 0//WebView height
 
     override val layoutResId: Int = R.layout.common_wv_tencent
-
-    companion object {
-        private const val REQUEST_UPDATE_CAMERA = 0x01 //相机
-        private const val REQUEST_UPDATE_ALBUM = 0x02 //相册
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,23 +76,7 @@ open class RootWvActivity : RootTbActivity(), IWvView {
                     fileChooserParams: FileChooserParams?
                 ): Boolean {
                     mValueCallback1 = valueCallback
-                    PhotoChoiceDialogFragment.newInstance().show(
-                        supportFragmentManager,
-                        {
-                            RxPermissionsManager.requestPermission(
-                                this@RootWvActivity,
-                                PERMISSION_CAMERA
-                            ) { aBoolean ->
-                                if (aBoolean) openCamera(cameraPath, REQUEST_UPDATE_CAMERA)
-                            }
-                        }) {
-                        RxPermissionsManager.requestPermission(
-                            this@RootWvActivity,
-                            PERMISSION_WRITE_EXTERNAL_STORAGE
-                        ) { aBoolean ->
-                            if (aBoolean) openAlbum(REQUEST_UPDATE_ALBUM)
-                        }
-                    }
+                    showPhotoChoiceDialog()
                     return true
                 }
             },
@@ -115,26 +92,40 @@ open class RootWvActivity : RootTbActivity(), IWvView {
                     p2: FileChooserParams?
                 ): Boolean {
                     mValueCallback2 = valueCallback
-                    PhotoChoiceDialogFragment.newInstance().show(
-                        supportFragmentManager,
-                        {
-                            RxPermissionsManager.requestPermission(
-                                this@RootWvActivity,
-                                PERMISSION_CAMERA
-                            ) { aBoolean ->
-                                if (aBoolean) openCamera(cameraPath, REQUEST_UPDATE_CAMERA)
-                            }
-                        }) {
-                        RxPermissionsManager.requestPermission(
-                            this@RootWvActivity,
-                            PERMISSION_WRITE_EXTERNAL_STORAGE
-                        ) { aBoolean ->
-                            if (aBoolean) openAlbum(REQUEST_UPDATE_ALBUM)
-                        }
-                    }
+                    showPhotoChoiceDialog()
                     return true
                 }
             })
+    }
+
+    private fun showPhotoChoiceDialog() {
+        PhotoChoiceDialogFragment.newInstance().show(supportFragmentManager, {
+            requestCameraPermission {
+                if (it == 0) {
+                    startActivityForResult(
+                        IntentUtils.getCameraIntent(cameraPath),
+                        successBlock = {
+                            val uri = Uri.fromFile(File(cameraPath))
+                            mValueCallback1?.onReceiveValue(arrayOf(uri))
+                            mValueCallback2?.onReceiveValue(arrayOf(uri))
+                        }) {
+                    }
+                }
+            }
+        }) {
+            requestStoragePermission {
+                if (it == 0) {
+                    startActivityForResult(
+                        IntentUtils.getAlbumIntent(),
+                        successBlock = { result ->
+                            result.data?.data?.let { uri ->
+                                mValueCallback1?.onReceiveValue(arrayOf(uri))
+                                mValueCallback2?.onReceiveValue(arrayOf(uri))
+                            }
+                        })
+                }
+            }
+        }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -172,24 +163,5 @@ open class RootWvActivity : RootTbActivity(), IWvView {
             keyCode,
             event
         )
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK) {
-            //图片选择回调
-            var uri: Uri? = null
-            if (requestCode == REQUEST_UPDATE_CAMERA) { //相机
-                uri = Uri.fromFile(File(cameraPath))
-            } else if (requestCode == REQUEST_UPDATE_ALBUM) { //相册
-                if (data != null) {
-                    uri = data.data
-                }
-            }
-            if (uri != null) {
-                mValueCallback1?.onReceiveValue(arrayOf(uri))
-                mValueCallback1?.onReceiveValue(arrayOf(uri))
-            }
-        }
     }
 }

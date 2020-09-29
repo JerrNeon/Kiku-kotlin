@@ -53,7 +53,7 @@ class CmbLifeManage private constructor() : ICmblifeListener, DefaultLifecycleOb
         }
     }
 
-    override fun onCmblifeCallBack(requestCode: String?, resultMap: Map<String?, String?>?) {
+    override fun onCmblifeCallBack(requestCode: String?, resultMap: Map<String, String>?) {
         if (payRequestCode == requestCode) {
             onCmblifeCallBack(resultMap)
         }
@@ -62,7 +62,7 @@ class CmbLifeManage private constructor() : ICmblifeListener, DefaultLifecycleOb
     /**
      * 支付结果回调
      */
-    private fun onCmblifeCallBack(resultMap: Map<String?, String?>?) {
+    private fun onCmblifeCallBack(resultMap: Map<String, String>?) {
         if (resultMap != null) {
             when (resultMap[payResultCode]) {
                 paySuccessResultCode -> {
