@@ -79,11 +79,11 @@ object PermissionsManager {
         activity: AppCompatActivity,
         permissionType: PermissionType,
         result: ((granted: Boolean) -> Unit)? = null
-    ) {
+    ): () -> Unit {
         val permissions = getPermissions(permissionType)
         val permissionName = getPermissionName(permissionType, activity.applicationContext)
         val context = activity.applicationContext
-        activity.requestMultiplePermissions(permissions) {
+        return activity.requestMultiplePermissions(permissions) {
             when (it) {
                 0 -> {//权限申请成功
                     if (permissionType == PermissionType.PERMISSION_LOCATION) {//所有权限都同意

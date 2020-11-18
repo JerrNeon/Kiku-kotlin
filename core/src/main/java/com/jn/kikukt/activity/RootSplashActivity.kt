@@ -20,7 +20,8 @@ abstract class RootSplashActivity : RootActivity(), ISplashView {
         private const val SKIP_TIME = 3000L//splash countDowner 3s
     }
 
-    protected var mHandler = WeakHandler(this, handleMessage)
+    private var mHandler = WeakHandler(this, handleMessage)
+    private lateinit var permissionBlock: () -> Unit
 
     open val handleMessage
         get() = { activity: Activity, msg: Message ->
@@ -45,11 +46,14 @@ abstract class RootSplashActivity : RootActivity(), ISplashView {
             requestAllPermission()//need check All permission first enter App
         else
             mHandler.sendEmptyMessageDelayed(SKIP_WHAT, SKIP_TIME)
+
+        //初始化permission
+        permissionBlock = requestMultiplePermissions(getAllPermissions()) {
+            mHandler.sendEmptyMessageDelayed(SKIP_WHAT, SKIP_TIME)
+        }
     }
 
     override fun requestAllPermission() {
-        requestMultiplePermissions(getAllPermissions()) {
-            mHandler.sendEmptyMessageDelayed(SKIP_WHAT, SKIP_TIME)
-        }
+        permissionBlock.invoke()
     }
 }

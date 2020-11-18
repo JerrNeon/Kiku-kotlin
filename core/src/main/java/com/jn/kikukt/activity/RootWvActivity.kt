@@ -31,6 +31,10 @@ open class RootWvActivity : RootTbActivity(), IWvView {
         get() = FileUtils.getImagePath("web")
     private var mValueCallback1: ValueCallback<Array<Uri>>? = null//图片回调
     private var mValueCallback2: com.tencent.smtt.sdk.ValueCallback<Array<Uri>>? = null//图片回调
+    private lateinit var cameraPermissionBlock: () -> Unit
+    private lateinit var storagePermissionBlock: () -> Unit
+    private lateinit var cameraResultBlock: () -> Unit
+    private lateinit var albumResultBlock: () -> Unit
 
     private lateinit var mWebView: Any
     private var mWebViewHeight: Int = 0//WebView height
@@ -45,6 +49,33 @@ open class RootWvActivity : RootTbActivity(), IWvView {
 
     override fun initWvView() {
         mWebView = wv_common
+
+        cameraPermissionBlock = requestCameraPermission {
+            if (it == 0) {
+                cameraResultBlock.invoke()
+            }
+        }
+        cameraResultBlock = startActivityForResult(
+            IntentUtils.getCameraIntent(cameraPath),
+            successBlock = {
+                val uri = Uri.fromFile(File(cameraPath))
+                mValueCallback1?.onReceiveValue(arrayOf(uri))
+                mValueCallback2?.onReceiveValue(arrayOf(uri))
+            }) {
+        }
+        storagePermissionBlock = requestStoragePermission {
+            if (it == 0) {
+                albumResultBlock.invoke()
+            }
+        }
+        albumResultBlock = startActivityForResult(
+            IntentUtils.getAlbumIntent(),
+            successBlock = { result ->
+                result.data?.data?.let { uri ->
+                    mValueCallback1?.onReceiveValue(arrayOf(uri))
+                    mValueCallback2?.onReceiveValue(arrayOf(uri))
+                }
+            })
     }
 
     override fun initWv() {
@@ -100,31 +131,9 @@ open class RootWvActivity : RootTbActivity(), IWvView {
 
     private fun showPhotoChoiceDialog() {
         PhotoChoiceDialogFragment.newInstance().show(supportFragmentManager, {
-            requestCameraPermission {
-                if (it == 0) {
-                    startActivityForResult(
-                        IntentUtils.getCameraIntent(cameraPath),
-                        successBlock = {
-                            val uri = Uri.fromFile(File(cameraPath))
-                            mValueCallback1?.onReceiveValue(arrayOf(uri))
-                            mValueCallback2?.onReceiveValue(arrayOf(uri))
-                        }) {
-                    }
-                }
-            }
+            cameraPermissionBlock.invoke()
         }) {
-            requestStoragePermission {
-                if (it == 0) {
-                    startActivityForResult(
-                        IntentUtils.getAlbumIntent(),
-                        successBlock = { result ->
-                            result.data?.data?.let { uri ->
-                                mValueCallback1?.onReceiveValue(arrayOf(uri))
-                                mValueCallback2?.onReceiveValue(arrayOf(uri))
-                            }
-                        })
-                }
-            }
+            storagePermissionBlock.invoke()
         }
     }
 

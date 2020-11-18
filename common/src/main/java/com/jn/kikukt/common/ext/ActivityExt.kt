@@ -59,8 +59,12 @@ fun Activity.isLocationNotGrantedAndPrompt() =
 /**
  * 请求定位权限
  */
-fun AppCompatActivity.requestPermission(permission: String, block: (result: Int) -> Unit) {
-    registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+fun AppCompatActivity.requestPermission(
+    permission: String,
+    block: (result: Int) -> Unit
+): () -> Unit {
+    //registerForActivityResult必须在onCreate方法中调用
+    val launcher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
         if (it) {
             //用户已经同意了权限
             block.invoke(0)
@@ -73,7 +77,8 @@ fun AppCompatActivity.requestPermission(permission: String, block: (result: Int)
                 block.invoke(2)
             }
         }
-    }.launch(permission)
+    }
+    return { launcher.launch(permission) }
 }
 
 /**
@@ -82,8 +87,9 @@ fun AppCompatActivity.requestPermission(permission: String, block: (result: Int)
 fun AppCompatActivity.requestMultiplePermissions(
     permissions: Array<String>,
     block: (result: Int) -> Unit
-) {
-    registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+): () -> Unit {
+    //registerForActivityResult必须在onCreate方法中调用
+    val launcher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
         if (it.values.count { result -> result } == it.size) {
             //用户已经同意了权限
             block.invoke(0)
@@ -98,28 +104,29 @@ fun AppCompatActivity.requestMultiplePermissions(
                 block.invoke(2)
             }
         }
-    }.launch(permissions)
+    }
+    return { launcher.launch(permissions) }
 }
 
 /**
  * 请求拍照权限
  */
-fun AppCompatActivity.requestCameraPermission(block: (result: Int) -> Unit) {
-    requestPermission(Manifest.permission.CAMERA, block)
+fun AppCompatActivity.requestCameraPermission(block: (result: Int) -> Unit): () -> Unit {
+    return requestPermission(Manifest.permission.CAMERA, block)
 }
 
 /**
  * 请求存储权限
  */
-fun AppCompatActivity.requestStoragePermission(block: (result: Int) -> Unit) {
-    requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, block)
+fun AppCompatActivity.requestStoragePermission(block: (result: Int) -> Unit): () -> Unit {
+    return requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, block)
 }
 
 /**
  * 请求相机&存储权限
  */
-fun AppCompatActivity.requestCameraStoragePermission(block: (result: Int) -> Unit) {
-    requestMultiplePermissions(
+fun AppCompatActivity.requestCameraStoragePermission(block: (result: Int) -> Unit): () -> Unit {
+    return requestMultiplePermissions(
         arrayOf(
             Manifest.permission.CAMERA,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -130,8 +137,8 @@ fun AppCompatActivity.requestCameraStoragePermission(block: (result: Int) -> Uni
 /**
  * 请求电话权限
  */
-fun AppCompatActivity.requestPhonePermission(block: (result: Int) -> Unit) {
-    requestMultiplePermissions(
+fun AppCompatActivity.requestPhonePermission(block: (result: Int) -> Unit): () -> Unit {
+    return requestMultiplePermissions(
         arrayOf(
             Manifest.permission.CALL_PHONE,
             Manifest.permission.READ_PHONE_STATE
@@ -142,8 +149,8 @@ fun AppCompatActivity.requestPhonePermission(block: (result: Int) -> Unit) {
 /**
  * 请求定位权限
  */
-fun AppCompatActivity.requestLocationPermission(block: (result: Int) -> Unit) {
-    requestMultiplePermissions(
+fun AppCompatActivity.requestLocationPermission(block: (result: Int) -> Unit): () -> Unit {
+    return requestMultiplePermissions(
         arrayOf(
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION
@@ -158,26 +165,28 @@ fun AppCompatActivity.startActivityForResult(
     intent: Intent,
     successBlock: (result: ActivityResult) -> Unit,
     block: ((result: ActivityResult) -> Unit)? = null
-) {
-    registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+): () -> Unit {
+    //registerForActivityResult必须在onCreate方法中调用
+    val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if (it.resultCode == Activity.RESULT_OK)
             successBlock.invoke(it)
         block?.invoke(it)
-    }.launch(intent)
+    }
+    return { launcher.launch(intent) }
 }
 
 /**
  * 请求定位服务
  */
-fun AppCompatActivity.requestLocationService(block: (result: ActivityResult) -> Unit) {
-    startActivityForResult(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), block)
+fun AppCompatActivity.requestLocationService(block: (result: ActivityResult) -> Unit): () -> Unit {
+    return startActivityForResult(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), block)
 }
 
 /**
  * 打开应用详情界面
  */
-fun AppCompatActivity.requestApplicationSettings(block: (result: ActivityResult) -> Unit) {
-    startActivityForResult(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+fun AppCompatActivity.requestApplicationSettings(block: (result: ActivityResult) -> Unit): () -> Unit {
+    return startActivityForResult(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
         data = Uri.fromParts("package", packageName, null)
         flags = Intent.FLAG_ACTIVITY_NEW_TASK
     }, block)
@@ -186,6 +195,6 @@ fun AppCompatActivity.requestApplicationSettings(block: (result: ActivityResult)
 /**
  * 请求蓝牙服务
  */
-fun AppCompatActivity.requestBluetoothService(block: (result: ActivityResult) -> Unit) {
-    startActivityForResult(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), block)
+fun AppCompatActivity.requestBluetoothService(block: (result: ActivityResult) -> Unit): () -> Unit {
+    return startActivityForResult(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), block)
 }
