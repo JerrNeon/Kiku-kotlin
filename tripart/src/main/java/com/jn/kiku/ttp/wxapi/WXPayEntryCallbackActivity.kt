@@ -36,56 +36,71 @@ open class WXPayEntryCallbackActivity : AppCompatActivity(), IWXAPIEventHandler 
     override fun onResp(baseResp: BaseResp) {
         when (baseResp.errCode) {
             BaseResp.ErrCode.ERR_OK -> {
-                if (baseResp.type == ConstantsAPI.COMMAND_SENDAUTH) {
-                    //授权成功
-                    //ToastUtil.showToast(this, "登录成功");
-                    logI("onResp: 授权成功")
-                } else if (baseResp.type == ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX) {
-                    //分享成功
-                    logI("onResp: 分享成功")
-                    showToast("分享成功")
-                } else if (baseResp.type == ConstantsAPI.COMMAND_PAY_BY_WX) {
-                    //支付成功
-                    logI("onResp: 支付成功")
-                    showToast("支付成功")
-                } else if (baseResp.type == ConstantsAPI.COMMAND_LAUNCH_WX_MINIPROGRAM) {
-                    //WXLaunchMiniProgram.Resp baseResp
-                    logI("onResp: 启动小程序成功")
+                when (baseResp.type) {
+                    ConstantsAPI.COMMAND_SENDAUTH -> {
+                        //授权成功
+                        //ToastUtil.showToast(this, "登录成功");
+                        logI("onResp: 授权成功")
+                    }
+                    ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX -> {
+                        //分享成功
+                        logI("onResp: 分享成功")
+                        showToast("分享成功")
+                    }
+                    ConstantsAPI.COMMAND_PAY_BY_WX -> {
+                        //支付成功
+                        logI("onResp: 支付成功")
+                        showToast("支付成功")
+                    }
+                    ConstantsAPI.COMMAND_LAUNCH_WX_MINIPROGRAM -> {
+                        //WXLaunchMiniProgram.Resp baseResp
+                        logI("onResp: 启动小程序成功")
+                    }
                 }
-                if (mWeChatResultListener != null) mWeChatResultListener!!.onSuccess(baseResp)
+                mWeChatResultListener?.onSuccess(baseResp)
             }
-            BaseResp.ErrCode.ERR_USER_CANCEL -> if (baseResp.type == ConstantsAPI.COMMAND_SENDAUTH) {
-                //授权取消
-                logI("onResp: 取消授权")
-                showToast("取消登录")
-            } else if (baseResp.type == ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX) {
-                //分享成功
-                logI("onResp: 取消分享")
-                showToast("取消分享")
-            } else if (baseResp.type == ConstantsAPI.COMMAND_PAY_BY_WX) {
-                //支付取消
-                logI("onResp: 取消支付")
-                showToast("取消支付")
-            } else if (baseResp.type == ConstantsAPI.COMMAND_LAUNCH_WX_MINIPROGRAM) {
-                logI("onResp: 取消启动小程序")
+            BaseResp.ErrCode.ERR_USER_CANCEL -> when (baseResp.type) {
+                ConstantsAPI.COMMAND_SENDAUTH -> {
+                    //授权取消
+                    logI("onResp: 取消授权")
+                    showToast("取消登录")
+                }
+                ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX -> {
+                    //分享成功
+                    logI("onResp: 取消分享")
+                    showToast("取消分享")
+                }
+                ConstantsAPI.COMMAND_PAY_BY_WX -> {
+                    //支付取消
+                    logI("onResp: 取消支付")
+                    showToast("取消支付")
+                }
+                ConstantsAPI.COMMAND_LAUNCH_WX_MINIPROGRAM -> {
+                    logI("onResp: 取消启动小程序")
+                }
             }
             else -> {
-                if (baseResp.type == ConstantsAPI.COMMAND_SENDAUTH) {
-                    //授权失败
-                    logE("onResp: 授权失败")
-                    showToast("登录失败")
-                } else if (baseResp.type == ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX) {
-                    //分享失败
-                    logE("onResp:分享失败")
-                    showToast("分享失败")
-                } else if (baseResp.type == ConstantsAPI.COMMAND_PAY_BY_WX) {
-                    //支付失败
-                    logE("onResp:支付失败")
-                    showToast("支付失败")
-                } else if (baseResp.type == ConstantsAPI.COMMAND_LAUNCH_WX_MINIPROGRAM) {
-                    logI("onResp: 启动小程序失败")
+                when (baseResp.type) {
+                    ConstantsAPI.COMMAND_SENDAUTH -> {
+                        //授权失败
+                        logE("onResp: 授权失败")
+                        showToast("登录失败")
+                    }
+                    ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX -> {
+                        //分享失败
+                        logE("onResp:分享失败")
+                        showToast("分享失败")
+                    }
+                    ConstantsAPI.COMMAND_PAY_BY_WX -> {
+                        //支付失败
+                        logE("onResp:支付失败")
+                        showToast("支付失败")
+                    }
+                    ConstantsAPI.COMMAND_LAUNCH_WX_MINIPROGRAM -> {
+                        logI("onResp: 启动小程序失败")
+                    }
                 }
-                if (mWeChatResultListener != null) mWeChatResultListener!!.onFailure(baseResp)
+                mWeChatResultListener?.onFailure(baseResp)
             }
         }
         finish()
@@ -110,6 +125,8 @@ open class WXPayEntryCallbackActivity : AppCompatActivity(), IWXAPIEventHandler 
 
     companion object {
         private var mWeChatResultListener: WeChatResultListener? = null
+
+        @JvmStatic
         fun setWeChatResultListener(listener: WeChatResultListener?) {
             mWeChatResultListener = listener
         }
