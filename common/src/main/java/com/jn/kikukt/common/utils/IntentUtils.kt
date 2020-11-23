@@ -1,9 +1,12 @@
 package com.jn.kikukt.common.utils
 
+import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.provider.Settings
+import androidx.annotation.RequiresApi
 import java.io.File
 
 /**
@@ -71,6 +74,7 @@ object IntentUtils {
 
     /**
      * 安装Apk Intent
+     * 需要在manifest中声明[Manifest.permission.REQUEST_INSTALL_PACKAGES]权限,否则安装时会一闪而过
      */
     fun getInstallIntent(apkPath: String) = Intent(Intent.ACTION_VIEW).apply {
         //判断是否是AndroidN以及更高的版本
@@ -93,4 +97,10 @@ object IntentUtils {
         Intent(Intent.ACTION_DELETE).apply {
             data = Uri.parse("package:$packageName")
         }
+
+    /**
+     * 管理未知来源应用的intent
+     */
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getManageUnknownAppSourcesIntent() = Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES)
 }
