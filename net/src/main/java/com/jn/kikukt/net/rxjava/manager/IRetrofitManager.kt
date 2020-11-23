@@ -40,7 +40,7 @@ interface IRetrofitManager {
     val retrofitBuilder: Retrofit.Builder
         get() = Retrofit.Builder()
             .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
 
     /**
@@ -48,10 +48,8 @@ interface IRetrofitManager {
      */
     val gson: Gson
         get() = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP)
-            GsonBuilder().excludeFieldsWithModifiers(
-                Modifier.FINAL,
-                Modifier.TRANSIENT, Modifier.STATIC
-            ).create() else Gson()
+            GsonBuilder().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.STATIC).create()
+        else Gson()
 
     /**
      * OkHttpClient

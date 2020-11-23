@@ -17,11 +17,14 @@
     <!-- ======================解决 Android N 7.0 上 报错：android.os.FileUriExposedException begin============================ -->
     <files-path
         name="files_root"
-        path="."/>
+        path="." />
     <external-path
         name="external_storage_root"
-        path="."/>
-    <root-path
-        name="root_path"
-        path="."/>
+        path="." />
+    <cache-path
+        name="cache_root"
+        path="." />
+    <external-cache-path
+        name="external-cache-root"
+        path="." />
 </paths>

@@ -33,20 +33,25 @@ class VersionUpdateService : Service() {
     private var mCurrentProgress = 0f//下载进度
 
     private val channelId = "VersionUpdateService20190712"
-    private val channelName = resources.getString(R.string.app_name)
+    private val channelName
+        get() = resources.getString(R.string.app_name)
 
     @RequiresApi(Build.VERSION_CODES.N)
     private val importance = NotificationManager.IMPORTANCE_LOW
 
     private val scope = MainScope()
 
+    companion object {
+        private const val DEFAULT_SUFFIX_NAME = "apk"
+    }
+
     override fun onBind(intent: Intent): IBinder? {
         return null
     }
 
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val versionUpdateVO =
-            intent.getParcelableExtra<VersionUpdateVO>(VersionUpdateVO::class.java.simpleName)
+            intent?.getParcelableExtra<VersionUpdateVO>(VersionUpdateVO::class.java.simpleName)
         versionUpdateVO?.let { downloadFile(it) }
         return super.onStartCommand(intent, flags, startId)
     }
@@ -59,20 +64,18 @@ class VersionUpdateService : Service() {
     private fun downloadFile(versionUpdateVO: VersionUpdateVO) {
         //通知管理
         val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        //创建通知渠道
-        val notificationChannel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel(channelId, channelName, importance)
-        } else {
-            null
-        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notificationChannel?.enableVibration(true)
-            notificationChannel?.vibrationPattern = longArrayOf(500, 500)
-            notificationChannel?.setSound(null, null)
-            manager.createNotificationChannel(notificationChannel!!)
+            //创建通知渠道
+            val notificationChannel =
+                NotificationChannel(channelId, channelName, importance).apply {
+                    enableVibration(true)
+                    vibrationPattern = longArrayOf(500, 500)
+                    setSound(null, null)
+                }
+            manager.createNotificationChannel(notificationChannel)
         }
         //常见通知
-        val builder = NotificationCompat.Builder(this, "1")
+        val builder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(versionUpdateVO.appIconResId)
             .setContentTitle(versionUpdateVO.appName)
             .setTicker(resources.getString(R.string.versionUpdate_downloadStart))
@@ -118,11 +121,11 @@ class VersionUpdateService : Service() {
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.io())
             .map { responseBody ->
-                var fileSuffix = ""
-                responseBody.contentType()?.run {
-                    val mimeType = type + File.separator + subtype
-                    fileSuffix = FileUtils.getFileSuffix(mimeType)//文件后缀名
-                }
+                val fileSuffix =
+                    responseBody.contentType()?.run {
+                        val mimeType = type + File.separator + subtype
+                        FileUtils.getFileSuffixByMimeType(mimeType)//文件后缀名
+                    } ?: DEFAULT_SUFFIX_NAME
                 val filePath =
                     FileUtils.filePath + File.separator + downLoadFileName + "." + fileSuffix
                 FileIOUtils.writeFileFromIS(filePath, responseBody.byteStream())
@@ -224,11 +227,11 @@ class VersionUpdateService : Service() {
                             }
                         }
                     //下载完成(保存文件到手机)
-                    var fileSuffix = ""
-                    responseBody.contentType()?.run {
-                        val mimeType = type + File.separator + subtype
-                        fileSuffix = FileUtils.getFileSuffix(mimeType)//文件后缀名
-                    }
+                    val fileSuffix =
+                        responseBody.contentType()?.run {
+                            val mimeType = type + File.separator + subtype
+                            FileUtils.getFileSuffixByMimeType(mimeType)//文件后缀名
+                        } ?: DEFAULT_SUFFIX_NAME
                     val filePath =
                         FileUtils.filePath + File.separator + downLoadFileName + "." + fileSuffix
                     FileIOUtils.writeFileFromIS(filePath, responseBody.byteStream())

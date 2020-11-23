@@ -14,6 +14,7 @@ import com.google.android.material.tabs.TabLayout
 import com.jn.kikukt.R
 import com.jn.kikukt.common.api.IMainView
 import com.jn.kikukt.common.utils.showToast
+import com.jn.kikukt.dialog.ProgressDialogFragment
 import com.jn.kikukt.dialog.VersionUpdateDialog
 import com.jn.kikukt.entiy.VersionUpdateVO
 import com.jn.kikukt.receiver.VersionUpdateReceiver
@@ -132,7 +133,7 @@ abstract class RootMainActivity : RootActivity(), IMainView, TabLayout.OnTabSele
             mVersionUpdateReceiver = VersionUpdateReceiver { _, intent ->
                 dismissProgressDialog()
                 val message = intent.getStringExtra(VersionUpdateReceiver.VERSION_UPDATE_ACTION)
-                applicationContext.showToast(message!!)
+                message?.let { applicationContext.showToast(it) }
                 showVersionUpdateDialog()
             }
         }
@@ -151,7 +152,9 @@ abstract class RootMainActivity : RootActivity(), IMainView, TabLayout.OnTabSele
         if (mVersionUpdateDialog == null) {
             mVersionUpdateDialog = VersionUpdateDialog.newInstance(mVersionUpdateVO!!)
         }
-        mVersionUpdateDialog?.show(supportFragmentManager, "") { showProgressDialog() }
+        mVersionUpdateDialog?.show(supportFragmentManager, "") {
+            showProgressDialog(ProgressDialogFragment.TYPE_WHITE)
+        }
     }
 
     override fun onTabReselected(tab: TabLayout.Tab?) {
