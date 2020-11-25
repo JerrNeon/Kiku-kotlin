@@ -23,8 +23,11 @@ abstract class BaseRvAdapter<T>(
 /**
  * 多类型
  */
-abstract class BaseRvMultiItemAdapter<T : MultiItemEntity> :
-    BaseMultiItemQuickAdapter<T, BaseViewHolder>() {
+abstract class BaseRvMultiItemAdapter<T : MultiItemEntity>(
+    protected val requestManager: RequestManager? = null,
+    data: MutableList<T>? = null
+) :
+    BaseMultiItemQuickAdapter<T, BaseViewHolder>(data) {
 
     abstract val itemTypes: IntArray
     abstract val layoutResIds: IntArray
@@ -33,7 +36,7 @@ abstract class BaseRvMultiItemAdapter<T : MultiItemEntity> :
         setItemType()
     }
 
-    open fun setItemType() {
+    private fun setItemType() {
         val itemTypeArray = itemTypes
         val layoutResIdArray = layoutResIds
         if (itemTypeArray.isEmpty())
@@ -51,7 +54,10 @@ abstract class BaseRvMultiItemAdapter<T : MultiItemEntity> :
 /**
  * 多类型
  */
-abstract class BaseRvDelegateMultiAdapter<T> : BaseDelegateMultiAdapter<T, BaseViewHolder>() {
+abstract class BaseRvDelegateMultiAdapter<T>(
+    protected val requestManager: RequestManager? = null,
+    data: MutableList<T>? = null
+) : BaseDelegateMultiAdapter<T, BaseViewHolder>(data) {
 
     abstract val itemTypes: IntArray
     abstract val layoutResIds: IntArray
