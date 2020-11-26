@@ -125,7 +125,7 @@ ext {
             "takephoto_library"                  : 'com.jph.takephoto:takephoto_library:3.0.1',//拍照或相册选择或文件选择并裁剪
             "fragmentation"                      : 'me.yokeyword:fragmentation:0.9.4',//解决Fragment存在bug及懒加载
             "zhihu-matisse"                      : 'com.zhihu.android:matisse:0.4.3',//图片选择库(多选)
-            "tbssdk"                             : 'com.tencent.tbs.tbssdk:sdk:43697',//X5WebView
+            "tbssdk"                             : 'com.tencent.tbs.tbssdk:sdk:43939',//X5WebView
 
             "GSYVideoPlayer"                     : "com.github.CarGuo:GSYVideoPlayer:v1.6.0",//视频播放
             "jiecaovideoplayer"                  : "fm.jiecao:jiecaovideoplayer:5.5.4",//视频播放
