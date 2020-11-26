@@ -26,9 +26,10 @@ import kotlinx.android.synthetic.main.common_main_layout.*
  */
 abstract class RootMainActivity : RootActivity(), IMainView, TabLayout.OnTabSelectedListener {
 
+    private var mTimeExit: Long = 0//Back press time
+
     companion object {
-        private var mTimeExit: Long = 0//Back press time
-        private const val mTimeInterval: Long = 2000//two times Interval
+        private const val TIME_INTERVAL: Long = 2000//two times Interval
         private val mFlRootMainContainerId = R.id.fl_RootMainContainer//main content resource ID
     }
 
@@ -112,7 +113,7 @@ abstract class RootMainActivity : RootActivity(), IMainView, TabLayout.OnTabSele
     }
 
     override fun isExit(): Boolean {
-        if (System.currentTimeMillis() - mTimeExit > mTimeInterval) {
+        if (System.currentTimeMillis() - mTimeExit > TIME_INTERVAL) {
             if (tl_RootMain.selectedTabPosition == 0) {
                 Toast.makeText(
                     applicationContext, resources.getString(R.string.app_exitNoticeMessage),
