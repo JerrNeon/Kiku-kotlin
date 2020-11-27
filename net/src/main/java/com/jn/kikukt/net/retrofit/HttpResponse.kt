@@ -11,7 +11,10 @@ sealed class HttpResponse
 
 data class Start(val start: Any? = null) : HttpResponse()
 data class Success<out T>(val data: T) : HttpResponse()
+data class Success2<out K, out V>(val data1: K, val data2: V) : HttpResponse()
+data class Success3<out K, out V, out E>(val data1: K, val data2: V, val data3: E) : HttpResponse()
 data class Failure(val error: OkHttpException) : HttpResponse()
+data class Failure2<out T>(val error: OkHttpException, val data: T) : HttpResponse()
 data class Complete(val complete: Any? = null) : HttpResponse()
 
 
