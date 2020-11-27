@@ -19,20 +19,16 @@ fun BaseViewHolder.setSelected(@IdRes viewId: Int, selected: Boolean): BaseViewH
 fun BaseViewHolder.loadImage(
     viewId: Int,
     url: String,
-    requestManager: RequestManager? = null,
     isCache: Boolean = true,
-    isGif: Boolean = false,
-    isCircle: Boolean = false,
-    radius: Int? = null
+    isGif: Boolean = false
 ): BaseViewHolder {
     val view = getView<ImageView>(viewId)
+    val context = itemView.tag as? RequestManager ?: view.context
     view.loadImage(
-        requestManager ?: view.context,
+        context,
         url,
         isCache = isCache,
         isGif = isGif,
-        isCircle = isCircle,
-        radius = radius
     )
     return this
 }

@@ -110,7 +110,6 @@ private fun getRequestManager(context: Any): RequestManager {
 
 fun Activity.requestManager() = Glide.with(this)
 fun Fragment.requestManager() = Glide.with(this)
-fun Context.requestManager() = Glide.with(this)
 
 fun ImageView.loadImage(
     context: Any,

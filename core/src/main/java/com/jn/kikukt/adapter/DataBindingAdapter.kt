@@ -1,4 +1,4 @@
-package com.jn.kikukt.utils
+package com.jn.kikukt.adapter
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter

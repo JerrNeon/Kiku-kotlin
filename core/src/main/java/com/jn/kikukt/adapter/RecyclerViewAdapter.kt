@@ -1,5 +1,6 @@
 package com.jn.kikukt.adapter
 
+import android.view.View
 import androidx.annotation.LayoutRes
 import com.bumptech.glide.RequestManager
 import com.chad.library.adapter.base.BaseDelegateMultiAdapter
@@ -18,7 +19,13 @@ abstract class BaseRvAdapter<T>(
     protected val requestManager: RequestManager? = null,
     data: MutableList<T>? = null
 ) :
-    BaseQuickAdapter<T, BaseViewHolder>(layoutResId, data)
+    BaseQuickAdapter<T, BaseViewHolder>(layoutResId, data) {
+
+    override fun createBaseViewHolder(view: View): BaseViewHolder {
+        view.tag = requestManager
+        return super.createBaseViewHolder(view)
+    }
+}
 
 /**
  * 多类型
@@ -48,6 +55,11 @@ abstract class BaseRvMultiItemAdapter<T : MultiItemEntity>(
         for (i in itemTypeArray.indices) {
             addItemType(itemTypeArray[i], layoutResIdArray[i])
         }
+    }
+
+    override fun createBaseViewHolder(view: View): BaseViewHolder {
+        view.tag = requestManager
+        return super.createBaseViewHolder(view)
     }
 }
 
@@ -86,5 +98,10 @@ abstract class BaseRvDelegateMultiAdapter<T>(
         for (i in itemTypeArray.indices) {
             multiTypeDelegate?.addItemType(itemTypeArray[i], layoutResIdArray[i])
         }
+    }
+
+    override fun createBaseViewHolder(view: View): BaseViewHolder {
+        view.tag = requestManager
+        return super.createBaseViewHolder(view)
     }
 }
