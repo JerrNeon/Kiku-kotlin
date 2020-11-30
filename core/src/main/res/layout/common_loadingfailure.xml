@@ -15,8 +15,8 @@
         android:adjustViewBounds="true"
         android:maxWidth="@dimen/dp_50"
         android:maxHeight="@dimen/dp_50"
-        android:src="@drawable/ic_kiku_nonet"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/ic_kiku_nonet" />
 
     <TextView
         android:id="@+id/tv_commonLoadingFailure"
@@ -24,8 +24,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/dp_10"
-        android:text="@string/kiku_load_failure"
         android:textColor="@color/c_CBCBCB"
-        android:textSize="@dimen/sp_12" />
+        android:textSize="@dimen/sp_12"
+        tools:text="@string/kiku_load_failure" />
 
 </LinearLayout>

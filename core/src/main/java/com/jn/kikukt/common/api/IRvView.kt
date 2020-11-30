@@ -78,10 +78,18 @@ interface IRvView<T> {
         @StringRes loadFailureStringRes: Int
     ) {
         mAdapter.emptyLayout?.run {
-            if (loadFailureDrawableRes != 0)
+            if (loadFailureDrawableRes != 0) {
                 iv_commonLoadingFailure.setImageResource(loadFailureDrawableRes)
-            if (loadFailureStringRes != 0)
+                iv_commonLoadingFailure.visibility = View.VISIBLE
+            } else {
+                iv_commonLoadingFailure.visibility = View.GONE
+            }
+            if (loadFailureStringRes != 0) {
                 tv_commonLoadingFailure.setText(loadFailureStringRes)
+                tv_commonLoadingFailure.visibility = View.VISIBLE
+            } else {
+                tv_commonLoadingFailure.visibility = View.GONE
+            }
         }
     }
 
