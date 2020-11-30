@@ -6,6 +6,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.PixelFormat
 import android.net.Uri
+import android.os.Build
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ProgressBar
 import com.jn.kikukt.common.utils.logI
+import com.tencent.smtt.export.external.TbsCoreSettings
 import com.tencent.smtt.sdk.QbSdk
 import com.tencent.smtt.sdk.TbsListener
 import com.tencent.smtt.sdk.ValueCallback
@@ -31,41 +33,69 @@ object WebViewUtils {
     @SuppressLint("SetJavaScriptEnabled")
     fun initWebView(activity: Activity, webView: Any) {
         if (webView is WebView) {
-            webView.isVerticalScrollBarEnabled = false
-            webView.setVerticalScrollbarOverlay(false)
-            webView.isHorizontalScrollBarEnabled = false
-            webView.setHorizontalScrollbarOverlay(false)
+            webView.run {
+                isVerticalScrollBarEnabled = false
+                setVerticalScrollbarOverlay(false)
+                isHorizontalScrollBarEnabled = false
+                setHorizontalScrollbarOverlay(false)
+            }
             val webSettings = webView.settings
-            //支持javascript
-            webSettings.javaScriptEnabled = true
-            // 设置可以支持缩放
-            webSettings.setSupportZoom(true)
-            // 设置出现缩放工具
-            webSettings.builtInZoomControls = false
-            //扩大比例的缩放
-            webSettings.useWideViewPort = false
-            //自适应屏幕
-            webSettings.loadWithOverviewMode = true
-            //设置默认字体
-            //webSettings.setDefaultFontSize(17);
-            //提高渲染的优先级
-            webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH)
+            webSettings.run {
+                //支持javascript
+                javaScriptEnabled = true
+                // 设置可以支持缩放
+                setSupportZoom(true)
+                // 设置出现缩放工具
+                builtInZoomControls = false
+                //扩大比例的缩放
+                useWideViewPort = false
+                //自适应屏幕
+                loadWithOverviewMode = true
+                //设置默认字体
+                //setDefaultFontSize(17)
+                //提高渲染的优先级
+                setRenderPriority(WebSettings.RenderPriority.HIGH)
+                //允许该网页中http和https混合使用，Android 5之后默认不允许https安全站点去加载http不安全的资源
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+                }
+                //是否阻止图像资源加载显示
+                loadsImagesAutomatically = true
+                blockNetworkImage = false
+            }
         } else if (webView is com.tencent.smtt.sdk.WebView) {
-            activity.window.setFormat(PixelFormat.TRANSLUCENT)//（这个对宿主没什么影响，建议声明）
-            activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+            activity.window.run {
+                setFormat(PixelFormat.TRANSLUCENT)//（这个对宿主没什么影响，建议声明）
+                setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+            }
 
-            //自适应屏幕
             val webSettings = webView.settings
-            //支持javascript
-            webSettings.javaScriptEnabled = true
-            // 设置可以支持缩放
-            webSettings.setSupportZoom(true)
-            // 设置出现缩放工具
-            webSettings.builtInZoomControls = false
-            //扩大比例的缩放
-            //webSettings.setUseWideViewPort(false);
-            //自适应屏幕
-            //webSettings.setLoadWithOverviewMode(true);
+            webSettings.run {
+                //支持javascript
+                javaScriptEnabled = true
+                // 设置可以支持缩放
+                setSupportZoom(true)
+                // 设置出现缩放工具
+                builtInZoomControls = false
+                //扩大比例的缩放
+                //webSettings.setUseWideViewPort(false)
+                //自适应屏幕
+                //webSettings.setLoadWithOverviewMode(true)
+                //允许该网页中http和https混合使用，Android 5之后默认不允许https安全站点去加载http不安全的资源
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+                }
+                //是否阻止图像资源加载显示
+                //有图：正常加载显示所有图片
+                loadsImagesAutomatically = true
+                blockNetworkImage = false
+                //始终无图：所有图片都不显示
+                //loadsImagesAutomatically = false
+                //blockNetworkImage = true
+                //数据网络无图
+                //loadsImagesAutomatically = true
+                //blockNetworkImage = true
+            }
         }
     }
 
@@ -73,14 +103,6 @@ object WebViewUtils {
      * 初始化腾讯的WebViewX5内核环境
      */
     fun initX5Environment(context: Context) {
-        val cb = object : QbSdk.PreInitCallback {
-
-            override fun onViewInitFinished(arg0: Boolean) {
-                "TencentWebView: onViewInitFinished is $arg0".logI()
-            }
-
-            override fun onCoreInitFinished() {}
-        }
         QbSdk.setTbsListener(object : TbsListener {
             override fun onDownloadFinish(i: Int) {
                 "TencentWebView: onDownloadFinish".logI()
@@ -94,7 +116,24 @@ object WebViewUtils {
                 "TencentWebView: onDownloadProgress:$i".logI()
             }
         })
-        QbSdk.initX5Environment(context, cb)
+        //首次初始化冷启动优化
+        QbSdk.initTbsSettings(
+            mapOf(
+                Pair(TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER, true),
+                Pair(TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE, true)
+            )
+        )
+        //初始化X5
+        QbSdk.initX5Environment(context, object : QbSdk.PreInitCallback {
+
+            override fun onViewInitFinished(arg0: Boolean) {
+                "TencentWebView: onViewInitFinished is $arg0".logI()
+            }
+
+            override fun onCoreInitFinished() {
+                "TencentWebView: onCoreInitFinished".logI()
+            }
+        })
     }
 
     fun setWebViewClient(webView: Any) {

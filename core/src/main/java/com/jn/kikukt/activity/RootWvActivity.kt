@@ -44,6 +44,7 @@ open class RootWvActivity : RootTbActivity(), IWvView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initWvView()
+        initWv()
         setWebViewClient()
     }
 
