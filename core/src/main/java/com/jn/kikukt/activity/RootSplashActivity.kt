@@ -6,7 +6,6 @@ import android.os.Message
 import com.jn.kikukt.common.SPManage
 import com.jn.kikukt.common.api.ISplashView
 import com.jn.kikukt.common.leak.WeakHandler
-import com.jn.kikukt.common.utils.statusbar.setTransparent
 import requestMultiplePermissions
 
 /**
@@ -23,7 +22,7 @@ abstract class RootSplashActivity : RootActivity(), ISplashView {
     private var mHandler = WeakHandler(this, handleMessage)
     private lateinit var permissionBlock: () -> Unit
 
-    open val handleMessage
+    private val handleMessage
         get() = { activity: Activity, msg: Message ->
             if (msg.what == SKIP_WHAT) {
                 if (SPManage.instance.isFirstGuide)
@@ -36,7 +35,6 @@ abstract class RootSplashActivity : RootActivity(), ISplashView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTransparent()
         initView()
     }
 

@@ -104,16 +104,18 @@ object StatusBarUtils {
      * 设置根布局参数
      */
     internal fun setRootView(activity: Activity) {
-        val parent = activity.findViewById<View>(android.R.id.content) as ViewGroup
-        var i = 0
-        val count = parent.childCount
-        while (i < count) {
-            val childView = parent.getChildAt(i)
-            if (childView is ViewGroup) {
-                childView.setFitsSystemWindows(true)
-                childView.clipToPadding = true
+        val parent = activity.findViewById<View>(android.R.id.content) as? ViewGroup
+        parent?.let {
+            var i = 0
+            val count = it.childCount
+            while (i < count) {
+                val childView = it.getChildAt(i)
+                if (childView is ViewGroup) {
+                    childView.setFitsSystemWindows(true)
+                    childView.clipToPadding = true
+                }
+                i++
             }
-            i++
         }
     }
 
