@@ -8,8 +8,8 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/fl_RootMainContainer"
+    <include
+        layout="@layout/common_main_fragment_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
