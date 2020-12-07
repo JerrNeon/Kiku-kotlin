@@ -1,6 +1,8 @@
 package com.jn.kikukt.common.api
 
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.jn.kikukt.dialog.ProgressDialogFragment
 
 /**
@@ -9,7 +11,6 @@ import com.jn.kikukt.dialog.ProgressDialogFragment
  */
 interface IBaseView {
 
-    var mAppCompatActivity: AppCompatActivity
     var mProgressDialog: ProgressDialogFragment?
 
     /**
@@ -18,10 +19,17 @@ interface IBaseView {
     fun showProgressDialog(type: Int = ProgressDialogFragment.TYPE_BLACK) {
         if (mProgressDialog == null)
             mProgressDialog = ProgressDialogFragment.newInstance(type)
-        mProgressDialog?.show(
-            mAppCompatActivity.supportFragmentManager,
-            ProgressDialogFragment::class.java.simpleName
-        )
+        val appCompatActivity = when (this) {
+            is AppCompatActivity -> this
+            is Fragment -> this.activity as? AppCompatActivity
+            else -> null
+        }
+        appCompatActivity?.let {
+            mProgressDialog?.show(
+                it.supportFragmentManager,
+                ProgressDialogFragment::class.java.simpleName
+            )
+        }
     }
 
     /**
@@ -36,6 +44,11 @@ interface IBaseView {
      * 初始化View
      */
     fun initView() {}
+
+    /**
+     * 初始化View
+     */
+    fun initView(view: View) {}
 
     /**
      * 初始化数据

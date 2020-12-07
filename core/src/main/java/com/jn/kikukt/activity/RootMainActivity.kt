@@ -8,15 +8,16 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.commit
+import androidx.viewbinding.ViewBinding
 import com.google.android.material.tabs.TabLayout
 import com.jn.kikukt.R
 import com.jn.kikukt.common.api.IMainView
 import com.jn.kikukt.common.utils.showToast
+import com.jn.kikukt.databinding.CommonMainLayoutBinding
 import com.jn.kikukt.dialog.ProgressDialogFragment
 import com.jn.kikukt.dialog.VersionUpdateDialog
 import com.jn.kikukt.entiy.VersionUpdateVO
 import com.jn.kikukt.receiver.VersionUpdateReceiver
-import kotlinx.android.synthetic.main.common_main_layout.*
 
 /**
  * Author：Stevie.Chen Time：2019/7/11
@@ -30,6 +31,8 @@ abstract class RootMainActivity : RootActivity(), IMainView, TabLayout.OnTabSele
         null//versionUpdate downLoad receiver
     protected var mVersionUpdateDialog: VersionUpdateDialog? = null//versionUpdate dialog
     protected var mVersionUpdateVO: VersionUpdateVO? = null//versionUpdate content
+    protected lateinit var mTabLayout: TabLayout//TabLayout
+    override val viewBinding: ViewBinding? by lazy { CommonMainLayoutBinding.inflate(layoutInflater) }
 
     companion object {
         const val TIME_INTERVAL: Long = 2000//two times Interval
@@ -39,16 +42,16 @@ abstract class RootMainActivity : RootActivity(), IMainView, TabLayout.OnTabSele
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.common_main_layout)
         initMainView()
         changeFragment(0)
     }
 
     override fun initMainView() {
+        mTabLayout = findViewById(R.id.tl_RootMain)
         for (i in menuSelectedImgResources.indices) {
             val menuView =
                 LayoutInflater.from(this)
-                    .inflate(R.layout.common_mainmenu_layout, ll_RootMain, false)
+                    .inflate(R.layout.common_mainmenu_layout, mTabLayout, false)
             val iv = menuView.findViewById<ImageView>(R.id.iv_menu)
             val tv = menuView.findViewById<TextView>(R.id.tv_menu)
             tv.setTextColor(
@@ -62,9 +65,9 @@ abstract class RootMainActivity : RootActivity(), IMainView, TabLayout.OnTabSele
                 tv.isSelected = false
             }
             tv.text = menuTitles[i]
-            tl_RootMain.addTab(tl_RootMain.newTab().setCustomView(menuView))
+            mTabLayout.addTab(mTabLayout.newTab().setCustomView(menuView))
         }
-        tl_RootMain.addOnTabSelectedListener(this)
+        mTabLayout.addOnTabSelectedListener(this)
     }
 
     override fun changeFragment(position: Int) {
@@ -90,7 +93,7 @@ abstract class RootMainActivity : RootActivity(), IMainView, TabLayout.OnTabSele
 
     override fun isExit(): Boolean {
         if (System.currentTimeMillis() - mTimeExit > TIME_INTERVAL) {
-            if (tl_RootMain.selectedTabPosition == 0) {
+            if (mTabLayout.selectedTabPosition == 0) {
                 Toast.makeText(
                     applicationContext,
                     resources.getString(R.string.app_exitNoticeMessage),
@@ -98,7 +101,7 @@ abstract class RootMainActivity : RootActivity(), IMainView, TabLayout.OnTabSele
                 ).show()
                 mTimeExit = System.currentTimeMillis()
             } else {
-                tl_RootMain.getTabAt(0)?.select()
+                mTabLayout.getTabAt(0)?.select()
             }
         } else {
             return true

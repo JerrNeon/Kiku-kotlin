@@ -28,7 +28,7 @@ class RvOnScrollListener : RecyclerView.OnScrollListener {
         super.onScrolled(recyclerView, dx, dy)
         mOnScrollListener?.onScrolled(recyclerView, dx, dy)
         if (mOnScrollLastItemListener != null) {
-            if (recyclerView?.isSlideToBottom()!! && dy > 0)
+            if (recyclerView.isSlideToBottom() && dy > 0)
                 mOnScrollLastItemListener?.onScrolledLastItem(recyclerView, dx, dy)
         }
     }

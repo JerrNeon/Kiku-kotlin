@@ -3,11 +3,14 @@ package com.jn.kikukt.activity
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.viewbinding.ViewBinding
 import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
 import com.jn.kikukt.R
 import com.jn.kikukt.adapter.BaseFragmentPagerAdapter
 import com.jn.kikukt.common.api.ITabLayoutView
-import kotlinx.android.synthetic.main.common_tab_layout_viewpager.*
+import com.jn.kikukt.databinding.CommonTabLayoutViewpagerBinding
 
 /**
  * Author：Stevie.Chen Time：2020/7/15
@@ -21,7 +24,12 @@ abstract class RootTabActivity2 : RootTbActivity(), ITabLayoutView {
     open val mAdapter: PagerAdapter
         get() = BaseFragmentPagerAdapter(supportFragmentManager, fragments, titles)
 
-    override val layoutResId: Int = R.layout.common_tab_layout_viewpager
+    override val viewBinding: ViewBinding by lazy {
+        CommonTabLayoutViewpagerBinding.inflate(layoutInflater)
+    }
+
+    protected lateinit var mViewPager: ViewPager
+    protected lateinit var mTabLayout: TabLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,13 +39,17 @@ abstract class RootTabActivity2 : RootTbActivity(), ITabLayoutView {
     }
 
     override fun initTabView() {
-        viewpager_RootTab.adapter = mAdapter
-        titles.forEach { tabLayout_RootTab.addTab(tabLayout_RootTab.newTab().setText(it)) }
-        tabLayout_RootTab.setupWithViewPager(viewpager_RootTab)
+        mViewPager = findViewById(R.id.viewpager_RootTab)
+        mTabLayout = findViewById(R.id.tabLayout_RootTab)
+        mViewPager.adapter = mAdapter
+        titles.forEach { title ->
+            mTabLayout.addTab(mTabLayout.newTab().setText(title))
+        }
+        mTabLayout.setupWithViewPager(mViewPager)
     }
 
     override fun setTabLayoutAttribute() {
-        tabLayout_RootTab.run {
+        mTabLayout.run {
             //indicator color
             setSelectedTabIndicatorColor(
                 ContextCompat.getColor(
@@ -56,7 +68,7 @@ abstract class RootTabActivity2 : RootTbActivity(), ITabLayoutView {
     }
 
     override fun setOffscreenPageLimit() {
-        fragments.let { viewpager_RootTab.offscreenPageLimit = it.size }
+        fragments.let { mViewPager.offscreenPageLimit = it.size }
     }
 
 }

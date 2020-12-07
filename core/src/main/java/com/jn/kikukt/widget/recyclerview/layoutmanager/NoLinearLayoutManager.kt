@@ -1,11 +1,11 @@
 package com.jn.kikukt.widget.recyclerview.layoutmanager
 
 import android.content.Context
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * Author：Stevie.Chen Time：2019/7/12
@@ -87,8 +87,7 @@ class NoLinearLayoutManager :LinearLayoutManager {
         heightSpec: Int, measuredDimension: IntArray
     ) {
         try {
-            val view = recycler!!.getViewForPosition(0)//fix 动态添加时报IndexOutOfBoundsException
-
+            val view = recycler?.getViewForPosition(0)//fix 动态添加时报IndexOutOfBoundsException
             if (view != null) {
                 val p = view.layoutParams as RecyclerView.LayoutParams
 

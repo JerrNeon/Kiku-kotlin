@@ -1,11 +1,12 @@
 package com.jn.kikukt.activity
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import com.jn.kikukt.R
 import com.jn.kikukt.utils.setStatusBar
 import com.jn.kikukt.widget.TitleBarLayout
-import kotlinx.android.synthetic.main.common_titlebar_layout.*
 
 /**
  * Author：Stevie.Chen Time：2019/7/10
@@ -13,14 +14,22 @@ import kotlinx.android.synthetic.main.common_titlebar_layout.*
  */
 abstract class RootTbActivity : RootActivity() {
 
-    private lateinit var titleBarLayout: TitleBarLayout//root layout
-
-    abstract val layoutResId: Int
+    private var titleBarLayout: TitleBarLayout? = null//root layout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.common_titlebar_layout)
+        initStatusBar()
         initRootTbView()
+    }
+
+    override fun initViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        attachToRoot: Boolean
+    ) {
+    }
+
+    open fun initStatusBar() {
         setStatusBar()
     }
 
@@ -28,12 +37,9 @@ abstract class RootTbActivity : RootActivity() {
      * init titleBar View
      */
     open fun initRootTbView() {
-        titleBarLayout = tbl_root
-        if (layoutResId == 0) {
-            throw Throwable("layoutResId is no correct!")
-        }
-        titleBarLayout.apply {
-            setTitleSource(contentLayoutResId = layoutResId)
+        setContentView(R.layout.common_titlebar_layout)
+        titleBarLayout = findViewById<TitleBarLayout>(R.id.tbl_root).apply {
+            setTitleSource(contentView = viewBinding?.root)
             onTitleClick(onLeadingClick = { finish() })
         }
     }
@@ -67,7 +73,7 @@ abstract class RootTbActivity : RootActivity() {
         dividerVisibility: Int? = null,
         contentLayoutResId: Int? = null
     ) {
-        titleBarLayout.setTitleSource(
+        titleBarLayout?.setTitleSource(
             bgResId,
             leadingResId,
             titleHeight,
@@ -89,6 +95,6 @@ abstract class RootTbActivity : RootActivity() {
         onLeadingClick: ((v: View) -> Unit)? = null,
         onMenuClick: ((v: View) -> Unit)? = null
     ) {
-        titleBarLayout.onTitleClick(onLeadingClick, onMenuClick)
+        titleBarLayout?.onTitleClick(onLeadingClick, onMenuClick)
     }
 }

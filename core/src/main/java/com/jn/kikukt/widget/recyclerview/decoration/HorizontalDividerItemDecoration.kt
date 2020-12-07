@@ -2,27 +2,26 @@ package com.jn.kikukt.widget.recyclerview.decoration
 
 import android.content.Context
 import android.graphics.Rect
-import androidx.annotation.DimenRes
-import androidx.core.view.ViewCompat
-import androidx.recyclerview.widget.RecyclerView
 import android.view.View
+import androidx.annotation.DimenRes
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * Author：Stevie.Chen Time：2019/7/12
  * Class Comment：垂直滑动水平分割线
  */
-class HorizontalDividerItemDecoration : FlexibleDividerDecoration {
+class HorizontalDividerItemDecoration(builder: Builder) : FlexibleDividerDecoration(builder) {
 
     private var mMarginProvider: MarginProvider
 
-    constructor(builder: Builder) : super(builder) {
+    init {
         mMarginProvider = builder.mMarginProvider
     }
 
     override fun getDividerBound(position: Int, parent: RecyclerView, child: View): Rect {
         val bounds = Rect(0, 0, 0, 0)
-        val transitionX = ViewCompat.getTranslationX(child).toInt()
-        val transitionY = ViewCompat.getTranslationY(child).toInt()
+        val transitionX = child.translationX.toInt()
+        val transitionY = child.translationY.toInt()
         val params = child.layoutParams as RecyclerView.LayoutParams
         bounds.left = parent.paddingLeft +
                 mMarginProvider.dividerLeftMargin(position, parent) + transitionX

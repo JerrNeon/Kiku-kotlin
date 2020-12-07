@@ -14,7 +14,6 @@ import com.jn.kikukt.net.retrofit.Failure
 import com.jn.kikukt.net.retrofit.HttpResponse
 import com.jn.kikukt.net.retrofit.Success
 import com.scwang.smart.refresh.layout.api.RefreshLayout
-import kotlinx.android.synthetic.main.common_rv.*
 
 /**
  * Author：Stevie.Chen Time：2019/7/10
@@ -42,11 +41,13 @@ abstract class RootRvActivity<T> : RootRefreshActivity(), IRvView<T> {
                 is Failure -> {
                     showLoadErrorView()
                 }
+                else -> {
+                }
             }
         }
     }
 
-    override val layoutItemResId: Int = R.layout.common_rv
+    override val itemContentLayoutId: Int = R.layout.common_rv
 
     override val isLoadMoreEnable: Boolean
         get() =
@@ -78,7 +79,7 @@ abstract class RootRvActivity<T> : RootRefreshActivity(), IRvView<T> {
     }
 
     override fun initRvView() {
-        mRecyclerView = rv_common
+        mRecyclerView = findViewById(R.id.rv_common)
         mRecyclerView.let {
             it.layoutManager = mLayoutManager
             it.adapter = mAdapter

@@ -14,13 +14,13 @@ import com.jn.kikukt.net.retrofit.Failure
 import com.jn.kikukt.net.retrofit.HttpResponse
 import com.jn.kikukt.net.retrofit.Success
 import com.scwang.smart.refresh.layout.api.RefreshLayout
-import kotlinx.android.synthetic.main.common_rv.view.*
 
 /**
  * Author：Stevie.Chen Time：2019/7/11
  * Class Comment：
  */
-abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T> {
+abstract class RootRvFragment<T>(contentLayoutId: Int = R.layout.common_refresh_layout) :
+    RootRefreshFragment(contentLayoutId), IRvView<T> {
 
     override lateinit var mRecyclerView: RecyclerView//RecyclerView
     override val emptyViewResId: Int
@@ -40,11 +40,13 @@ abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T> {
                 is Failure -> {
                     showLoadErrorView()
                 }
+                else -> {
+                }
             }
         }
     }
 
-    override val layoutItemResId: Int = R.layout.common_rv
+    override val itemContentLayoutId: Int = R.layout.common_rv
 
     override val isLoadMoreEnable: Boolean
         get() = when (mLoadMoreEnableType) {
@@ -56,11 +58,7 @@ abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T> {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRvView()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        //非懒加载Fragment在onActivityCreated方法中发起请求
+        //非懒加载Fragment在onViewCreated方法中发起请求
         if (!isLazyLoad) {
             onRequest()
             onObserve()
@@ -82,7 +80,7 @@ abstract class RootRvFragment<T> : RootRefreshFragment(), IRvView<T> {
     }
 
     override fun initRvView() {
-        mRecyclerView = view?.rv_common!!
+        mRecyclerView = requireView().findViewById(R.id.rv_common)
         mRecyclerView.let {
             it.layoutManager = mLayoutManager
             it.adapter = mAdapter

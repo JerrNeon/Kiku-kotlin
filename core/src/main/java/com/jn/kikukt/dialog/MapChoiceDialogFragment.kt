@@ -2,10 +2,10 @@ package com.jn.kikukt.dialog
 
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import com.jn.kikukt.R
 import com.jn.kikukt.common.utils.LatLng
 import com.jn.kikukt.common.utils.MapUtils
-import kotlinx.android.synthetic.main.dialog_mapchoice.view.*
 
 /**
  * Author：Stevie.Chen Time：2019/7/15
@@ -41,14 +41,14 @@ class MapChoiceDialogFragment : RootDialogFragment(), View.OnClickListener {
 
     override val animationStyle: Int = R.style.bottom_in_out
 
-    override fun initView() {
+    override fun initView(view: View) {
         super.initView()
-        view?.run {
-            tv_google.setOnClickListener(this@MapChoiceDialogFragment)
-            tv_baiduMap.setOnClickListener(this@MapChoiceDialogFragment)
-            tv_autoNavi.setOnClickListener(this@MapChoiceDialogFragment)
-            tv_cancel.setOnClickListener(this@MapChoiceDialogFragment)
-        }
+        view.findViewById<TextView>(R.id.tv_google).setOnClickListener(this@MapChoiceDialogFragment)
+        view.findViewById<TextView>(R.id.tv_baiduMap)
+            .setOnClickListener(this@MapChoiceDialogFragment)
+        view.findViewById<TextView>(R.id.tv_autoNavi)
+            .setOnClickListener(this@MapChoiceDialogFragment)
+        view.findViewById<TextView>(R.id.tv_cancel).setOnClickListener(this@MapChoiceDialogFragment)
     }
 
     override fun initData() {

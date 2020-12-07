@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
+import android.widget.TextView
 import com.jn.kikukt.R
 import com.jn.kikukt.common.utils.getScreenWidth
 import isLocationServiceEnable
-import kotlinx.android.synthetic.main.dialog_locationservice.view.*
 import requestLocationService
 
 /**
@@ -47,11 +47,11 @@ class LocationServiceDialogFragment : RootDialogFragment(), View.OnClickListener
         }
     }
 
-    override fun initView() {
-        view?.run {
-            tv_permissionCancel.setOnClickListener(this@LocationServiceDialogFragment)
-            tv_permissionSubmit.setOnClickListener(this@LocationServiceDialogFragment)
-        }
+    override fun initView(view: View) {
+        view.findViewById<TextView>(R.id.tv_permissionCancel)
+            .setOnClickListener(this@LocationServiceDialogFragment)
+        view.findViewById<TextView>(R.id.tv_permissionSubmit)
+            .setOnClickListener(this@LocationServiceDialogFragment)
     }
 
     override fun onClick(view: View) {

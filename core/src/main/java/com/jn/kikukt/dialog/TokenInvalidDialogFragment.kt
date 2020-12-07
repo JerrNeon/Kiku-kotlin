@@ -3,9 +3,9 @@ package com.jn.kikukt.dialog
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
+import android.widget.TextView
 import com.jn.kikukt.R
 import com.jn.kikukt.common.utils.getScreenWidth
-import kotlinx.android.synthetic.main.dialog_tokeninvalid.view.*
 
 /**
  * Author：Stevie.Chen Time：2019/7/15
@@ -26,9 +26,9 @@ open class TokenInvalidDialogFragment : RootDialogFragment(), View.OnClickListen
             width = (screenWidth * 0.7f).toInt()//宽度为全屏的70%
         }
 
-    override fun initView() {
+    override fun initView(view: View) {
         super.initView()
-        view?.tv_commit?.setOnClickListener(this)
+        view.findViewById<TextView>(R.id.tv_commit).setOnClickListener(this)
     }
 
     override fun onClick(view: View) {

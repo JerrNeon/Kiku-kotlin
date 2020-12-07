@@ -7,7 +7,8 @@
     android:background="@drawable/rectangle_whitebg_corner20"
     android:paddingLeft="@dimen/dp_20"
     android:paddingRight="@dimen/dp_20"
-    android:paddingBottom="@dimen/dp_14">
+    android:paddingBottom="@dimen/dp_14"
+    tools:viewBindingIgnore="true">
 
     <LinearLayout
         android:id="@+id/ll_protocolTitle"

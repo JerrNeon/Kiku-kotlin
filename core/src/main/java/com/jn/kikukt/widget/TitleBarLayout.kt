@@ -130,21 +130,28 @@ class TitleBarLayout : ConstraintLayout {
      */
     private fun buildContentView(contentLayoutResId: Int) {
         if (contentLayoutResId != 0) {
-            content = LayoutInflater.from(context).inflate(contentLayoutResId, this, false)
-            content?.let {
-                val drawable = it.background
-                if (drawable == null) {
-                    it.setBackgroundColor(Color.WHITE)
-                }
-            }
-            addView(
-                content,
-                LayoutParams(LayoutParams.MATCH_PARENT, 0).apply {
-                    verticalWeight = 1f
-                    topToBottom = R.id.view_titleBar_Divider
-                    bottomToBottom = LayoutParams.PARENT_ID
-                })
+            buildContentView(LayoutInflater.from(context).inflate(contentLayoutResId, this, false))
         }
+    }
+
+    /**
+     * 主区域内容
+     */
+    private fun buildContentView(contentView: View) {
+        content = contentView
+        content?.let {
+            val drawable = it.background
+            if (drawable == null) {
+                it.setBackgroundColor(Color.WHITE)
+            }
+        }
+        addView(
+            content,
+            LayoutParams(LayoutParams.MATCH_PARENT, 0).apply {
+                verticalWeight = 1f
+                topToBottom = R.id.view_titleBar_Divider
+                bottomToBottom = LayoutParams.PARENT_ID
+            })
     }
 
     /**
@@ -161,7 +168,8 @@ class TitleBarLayout : ConstraintLayout {
         dividerColorResId: Int? = null,
         dividerHeight: Float? = null,
         dividerVisibility: Int? = null,
-        contentLayoutResId: Int? = null
+        contentLayoutResId: Int? = null,
+        contentView: View? = null,
     ) {
         bgResId?.let {
             viewBg.setBackgroundColor(
@@ -217,6 +225,9 @@ class TitleBarLayout : ConstraintLayout {
             ).toInt()
         }
         contentLayoutResId?.let {
+            buildContentView(it)
+        }
+        contentView?.let {
             buildContentView(it)
         }
     }

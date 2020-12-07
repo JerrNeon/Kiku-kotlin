@@ -8,14 +8,15 @@ import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.widget.FrameLayout
+import android.widget.ProgressBar
+import androidx.viewbinding.ViewBinding
 import com.jn.kikukt.R
 import com.jn.kikukt.common.api.IWvView
 import com.jn.kikukt.common.utils.IntentUtils
 import com.jn.kikukt.common.utils.file.FileUtils
+import com.jn.kikukt.databinding.CommonWvTencentBinding
 import com.jn.kikukt.dialog.PhotoChoiceDialogFragment
 import com.jn.kikukt.utils.WebViewUtils
-import kotlinx.android.synthetic.main.common_wv_progress.*
-import kotlinx.android.synthetic.main.common_wv_tencent.*
 import requestCameraPermission
 import requestStoragePermission
 import startActivityForResult
@@ -39,7 +40,7 @@ open class RootWvActivity : RootTbActivity(), IWvView {
     private lateinit var mWebView: Any
     private var mWebViewHeight: Int = 0//WebView height
 
-    override val layoutResId: Int = R.layout.common_wv_tencent
+    override val viewBinding: ViewBinding by lazy { CommonWvTencentBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +50,7 @@ open class RootWvActivity : RootTbActivity(), IWvView {
     }
 
     override fun initWvView() {
-        mWebView = wv_common
+        mWebView = viewBinding.root.findViewById(R.id.wv_common)
 
         cameraPermissionBlock = requestCameraPermission {
             if (it == 0) {
@@ -92,10 +93,11 @@ open class RootWvActivity : RootTbActivity(), IWvView {
     }
 
     override fun setWebViewClient() {
+        val progress = viewBinding.root.findViewById<ProgressBar>(R.id.pb_wv_common)
         WebViewUtils.setWebViewClient(mWebView)
         WebViewUtils.setWebChromeClient(
             mWebView,
-            pb_wv_common,
+            progress,
             client1 = object : WebChromeClient() {
                 override fun onReceivedTitle(p0: WebView?, p1: String?) {
                     super.onReceivedTitle(p0, p1)

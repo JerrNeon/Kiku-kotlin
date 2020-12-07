@@ -1,7 +1,7 @@
 package com.jn.kiku.ttp.share.wechat
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 /**
  * Author：Stevie.Chen Time：2020/09/08 15:25

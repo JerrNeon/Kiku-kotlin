@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
+import android.widget.TextView
 import com.jn.kikukt.R
 import com.jn.kikukt.common.utils.getScreenWidth
-import kotlinx.android.synthetic.main.dialog_permission.view.*
 import requestApplicationSettings
 
 /**
@@ -48,26 +48,24 @@ class PermissionDialogFragment : RootDialogFragment(), View.OnClickListener {
         }
     }
 
-    override fun initView() {
-        view?.run {
-            tv_permissionCancel.setOnClickListener(this@PermissionDialogFragment)
-            tv_permissionSubmit.setOnClickListener(this@PermissionDialogFragment)
-        }
+    override fun initView(view: View) {
+        view.findViewById<TextView>(R.id.tv_permissionCancel)
+            .setOnClickListener(this@PermissionDialogFragment)
+        view.findViewById<TextView>(R.id.tv_permissionSubmit)
+            .setOnClickListener(this@PermissionDialogFragment)
     }
 
     override fun initData() {
         val bundle = arguments
         val appName = bundle?.getString(APP_NAME, "")
         val permissionName = bundle?.getString(PERMISSION_NAME, "")
-        view?.run {
-            tv_permissionMessage.text =
-                String.format(
-                    resources.getString(R.string.permission_content),
-                    appName,
-                    permissionName,
-                    appName
-                )
-        }
+        view?.findViewById<TextView>(R.id.tv_permissionMessage)?.text =
+            String.format(
+                resources.getString(R.string.permission_content),
+                appName,
+                permissionName,
+                appName
+            )
     }
 
     override fun onClick(view: View) {

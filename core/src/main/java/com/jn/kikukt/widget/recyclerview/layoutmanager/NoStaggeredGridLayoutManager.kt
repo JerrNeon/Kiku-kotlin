@@ -1,11 +1,11 @@
 package com.jn.kikukt.widget.recyclerview.layoutmanager
 
 import android.content.Context
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 /**
  * Author：Stevie.Chen Time：2019/7/12
@@ -106,7 +106,7 @@ class NoStaggeredGridLayoutManager : StaggeredGridLayoutManager {
     ) {
         if (position < itemCount) {
             try {
-                val view = recycler!!.getViewForPosition(0)//fix 动态添加时报IndexOutOfBoundsException
+                val view = recycler?.getViewForPosition(0)//fix 动态添加时报IndexOutOfBoundsException
                 if (view != null) {
                     val p = view.layoutParams as RecyclerView.LayoutParams
                     val childWidthSpec = ViewGroup.getChildMeasureSpec(

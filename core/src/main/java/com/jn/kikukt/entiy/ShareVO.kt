@@ -1,7 +1,7 @@
 package com.jn.kikukt.entiy
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 /**
  * Author：Stevie.Chen Time：2019/7/15

@@ -1,14 +1,16 @@
 package com.jn.kikukt.activity
 
 import android.os.Bundle
+import androidx.viewbinding.ViewBinding
+import androidx.viewpager2.widget.ViewPager2
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.jn.kikukt.R
 import com.jn.kikukt.adapter.BaseRvAdapter
 import com.jn.kikukt.adapter.loadImage
 import com.jn.kikukt.common.SPManage
 import com.jn.kikukt.common.api.IGuideView
+import com.jn.kikukt.databinding.CommonGuideLayoutBinding
 import com.jn.kikukt.entiy.GuidePageVO
-import kotlinx.android.synthetic.main.common_guide_layout.*
 
 /**
  * Author：Stevie.Chen Time：2019/7/10
@@ -17,10 +19,10 @@ import kotlinx.android.synthetic.main.common_guide_layout.*
 abstract class RootGuideActivity : RootActivity(), IGuideView {
 
     protected lateinit var mAdapter: BaseRvAdapter<GuidePageVO>
+    override val viewBinding: ViewBinding by lazy { CommonGuideLayoutBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.common_guide_layout)
         initView()
     }
 
@@ -40,7 +42,7 @@ abstract class RootGuideActivity : RootActivity(), IGuideView {
                 )
             }
         }
-        vp_RootGuide.adapter = mAdapter
+        viewBinding.root.findViewById<ViewPager2>(R.id.vp_RootGuide).adapter = mAdapter
     }
 
     open fun getAdapter(): BaseRvAdapter<GuidePageVO> =

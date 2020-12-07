@@ -81,19 +81,19 @@ abstract class RootPopupWindow {
         mPopupWindow?.setOnDismissListener(onDismissListener)
     }
 
-    fun showAsDropDown(anchor: View) {
+    open fun showAsDropDown(anchor: View) {
         mPopupWindow?.showAsDropDown(anchor)
     }
 
-    fun showAsDropDown(anchor: View, xoff: Int, yoff: Int) {
+    open fun showAsDropDown(anchor: View, xoff: Int, yoff: Int) {
         mPopupWindow?.showAsDropDown(anchor, xoff, yoff)
     }
 
-    fun showAsDropDown(anchor: View, xoff: Int, yoff: Int, gravity: Int) {
+    open fun showAsDropDown(anchor: View, xoff: Int, yoff: Int, gravity: Int) {
         mPopupWindow?.showAsDropDown(anchor, xoff, yoff, gravity)
     }
 
-    fun showAtLocation(anchor: View, gravity: Int, x: Int, y: Int) {
+    open fun showAtLocation(anchor: View, gravity: Int, x: Int, y: Int) {
         mPopupWindow?.showAtLocation(anchor, gravity, x, y)
     }
 }

@@ -21,21 +21,24 @@ interface IRefreshView : OnRefreshLoadMoreListener {
     var mPageSize: Int//page info(page size)
     var mTotalSize: Int//page info(total size)
     var mTotalPage: Int//page info(total page)
+
     @RefreshViewType
     val mRefreshViewType: Int
         get() = ALL//refresh type(刷新类型)
+
     @LoadMoreEnableType
     val mLoadMoreEnableType: Int
         get() = EMPTY//load more type(是否可以加载更多的判断标志)
     val isLoadMoreEnable: Boolean
         get() = true//isLoadMoreEnable(是否可以加载更多)
+
     @RefreshOperateType
     var mRefreshOperateType: Int//operate type(Refresh所在界面当前操作类型)
     var mSmartRefreshLayout: SmartRefreshLayout//root layout
     var mClassicsHeader: ClassicsHeader?//refresh layout
     var mClassicsFooter: ClassicsFooter?//load more layout
 
-    val layoutItemResId: Int//获取主区域内容布局Id
+    val itemContentLayoutId: Int//获取主区域内容布局Id
 
     /**
      * 初始化刷新相关控件

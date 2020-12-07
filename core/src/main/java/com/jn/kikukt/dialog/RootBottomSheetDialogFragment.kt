@@ -6,7 +6,6 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
 import androidx.annotation.CallSuper
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.jn.kikukt.common.api.IBaseView
@@ -18,7 +17,6 @@ import com.jn.kikukt.common.api.IBaseView
 abstract class RootBottomSheetDialogFragment : BottomSheetDialogFragment(), IBaseView,
     DialogInterface.OnKeyListener {
 
-    override lateinit var mAppCompatActivity: AppCompatActivity
     override var mProgressDialog: ProgressDialogFragment? = null
     protected var mWindow: Window? = null
 
@@ -51,12 +49,14 @@ abstract class RootBottomSheetDialogFragment : BottomSheetDialogFragment(), IBas
             if (animationStyle != 0)
                 window?.attributes?.windowAnimations = animationStyle
         }
-        val view = inflater.inflate(layoutResId, container, false)
-        if (activity is AppCompatActivity)
-            mAppCompatActivity = activity as AppCompatActivity
+        return inflater.inflate(layoutResId, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView(view)
         initView()
         initData()
-        return view
     }
 
     override fun onKey(

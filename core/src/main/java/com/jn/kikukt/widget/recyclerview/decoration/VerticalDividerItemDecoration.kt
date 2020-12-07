@@ -2,27 +2,26 @@ package com.jn.kikukt.widget.recyclerview.decoration
 
 import android.content.Context
 import android.graphics.Rect
-import androidx.annotation.DimenRes
-import androidx.core.view.ViewCompat
-import androidx.recyclerview.widget.RecyclerView
 import android.view.View
+import androidx.annotation.DimenRes
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * Author：Stevie.Chen Time：2019/7/12
  * Class Comment：横向滑动时竖直分割线
  */
-class VerticalDividerItemDecoration : FlexibleDividerDecoration {
+class VerticalDividerItemDecoration(builder: Builder) : FlexibleDividerDecoration(builder) {
 
     private var mMarginProvider: MarginProvider
 
-    constructor(builder: Builder) : super(builder) {
+    init {
         mMarginProvider = builder.mMarginProvider
     }
 
     override fun getDividerBound(position: Int, parent: RecyclerView, child: View): Rect {
         val bounds = Rect(0, 0, 0, 0)
-        val transitionX = ViewCompat.getTranslationX(child).toInt()
-        val transitionY = ViewCompat.getTranslationY(child).toInt()
+        val transitionX = child.translationX.toInt()
+        val transitionY = child.translationY.toInt()
         val params = child.layoutParams as RecyclerView.LayoutParams
         bounds.top = parent.paddingTop +
                 mMarginProvider.dividerTopMargin(position, parent) + transitionY
@@ -79,7 +78,10 @@ class VerticalDividerItemDecoration : FlexibleDividerDecoration {
 
     private fun getDividerSize(position: Int, parent: RecyclerView): Int {
         return when {
-            mPaintProvider != null -> mPaintProvider!!.dividerPaint(position, parent).strokeWidth.toInt()
+            mPaintProvider != null -> mPaintProvider!!.dividerPaint(
+                position,
+                parent
+            ).strokeWidth.toInt()
             mSizeProvider != null -> mSizeProvider!!.dividerSize(position, parent)
             mDrawableProvider != null -> {
                 val drawable = mDrawableProvider!!.drawableProvider(position, parent)

@@ -10,14 +10,18 @@ import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.scwang.smart.refresh.layout.api.RefreshLayout
-import kotlinx.android.synthetic.main.common_refresh_layout.view.*
 
 /**
  * Author：Stevie.Chen Time：2019/7/11
  * Class Comment：
  */
-abstract class RootRefreshFragment : RootFragment(), IRefreshView {
+abstract class RootRefreshFragment(contentLayoutId: Int = R.layout.common_refresh_layout) :
+    RootFragment(contentLayoutId), IRefreshView {
 
+    final override val mInitPageIndex: Int
+        get() = super.mInitPageIndex//page info
+    final override val mInitPageSize: Int
+        get() = super.mInitPageSize//page info
     override var mPageIndex: Int = mInitPageIndex//page info
     override var mPageSize: Int = mInitPageSize//page info
     override var mTotalSize: Int = 0//page info
@@ -26,8 +30,6 @@ abstract class RootRefreshFragment : RootFragment(), IRefreshView {
     override lateinit var mSmartRefreshLayout: SmartRefreshLayout//root layout
     override var mClassicsHeader: ClassicsHeader? = null//refresh layout
     override var mClassicsFooter: ClassicsFooter? = null//load more layout
-
-    override val layoutResId: Int = R.layout.common_refresh_layout
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -64,13 +66,13 @@ abstract class RootRefreshFragment : RootFragment(), IRefreshView {
 
     override fun initRefreshView() {
         view?.run {
-            mSmartRefreshLayout = srl_root
-            mClassicsHeader = srlH_root
-            mClassicsFooter = srlF_root
+            mSmartRefreshLayout = findViewById(R.id.srl_root)
+            mClassicsHeader = findViewById(R.id.srlH_root)
+            mClassicsFooter = findViewById(R.id.srlF_root)
         }
-        if (layoutItemResId != 0) {
+        if (itemContentLayoutId != 0) {
             mSmartRefreshLayout.setRefreshContent(
-                layoutInflater.inflate(layoutItemResId, mSmartRefreshLayout, false),
+                layoutInflater.inflate(itemContentLayoutId, mSmartRefreshLayout, false),
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
             )
         }

@@ -26,10 +26,12 @@ class EmoJiInputFilter(context: Context) : InputFilter {
         dstart: Int,
         dend: Int
     ): CharSequence {
-        val emoJiMatcher = mEmojiPattern.matcher(source)
-        if (emoJiMatcher.find()) {
-            Toast.makeText(mContext.applicationContext, "不支持输入表情", Toast.LENGTH_SHORT).show()
-            return ""
+        source?.let {
+            val emoJiMatcher = mEmojiPattern.matcher(it)
+            if (emoJiMatcher.find()) {
+                Toast.makeText(mContext.applicationContext, "不支持输入表情", Toast.LENGTH_SHORT).show()
+                return ""
+            }
         }
         return ""
     }

@@ -1,17 +1,19 @@
 package com.jn.kikukt.common.api
 
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.jn.kikukt.R
 import com.jn.kikukt.annonation.ERROR
 import com.jn.kikukt.annonation.LoadCompleteType
 import com.jn.kikukt.annonation.SUCCESS
 import com.jn.kikukt.net.retrofit.HttpResponse
-import kotlinx.android.synthetic.main.common_loadingfailure.view.*
 
 /**
  * Author：Stevie.Chen Time：2019/7/10
@@ -78,17 +80,19 @@ interface IRvView<T> {
         @StringRes loadFailureStringRes: Int
     ) {
         mAdapter.emptyLayout?.run {
+            val iv = findViewById<ImageView>(R.id.iv_commonLoadingFailure)
+            val tv = findViewById<TextView>(R.id.tv_commonLoadingFailure)
             if (loadFailureDrawableRes != 0) {
-                iv_commonLoadingFailure.setImageResource(loadFailureDrawableRes)
-                iv_commonLoadingFailure.visibility = View.VISIBLE
+                iv.setImageResource(loadFailureDrawableRes)
+                iv.visibility = View.VISIBLE
             } else {
-                iv_commonLoadingFailure.visibility = View.GONE
+                iv.visibility = View.GONE
             }
             if (loadFailureStringRes != 0) {
-                tv_commonLoadingFailure.setText(loadFailureStringRes)
-                tv_commonLoadingFailure.visibility = View.VISIBLE
+                tv.setText(loadFailureStringRes)
+                tv.visibility = View.VISIBLE
             } else {
-                tv_commonLoadingFailure.visibility = View.GONE
+                tv.visibility = View.GONE
             }
         }
     }

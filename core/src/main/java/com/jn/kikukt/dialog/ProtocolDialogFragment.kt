@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.jn.kikukt.R
 import com.jn.kikukt.common.utils.SpanUtils
-import kotlinx.android.synthetic.main.dialog_protocol.*
 import kotlin.system.exitProcess
 
 /**
@@ -42,14 +41,15 @@ class ProtocolDialogFragment private constructor() : RootDialogFragment() {
         fun newInstance() = ProtocolDialogFragment()
     }
 
-    override fun initView() {
+    override fun initView(view: View) {
         super.initView()
         setCanceledOnBackPress()
 
         context?.let { context ->
+            val tvContent = view.findViewById<TextView>(R.id.tv_protocolContent)
             val color = ContextCompat.getColor(context, R.color.c_333333)
-            tv_protocolContent.setLinkTextColor(ContextCompat.getColor(context, R.color.c_FA415E))
-            SpanUtils.with(tv_protocolContent)?.apply {
+            tvContent.setLinkTextColor(ContextCompat.getColor(context, R.color.c_FA415E))
+            SpanUtils.with(tvContent)?.apply {
                 append(getString(R.string.dialog_protocolContent1))
                 setFontSize(14, true)
                 setForegroundColor(color)
@@ -106,7 +106,7 @@ class ProtocolDialogFragment private constructor() : RootDialogFragment() {
             }
         }
 
-        view?.findViewById<TextView>(R.id.tv_protocolNegative)?.setOnClickListener {
+        view.findViewById<TextView>(R.id.tv_protocolNegative)?.setOnClickListener {
             if (System.currentTimeMillis() - mTimeExit > TIME_INTERVAL) {
                 Toast.makeText(
                     context,
@@ -119,7 +119,7 @@ class ProtocolDialogFragment private constructor() : RootDialogFragment() {
                 exitProcess(0)
             }
         }
-        view?.findViewById<TextView>(R.id.tv_protocolPositive)
+        view.findViewById<TextView>(R.id.tv_protocolPositive)
             ?.setOnClickListener {
                 dismissAllowingStateLoss()
                 onPositiveBlock?.invoke()

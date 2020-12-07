@@ -1,9 +1,9 @@
 package com.jn.kikukt.dialog
 
 import android.view.View
+import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import com.jn.kikukt.R
-import kotlinx.android.synthetic.main.dialog_photochoicedialog.view.*
 
 /**
  * Author：Stevie.Chen Time：2019/7/15
@@ -24,13 +24,14 @@ class PhotoChoiceDialogFragment : RootDialogFragment(), View.OnClickListener {
 
     override val animationStyle: Int = R.style.bottom_in_out
 
-    override fun initView() {
+    override fun initView(view: View) {
         super.initView()
-        view?.run {
-            tv_takePhoto.setOnClickListener(this@PhotoChoiceDialogFragment)
-            tv_album.setOnClickListener(this@PhotoChoiceDialogFragment)
-            tv_cancel.setOnClickListener(this@PhotoChoiceDialogFragment)
-        }
+        view.findViewById<TextView>(R.id.tv_takePhoto)
+            .setOnClickListener(this@PhotoChoiceDialogFragment)
+        view.findViewById<TextView>(R.id.tv_album)
+            .setOnClickListener(this@PhotoChoiceDialogFragment)
+        view.findViewById<TextView>(R.id.tv_cancel)
+            .setOnClickListener(this@PhotoChoiceDialogFragment)
     }
 
     fun show(

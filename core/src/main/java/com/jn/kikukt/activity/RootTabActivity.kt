@@ -3,13 +3,15 @@ package com.jn.kikukt.activity
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.viewbinding.ViewBinding
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.jn.kikukt.R
 import com.jn.kikukt.adapter.BaseFragmentStateAdapter
 import com.jn.kikukt.common.api.ITabLayoutView
-import kotlinx.android.synthetic.main.common_tab_layout_viewpager2.*
+import com.jn.kikukt.databinding.CommonTabLayoutViewpager2Binding
 
 /**
  * Author：Stevie.Chen Time：2020/7/15
@@ -24,7 +26,12 @@ abstract class RootTabActivity : RootTbActivity(), ITabLayoutView,
     open val mAdapter: FragmentStateAdapter
         get() = BaseFragmentStateAdapter(this, fragments)
 
-    override val layoutResId: Int = R.layout.common_tab_layout_viewpager2
+    override val viewBinding: ViewBinding by lazy {
+        CommonTabLayoutViewpager2Binding.inflate(layoutInflater)
+    }
+
+    protected lateinit var mViewPager: ViewPager2
+    protected lateinit var mTabLayout: TabLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,12 +40,14 @@ abstract class RootTabActivity : RootTbActivity(), ITabLayoutView,
     }
 
     override fun initTabView() {
-        viewpager_RootTab.adapter = mAdapter
-        TabLayoutMediator(tabLayout_RootTab, viewpager_RootTab, this).attach()
+        mViewPager = findViewById(R.id.viewpager_RootTab)
+        mTabLayout = findViewById(R.id.tabLayout_RootTab)
+        mViewPager.adapter = mAdapter
+        TabLayoutMediator(mTabLayout, mViewPager, this).attach()
     }
 
     override fun setTabLayoutAttribute() {
-        tabLayout_RootTab.run {
+        mTabLayout.run {
             //indicator color
             setSelectedTabIndicatorColor(
                 ContextCompat.getColor(
