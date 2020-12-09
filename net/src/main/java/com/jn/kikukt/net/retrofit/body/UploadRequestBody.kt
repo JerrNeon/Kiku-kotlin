@@ -1,5 +1,6 @@
 package com.jn.kikukt.net.retrofit.body
 
+import com.jn.kikukt.common.utils.log
 import com.jn.kikukt.net.retrofit.callback.ProgressListener
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -37,14 +38,18 @@ class UploadRequestBody(val requestBody: RequestBody?, val progressListener: Pro
 
             @Throws(IOException::class)
             override fun write(source: Buffer, byteCount: Long) {
-                super.write(source, byteCount)
-                totalBytesWrite += byteCount
-                progressListener?.onProgress(
-                    totalBytesWrite,
-                    requestBody?.contentLength() ?: 0,
-                    totalBytesWrite * 1.0f / (requestBody?.contentLength() ?: 1),
-                    true
-                )
+                try {
+                    super.write(source, byteCount)
+                    totalBytesWrite += byteCount
+                    progressListener?.onProgress(
+                        totalBytesWrite,
+                        requestBody?.contentLength() ?: 0,
+                        totalBytesWrite * 1.0f / (requestBody?.contentLength() ?: 1),
+                        true
+                    )
+                } catch (e: Exception) {
+                    e.log()
+                }
             }
         }
     }
