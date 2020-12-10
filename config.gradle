@@ -50,6 +50,8 @@ ext {
             "annotation"                         : 'androidx.annotation:annotation:1.1.0',
             "multidex"                           : 'androidx.multidex:multidex:2.0.1',//突破65536个方法数
             "viewpager2"                         : "androidx.viewpager2:viewpager2:1.0.0",
+            "datastore"                          : "androidx.datastore:datastore-preferences:1.0.0-alpha02",//代替SharePreference
+            "startup"                            : "androidx.startup:startup-runtime:1.0.0",//启动初始化
 
             "flexbox"                            : "com.google.android:flexbox:1.1.0",
 

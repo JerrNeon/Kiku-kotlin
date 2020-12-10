@@ -1,6 +1,7 @@
 package com.jn.kikukt.common.utils
 
 import android.util.Log
+import com.jn.common.BuildConfig
 import com.jn.kikukt.common.utils.LogUtils.LOG_ENABLE
 import com.jn.kikukt.common.utils.LogUtils.TAG
 
@@ -9,8 +10,19 @@ import com.jn.kikukt.common.utils.LogUtils.TAG
  * Class Comment：
  */
 object LogUtils {
-    var LOG_ENABLE: Boolean = true//这里建议根据buildType来区分是否打印日志，一般只在Debug环境下打印
-    var TAG: String = "LogUtils"
+    internal var LOG_ENABLE: Boolean = true//这里建议根据buildType来区分是否打印日志，一般只在Debug环境下打印
+    internal var TAG: String = "LogUtils"
+
+    /**
+     * 初始化Log
+     *
+     * @param logEnable 是否开启日志，建议debug开启日志信息，release关闭日志信息
+     * @param tagName   Tag名称
+     */
+    fun init(tagName: String = "LogUtils", logEnable: Boolean = BuildConfig.DEBUG) {
+        TAG = tagName
+        LOG_ENABLE = logEnable
+    }
 }
 
 fun String.logI() {

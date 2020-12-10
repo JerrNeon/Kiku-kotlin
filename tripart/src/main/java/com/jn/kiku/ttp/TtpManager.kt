@@ -27,7 +27,7 @@ object TtpManager {
      * @param context   Context
      * @param LOG_DEBUG 是否开启日志，建议debug下才开启
      */
-    fun initJPush(context: Context?, LOG_DEBUG: Boolean) {
+    fun initJPush(context: Context, LOG_DEBUG: Boolean) {
         JPushInterface.setDebugMode(LOG_DEBUG)
         JPushInterface.init(context)
     }
@@ -37,8 +37,8 @@ object TtpManager {
      *
      * @param redirectUrl 回调地址
      */
-    fun initSina(redirectUrl: String?) {
-        TtpConstants.SINA_REDIRECT_URL = redirectUrl!!
+    fun initSina(redirectUrl: String) {
+        TtpConstants.SINA_REDIRECT_URL = redirectUrl
     }
 
     /**

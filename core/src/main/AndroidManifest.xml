@@ -40,6 +40,15 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="com.jn.kikukt.utils.CoreInitializer"
+                android:value="androidx.startup" />
+        </provider>
 
         <!-- X5WebView-->
         <service

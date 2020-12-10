@@ -3,11 +3,12 @@ package com.jn.kikukt
 import android.app.Application
 import android.content.ComponentCallbacks2
 import android.content.Context
+import android.os.Handler
+import android.os.Process
 import androidx.multidex.MultiDex
+import com.jn.common.BuildConfig
 import com.jn.kikukt.common.ActivityManager
-import com.jn.kikukt.common.UtilsManager
-import com.jn.kikukt.common.exception.CrashHandler
-import com.jn.kikukt.utils.WebViewUtils
+import com.jn.kikukt.common.utils.LogUtils
 import com.jn.kikukt.utils.glide.GlideUtil.clearMemory
 import com.jn.kikukt.utils.glide.GlideUtil.trimMemory
 
@@ -15,7 +16,7 @@ import com.jn.kikukt.utils.glide.GlideUtil.trimMemory
  * Author：Stevie.Chen Time：2019/7/11
  * Class Comment：
  */
-abstract class RootApplication : Application() {
+open class RootApplication : Application() {
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
@@ -74,48 +75,32 @@ abstract class RootApplication : Application() {
     }
 
     /**
-     * 初始化工具类的一些相关信息
-     *
-     * @param tagName Tag名称
+     * 初始化LogUtils
      */
-    protected fun initUtilsManager(tagName: String) {
-        UtilsManager.initLogUtils(BuildConfig.DEBUG, tagName)
-        UtilsManager.initContextUtils(this)
+    protected fun initLogUtils(tagName: String, logEnable: Boolean = BuildConfig.DEBUG) {
+        LogUtils.init(tagName, logEnable)
     }
 
     /**
-     * 初始化第三方平台一些相关信息
+     * 初始化
      */
-    protected fun initTTpManager() {
-
-    }
-
-    /**
-     * 初始化崩溃异常信息
-     */
-    protected fun initCrashHandler() {
-        if (!BuildConfig.DEBUG)
-            CrashHandler.instance.init(this)
-    }
-
-    /**
-     * 搜集本地tbs内核信息并上报服务器，服务器返回结果决定使用哪个内核。
-     */
-    protected fun initTencentWebView() {
-        WebViewUtils.initX5Environment(applicationContext)
-    }
-
-    /**
-     * 查看App中数据库和sp中的数据及其项目构造
-     */
-    protected fun initStetho() {
-
-    }
-
-    /**
-     * 检查内存泄漏
-     */
-    protected fun initCanary() {
-
+    protected fun initComponent(
+        delayInitBlock: (() -> Unit)? = null,
+        threadInitBlock: (() -> Unit)? = null
+    ) {
+        Handler().postDelayed({
+            delayInitBlock?.invoke()
+        }, 3000)
+        Thread {
+            //设置线程的优先级，不与主线程抢资源
+            Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND)
+            //子线程初始化第三方组件
+            try {
+                Thread.sleep(4000)
+                threadInitBlock?.invoke()
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
+        }.start()
     }
 }

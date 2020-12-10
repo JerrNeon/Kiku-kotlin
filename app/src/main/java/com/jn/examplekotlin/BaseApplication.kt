@@ -11,6 +11,6 @@ class BaseApplication : RootApplication() {
     override fun onCreate() {
         super.onCreate()
         initActivityManager()
-        initUtilsManager("kiku_kotlin")
+        initLogUtils("kiku_kotlin")
     }
 }

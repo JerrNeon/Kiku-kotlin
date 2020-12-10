@@ -1,8 +1,8 @@
 package com.jn.kiku.ttp.jpush
 
 import android.app.Activity
-import android.app.Application
 import android.app.Notification
+import android.content.Context
 import android.os.Handler
 import android.os.Message
 import cn.jpush.android.api.BasicPushNotificationBuilder
@@ -21,8 +21,8 @@ import com.jn.kikukt.common.utils.logI
 object JPushManage {
     private const val MSG_SET_ALIAS = 1001
 
-    private val mContext: Application
-        get() = ContextUtils.application
+    private val mContext: Context
+        get() = ContextUtils.context
 
     enum class JPushType {
         SOUND, VIBRATE, All, NONE

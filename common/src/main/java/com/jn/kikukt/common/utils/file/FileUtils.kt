@@ -70,7 +70,7 @@ object FileUtils {
     //没有sdcard 放在 data/data/packageName/file 目录下
     val rootDir: File
         get() {
-            val application = ContextUtils.application
+            val application = ContextUtils.context
             return if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {// SD卡已经挂载
                 application.getExternalFilesDir(null) ?: application.filesDir
             } else {

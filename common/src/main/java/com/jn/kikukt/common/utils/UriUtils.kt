@@ -27,7 +27,7 @@ object UriUtils {
      * @param filePath 文件路径
      */
     fun getUri(filePath: String): Uri? {
-        return getUri(filePath, ContextUtils.application.packageName)
+        return getUri(filePath, ContextUtils.context.packageName)
     }
 
     /**

@@ -70,4 +70,6 @@ dependencies {
     //kotlin
     api depKt["activity-ktx"]
     api depKt["fragment-ktx"]
+    //startup
+    api dep["startup"]
 }

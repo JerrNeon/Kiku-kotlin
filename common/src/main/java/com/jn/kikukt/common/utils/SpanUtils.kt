@@ -16,7 +16,6 @@ import android.text.style.*
 import android.util.Log
 import android.widget.TextView
 import androidx.annotation.*
-import androidx.annotation.IntRange
 import androidx.core.content.ContextCompat
 import kotlinx.serialization.Serializable
 import java.lang.ref.WeakReference
@@ -196,7 +195,7 @@ class SpanUtils {
      * @param lineHeight The line height, in pixel.
      * @return the single [SpanUtils] instance
      */
-    fun setLineHeight(@IntRange(from = 0) lineHeight: Int): SpanUtils? {
+    fun setLineHeight(@androidx.annotation.IntRange(from = 0) lineHeight: Int): SpanUtils? {
         return setLineHeight(lineHeight, ALIGN_CENTER)
     }
 
@@ -213,7 +212,7 @@ class SpanUtils {
      * @return the single [SpanUtils] instance
      */
     fun setLineHeight(
-        @IntRange(from = 0) lineHeight: Int,
+        @androidx.annotation.IntRange(from = 0) lineHeight: Int,
         @Align align: Int
     ): SpanUtils? {
         this.lineHeight = lineHeight
@@ -241,8 +240,8 @@ class SpanUtils {
      */
     fun setQuoteColor(
         @ColorInt color: Int,
-        @IntRange(from = 1) stripeWidth: Int,
-        @IntRange(from = 0) gapWidth: Int
+        @androidx.annotation.IntRange(from = 1) stripeWidth: Int,
+        @androidx.annotation.IntRange(from = 0) gapWidth: Int
     ): SpanUtils? {
         quoteColor = color
         this.stripeWidth = stripeWidth
@@ -258,8 +257,8 @@ class SpanUtils {
      * @return the single [SpanUtils] instance
      */
     fun setLeadingMargin(
-        @IntRange(from = 0) first: Int,
-        @IntRange(from = 0) rest: Int
+        @androidx.annotation.IntRange(from = 0) first: Int,
+        @androidx.annotation.IntRange(from = 0) rest: Int
     ): SpanUtils? {
         this.first = first
         this.rest = rest
@@ -272,7 +271,7 @@ class SpanUtils {
      * @param gapWidth The width of gap, in pixel.
      * @return the single [SpanUtils] instance
      */
-    fun setBullet(@IntRange(from = 0) gapWidth: Int): SpanUtils? {
+    fun setBullet(@androidx.annotation.IntRange(from = 0) gapWidth: Int): SpanUtils? {
         return setBullet(0, 3, gapWidth)
     }
 
@@ -286,8 +285,8 @@ class SpanUtils {
      */
     fun setBullet(
         @ColorInt color: Int,
-        @IntRange(from = 0) radius: Int,
-        @IntRange(from = 0) gapWidth: Int
+        @androidx.annotation.IntRange(from = 0) radius: Int,
+        @androidx.annotation.IntRange(from = 0) gapWidth: Int
     ): SpanUtils? {
         bulletColor = color
         bulletRadius = radius
@@ -301,7 +300,7 @@ class SpanUtils {
      * @param size The size of font.
      * @return the single [SpanUtils] instance
      */
-    fun setFontSize(@IntRange(from = 0) size: Int): SpanUtils? {
+    fun setFontSize(@androidx.annotation.IntRange(from = 0) size: Int): SpanUtils? {
         return setFontSize(size, false)
     }
 
@@ -312,7 +311,7 @@ class SpanUtils {
      * @param isSp True to use sp, false to use pixel.
      * @return the single [SpanUtils] instance
      */
-    fun setFontSize(@IntRange(from = 0) size: Int, isSp: Boolean): SpanUtils? {
+    fun setFontSize(@androidx.annotation.IntRange(from = 0) size: Int, isSp: Boolean): SpanUtils? {
         fontSize = size
         fontSizeIsDp = isSp
         return this
@@ -731,7 +730,7 @@ class SpanUtils {
      * @param size The size of space.
      * @return the single [SpanUtils] instance
      */
-    fun appendSpace(@IntRange(from = 0) size: Int): SpanUtils? {
+    fun appendSpace(@androidx.annotation.IntRange(from = 0) size: Int): SpanUtils? {
         return appendSpace(size, Color.TRANSPARENT)
     }
 
@@ -742,7 +741,7 @@ class SpanUtils {
      * @param color The color of space.
      * @return the single [SpanUtils] instance
      */
-    fun appendSpace(@IntRange(from = 0) size: Int, @ColorInt color: Int): SpanUtils? {
+    fun appendSpace(@androidx.annotation.IntRange(from = 0) size: Int, @ColorInt color: Int): SpanUtils? {
         apply(mTypeSpace)
         spaceSize = size
         spaceColor = color
@@ -1041,8 +1040,8 @@ class SpanUtils {
         private val paint = Paint()
         override fun getSize(
             paint: Paint, text: CharSequence,
-            @IntRange(from = 0) start: Int,
-            @IntRange(from = 0) end: Int,
+            @androidx.annotation.IntRange(from = 0) start: Int,
+            @androidx.annotation.IntRange(from = 0) end: Int,
             fm: FontMetricsInt?
         ): Int {
             return width
@@ -1050,8 +1049,8 @@ class SpanUtils {
 
         override fun draw(
             canvas: Canvas, text: CharSequence,
-            @IntRange(from = 0) start: Int,
-            @IntRange(from = 0) end: Int,
+            @androidx.annotation.IntRange(from = 0) start: Int,
+            @androidx.annotation.IntRange(from = 0) end: Int,
             x: Float, top: Int, y: Int, bottom: Int,
             paint: Paint
         ) {
@@ -1174,7 +1173,7 @@ class SpanUtils {
         private var mContentUri: Uri? = null
         private var mResourceId = 0
         private val application
-            get() = ContextUtils.application
+            get() = ContextUtils.context
 
         constructor(b: Bitmap, verticalAlignment: Int) : super(verticalAlignment) {
             mDrawable = BitmapDrawable(application.resources, b)

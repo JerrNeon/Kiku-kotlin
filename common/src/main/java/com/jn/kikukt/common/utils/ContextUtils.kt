@@ -1,6 +1,5 @@
 package com.jn.kikukt.common.utils
 
-import android.app.Application
 import android.content.Context
 
 /**
@@ -8,7 +7,5 @@ import android.content.Context
  * Class Comment：
  */
 object ContextUtils {
-    lateinit var application: Application
-    val context: Context
-        get() = application.applicationContext
+    lateinit var context: Context
 }
