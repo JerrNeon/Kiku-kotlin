@@ -3,30 +3,25 @@ package com.jn.kikukt.activity
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.viewbinding.ViewBinding
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.jn.kikukt.R
 import com.jn.kikukt.adapter.BaseFragmentPagerAdapter
 import com.jn.kikukt.common.api.ITabLayoutView
-import com.jn.kikukt.databinding.CommonTabLayoutViewpagerBinding
 
 /**
  * Author：Stevie.Chen Time：2020/7/15
  * Class Comment：TabLayout + ViewPager
  */
-abstract class RootTabActivity2 : RootTbActivity(), ITabLayoutView {
+abstract class RootTabActivity2 : RootTbActivity(R.layout.common_tab_layout_viewpager),
+    ITabLayoutView {
 
     abstract val fragments: MutableList<Fragment>
     abstract val titles: MutableList<String>
 
     open val mAdapter: PagerAdapter
         get() = BaseFragmentPagerAdapter(supportFragmentManager, fragments, titles)
-
-    override val viewBinding: ViewBinding by lazy {
-        CommonTabLayoutViewpagerBinding.inflate(layoutInflater)
-    }
 
     protected lateinit var mViewPager: ViewPager
     protected lateinit var mTabLayout: TabLayout

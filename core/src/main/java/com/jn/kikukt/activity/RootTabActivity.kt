@@ -3,7 +3,6 @@ package com.jn.kikukt.activity
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.viewbinding.ViewBinding
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
@@ -11,24 +10,19 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.jn.kikukt.R
 import com.jn.kikukt.adapter.BaseFragmentStateAdapter
 import com.jn.kikukt.common.api.ITabLayoutView
-import com.jn.kikukt.databinding.CommonTabLayoutViewpager2Binding
 
 /**
  * Author：Stevie.Chen Time：2020/7/15
  * Class Comment：TabLayout + ViewPager2
  */
-abstract class RootTabActivity : RootTbActivity(), ITabLayoutView,
-    TabLayoutMediator.TabConfigurationStrategy {
+abstract class RootTabActivity : RootTbActivity(R.layout.common_tab_layout_viewpager2),
+    ITabLayoutView, TabLayoutMediator.TabConfigurationStrategy {
 
     abstract val fragments: MutableList<Fragment>
     abstract val titles: MutableList<String>
 
     open val mAdapter: FragmentStateAdapter
         get() = BaseFragmentStateAdapter(this, fragments)
-
-    override val viewBinding: ViewBinding by lazy {
-        CommonTabLayoutViewpager2Binding.inflate(layoutInflater)
-    }
 
     protected lateinit var mViewPager: ViewPager2
     protected lateinit var mTabLayout: TabLayout

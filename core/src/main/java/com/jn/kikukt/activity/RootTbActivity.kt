@@ -1,9 +1,7 @@
 package com.jn.kikukt.activity
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import com.jn.kikukt.R
 import com.jn.kikukt.utils.setStatusBar
 import com.jn.kikukt.widget.TitleBarLayout
@@ -12,21 +10,15 @@ import com.jn.kikukt.widget.TitleBarLayout
  * Author：Stevie.Chen Time：2019/7/10
  * Class Comment：
  */
-abstract class RootTbActivity : RootActivity() {
+abstract class RootTbActivity(open val layoutResId: Int) :
+    RootActivity(R.layout.common_titlebar_layout) {
 
-    private var titleBarLayout: TitleBarLayout? = null//root layout
+    protected var titleBarLayout: TitleBarLayout? = null//root layout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initStatusBar()
         initRootTbView()
-    }
-
-    override fun initViewBinding(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        attachToRoot: Boolean
-    ) {
     }
 
     open fun initStatusBar() {
@@ -37,9 +29,8 @@ abstract class RootTbActivity : RootActivity() {
      * init titleBar View
      */
     open fun initRootTbView() {
-        setContentView(R.layout.common_titlebar_layout)
         titleBarLayout = findViewById<TitleBarLayout>(R.id.tbl_root).apply {
-            setTitleSource(contentView = viewBinding?.root)
+            setTitleSource(contentLayoutResId = layoutResId)
             onTitleClick(onLeadingClick = { finish() })
         }
     }
@@ -50,7 +41,7 @@ abstract class RootTbActivity : RootActivity() {
      * @param titleText     title content
      * @param isShowDivider is or not show divider
      */
-    protected fun setTitleText(titleText: String, isShowDivider: Boolean = false) {
+    protected open fun setTitleText(titleText: String, isShowDivider: Boolean = false) {
         setTitleSource(
             titleText = titleText,
             dividerVisibility = if (isShowDivider) View.VISIBLE else View.GONE

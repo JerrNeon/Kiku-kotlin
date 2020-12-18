@@ -9,12 +9,10 @@ import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.widget.FrameLayout
 import android.widget.ProgressBar
-import androidx.viewbinding.ViewBinding
 import com.jn.kikukt.R
 import com.jn.kikukt.common.api.IWvView
 import com.jn.kikukt.common.utils.IntentUtils
 import com.jn.kikukt.common.utils.file.FileUtils
-import com.jn.kikukt.databinding.CommonWvTencentBinding
 import com.jn.kikukt.dialog.PhotoChoiceDialogFragment
 import com.jn.kikukt.utils.WebViewUtils
 import requestCameraPermission
@@ -26,7 +24,7 @@ import java.io.File
  * Author：Stevie.Chen Time：2019/7/11
  * Class Comment：Android自带的WebView
  */
-open class RootWvActivity : RootTbActivity(), IWvView {
+open class RootWvActivity : RootTbActivity(R.layout.common_wv_tencent), IWvView {
 
     private val cameraPath: String
         get() = FileUtils.getImagePath("web")
@@ -40,8 +38,6 @@ open class RootWvActivity : RootTbActivity(), IWvView {
     private lateinit var mWebView: Any
     private var mWebViewHeight: Int = 0//WebView height
 
-    override val viewBinding: ViewBinding by lazy { CommonWvTencentBinding.inflate(layoutInflater) }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initWvView()
@@ -50,7 +46,7 @@ open class RootWvActivity : RootTbActivity(), IWvView {
     }
 
     override fun initWvView() {
-        mWebView = viewBinding.root.findViewById(R.id.wv_common)
+        mWebView = findViewById(R.id.wv_common)
 
         cameraPermissionBlock = requestCameraPermission {
             if (it == 0) {
@@ -93,7 +89,7 @@ open class RootWvActivity : RootTbActivity(), IWvView {
     }
 
     override fun setWebViewClient() {
-        val progress = viewBinding.root.findViewById<ProgressBar>(R.id.pb_wv_common)
+        val progress = findViewById<ProgressBar>(R.id.pb_wv_common)
         WebViewUtils.setWebViewClient(mWebView)
         WebViewUtils.setWebChromeClient(
             mWebView,

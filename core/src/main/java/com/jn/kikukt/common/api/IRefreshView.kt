@@ -38,8 +38,6 @@ interface IRefreshView : OnRefreshLoadMoreListener {
     var mClassicsHeader: ClassicsHeader?//refresh layout
     var mClassicsFooter: ClassicsFooter?//load more layout
 
-    val itemContentLayoutId: Int//获取主区域内容布局Id
-
     /**
      * 初始化刷新相关控件
      */

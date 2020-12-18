@@ -3,11 +3,9 @@ package com.jn.kikukt.activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.viewbinding.ViewBinding
 import com.jn.kikukt.R
 import com.jn.kikukt.annonation.*
 import com.jn.kikukt.common.api.IRefreshView
-import com.jn.kikukt.databinding.CommonRefreshLayoutBinding
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -17,7 +15,8 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout
  * Author：Stevie.Chen Time：2019/7/10
  * Class Comment：
  */
-abstract class RootRefreshActivity : RootTbActivity(), IRefreshView {
+abstract class RootRefreshActivity(open val itemLayoutResId: Int) :
+    RootTbActivity(R.layout.common_refresh_layout), IRefreshView {
 
     final override val mInitPageIndex: Int
         get() = super.mInitPageIndex//page info
@@ -31,10 +30,6 @@ abstract class RootRefreshActivity : RootTbActivity(), IRefreshView {
     override lateinit var mSmartRefreshLayout: SmartRefreshLayout//root layout
     override var mClassicsHeader: ClassicsHeader? = null//refresh layout
     override var mClassicsFooter: ClassicsFooter? = null//load more layout
-
-    override val viewBinding: ViewBinding by lazy {
-        CommonRefreshLayoutBinding.inflate(layoutInflater)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,14 +65,12 @@ abstract class RootRefreshActivity : RootTbActivity(), IRefreshView {
     }
 
     override fun initRefreshView() {
-        viewBinding.root.run {
-            mSmartRefreshLayout = findViewById(R.id.srl_root)
-            mClassicsHeader = findViewById(R.id.srlH_root)
-            mClassicsFooter = findViewById(R.id.srlF_root)
-        }
-        if (itemContentLayoutId != 0) {
+        mSmartRefreshLayout = findViewById(R.id.srl_root)
+        mClassicsHeader = findViewById(R.id.srlH_root)
+        mClassicsFooter = findViewById(R.id.srlF_root)
+        if (itemLayoutResId != 0) {
             mSmartRefreshLayout.setRefreshContent(
-                LayoutInflater.from(this).inflate(itemContentLayoutId, mSmartRefreshLayout, false),
+                LayoutInflater.from(this).inflate(itemLayoutResId, mSmartRefreshLayout, false),
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
             )
         }

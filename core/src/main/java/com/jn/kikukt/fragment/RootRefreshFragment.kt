@@ -15,8 +15,8 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout
  * Author：Stevie.Chen Time：2019/7/11
  * Class Comment：
  */
-abstract class RootRefreshFragment(contentLayoutId: Int = R.layout.common_refresh_layout) :
-    RootFragment(contentLayoutId), IRefreshView {
+abstract class RootRefreshFragment(open val itemLayoutResId: Int) :
+    RootFragment(R.layout.common_refresh_layout), IRefreshView {
 
     final override val mInitPageIndex: Int
         get() = super.mInitPageIndex//page info
@@ -70,9 +70,9 @@ abstract class RootRefreshFragment(contentLayoutId: Int = R.layout.common_refres
             mClassicsHeader = findViewById(R.id.srlH_root)
             mClassicsFooter = findViewById(R.id.srlF_root)
         }
-        if (itemContentLayoutId != 0) {
+        if (itemLayoutResId != 0) {
             mSmartRefreshLayout.setRefreshContent(
-                layoutInflater.inflate(itemContentLayoutId, mSmartRefreshLayout, false),
+                layoutInflater.inflate(itemLayoutResId, mSmartRefreshLayout, false),
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
             )
         }

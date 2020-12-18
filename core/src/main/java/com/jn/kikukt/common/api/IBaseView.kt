@@ -43,12 +43,12 @@ interface IBaseView {
     /**
      * 初始化View
      */
-    fun initView() {}
+    fun initView(view: View) {}
 
     /**
      * 初始化View
      */
-    fun initView(view: View) {}
+    fun initView() {}
 
     /**
      * 初始化数据

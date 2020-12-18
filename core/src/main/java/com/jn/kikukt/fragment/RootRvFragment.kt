@@ -19,8 +19,7 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout
  * Author：Stevie.Chen Time：2019/7/11
  * Class Comment：
  */
-abstract class RootRvFragment<T>(contentLayoutId: Int = R.layout.common_refresh_layout) :
-    RootRefreshFragment(contentLayoutId), IRvView<T> {
+abstract class RootRvFragment<T> : RootRefreshFragment(R.layout.common_rv), IRvView<T> {
 
     override lateinit var mRecyclerView: RecyclerView//RecyclerView
     override val emptyViewResId: Int
@@ -45,8 +44,6 @@ abstract class RootRvFragment<T>(contentLayoutId: Int = R.layout.common_refresh_
             }
         }
     }
-
-    override val itemContentLayoutId: Int = R.layout.common_rv
 
     override val isLoadMoreEnable: Boolean
         get() = when (mLoadMoreEnableType) {

@@ -8,12 +8,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.commit
-import androidx.viewbinding.ViewBinding
 import com.google.android.material.tabs.TabLayout
 import com.jn.kikukt.R
 import com.jn.kikukt.common.api.IMainView
 import com.jn.kikukt.common.utils.showToast
-import com.jn.kikukt.databinding.CommonMainLayoutBinding
 import com.jn.kikukt.dialog.ProgressDialogFragment
 import com.jn.kikukt.dialog.VersionUpdateDialog
 import com.jn.kikukt.entiy.VersionUpdateVO
@@ -23,7 +21,8 @@ import com.jn.kikukt.receiver.VersionUpdateReceiver
  * Author：Stevie.Chen Time：2019/7/11
  * Class Comment：
  */
-abstract class RootMainActivity : RootActivity(), IMainView, TabLayout.OnTabSelectedListener {
+abstract class RootMainActivity : RootActivity(R.layout.common_main_layout), IMainView,
+    TabLayout.OnTabSelectedListener {
 
     open var mCurrPosition = 0//current position
     protected var mTimeExit: Long = 0//Back press time
@@ -32,7 +31,6 @@ abstract class RootMainActivity : RootActivity(), IMainView, TabLayout.OnTabSele
     protected var mVersionUpdateDialog: VersionUpdateDialog? = null//versionUpdate dialog
     protected var mVersionUpdateVO: VersionUpdateVO? = null//versionUpdate content
     protected lateinit var mTabLayout: TabLayout//TabLayout
-    override val viewBinding: ViewBinding? by lazy { CommonMainLayoutBinding.inflate(layoutInflater) }
 
     companion object {
         const val TIME_INTERVAL: Long = 2000//two times Interval
