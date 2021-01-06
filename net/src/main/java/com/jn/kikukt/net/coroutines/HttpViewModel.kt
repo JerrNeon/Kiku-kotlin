@@ -20,7 +20,7 @@ open class HttpViewModel(application: Application) : CoroutineViewModel(applicat
 
     open fun onFailure(
         e: Throwable,
-        isToastAll: Boolean = true,
+        isToastAll: Boolean? = true,
         error: ((Failure) -> Unit)? = null
     ) {
         val showErrorMsg = {
@@ -36,13 +36,15 @@ open class HttpViewModel(application: Application) : CoroutineViewModel(applicat
             }
             is OkHttpException -> {
                 error?.invoke(Failure(e))
-                if (isToastAll) {
+                if (isToastAll == true) {
                     showErrorMsg.invoke()
                 }
             }
             else -> {
                 error?.invoke(Failure(OkHttpException(e)))
-                showErrorMsg.invoke()
+                if (isToastAll == false) {
+                    showErrorMsg.invoke()
+                }
             }
         }
     }
@@ -100,7 +102,7 @@ open class HttpViewModel(application: Application) : CoroutineViewModel(applicat
         }
 
         fun request(
-            isToastAll: Boolean = true,
+            isToastAll: Boolean? = true,
             block: suspend CoroutineScope.() -> BaseHttpResult<R>?
         ) {
             startBlock?.invoke()
