@@ -9,6 +9,7 @@ import com.jn.kikukt.net.retrofit.exception.OkHttpErrorHelper
 import com.jn.kikukt.net.retrofit.exception.OkHttpException
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 
 /**
  * Author：Stevie.Chen Time：2020/1/15
@@ -104,9 +105,9 @@ open class HttpViewModel(application: Application) : CoroutineViewModel(applicat
         fun request(
             isToastAll: Boolean? = true,
             block: suspend CoroutineScope.() -> BaseHttpResult<R>?
-        ) {
+        ): Job {
             startBlock?.invoke()
-            launchOnMain(tryBlock = {
+            return launchOnMain(tryBlock = {
                 block()?.execute(successBlock)
             }, catchBlock = { e ->
                 onFailure(e, isToastAll, error = {

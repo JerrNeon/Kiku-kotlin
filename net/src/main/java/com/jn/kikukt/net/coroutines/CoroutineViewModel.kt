@@ -3,10 +3,7 @@ package com.jn.kikukt.net.coroutines
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 /**
  * Author：Stevie.Chen Time：2020/8/3
@@ -34,19 +31,17 @@ open class CoroutineViewModel(application: Application) : AndroidViewModel(appli
         tryBlock: suspend CoroutineScope.() -> Unit,
         catchBlock: suspend CoroutineScope.(e: Throwable) -> Unit = {},
         finallyBlock: suspend CoroutineScope.() -> Unit = {}
-    ) {
+    ): Job =
         viewModelScope.launch {
             tryCatch(tryBlock, catchBlock, finallyBlock)
         }
-    }
 
     fun launchOnIO(
         tryBlock: suspend CoroutineScope.() -> Unit,
         catchBlock: suspend CoroutineScope.(e: Throwable) -> Unit = {},
         finallyBlock: suspend CoroutineScope.() -> Unit = {}
-    ) {
+    ): Job =
         viewModelScope.launch(Dispatchers.IO) {
             tryCatch(tryBlock, catchBlock, finallyBlock)
         }
-    }
 }
