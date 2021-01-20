@@ -75,7 +75,11 @@ abstract class RootDialogFragment : AppCompatDialogFragment(), IBaseView,
         } catch (e: Exception) {
             //
         }
+    }
 
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        onDismissBlock?.invoke(dialog)
     }
 
     abstract val layoutResId: Int//布局资源
@@ -89,6 +93,7 @@ abstract class RootDialogFragment : AppCompatDialogFragment(), IBaseView,
     //对话框是否正在显示
     val isShowing: Boolean
         get() = if (dialog != null) dialog?.isShowing ?: false else false
+    var onDismissBlock: ((dialog: DialogInterface) -> Unit)? = null//对话框销毁回调
 
     /**
      * 点击物理按键让对话框不消失
