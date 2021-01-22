@@ -98,7 +98,7 @@ fun Long.formatDate(pattern: String = YYYY_MM_DD_HH_MM_SS): String {
 /**
  * 将日期格式的字符串转换为长整型
  */
-fun String.toLong(pattern: String = YYYY_MM_DD_HH_MM_SS): Long? {
+fun String.toDateLong(pattern: String = YYYY_MM_DD_HH_MM_SS): Long? {
     try {
         val sf = SimpleDateFormat(pattern, Locale.getDefault())
         return sf.parse(this)?.time
