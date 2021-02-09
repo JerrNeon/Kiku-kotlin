@@ -103,4 +103,10 @@ object IntentUtils {
      */
     @RequiresApi(Build.VERSION_CODES.O)
     fun getManageUnknownAppSourcesIntent() = Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES)
+
+    /**
+     * 管理系统弹框的intent
+     */
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun getManageOverlayPermissionIntent() = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)
 }

@@ -176,6 +176,22 @@ fun AppCompatActivity.startActivityForResult(
 }
 
 /**
+ * startActivityForResult
+ */
+fun AppCompatActivity.startActivityForResult(
+    successBlock: (result: ActivityResult) -> Unit,
+    block: ((result: ActivityResult) -> Unit)? = null
+): (intent: Intent) -> Unit {
+    //registerForActivityResult必须在onCreate方法中调用
+    val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == Activity.RESULT_OK)
+            successBlock.invoke(it)
+        block?.invoke(it)
+    }
+    return { intent -> launcher.launch(intent) }
+}
+
+/**
  * 请求定位服务
  */
 fun AppCompatActivity.requestLocationService(block: (result: ActivityResult) -> Unit): () -> Unit {

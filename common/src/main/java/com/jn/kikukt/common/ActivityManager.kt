@@ -4,6 +4,7 @@ package com.jn.kikukt.common
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import com.jn.kikukt.common.utils.log
 import java.util.*
 
 /**
@@ -71,9 +72,13 @@ class ActivityManager {
      * 关闭栈顶的Activity
      */
     fun finishTopActivity() {
-        val pop = mActivityStack.pop()
-        if (!pop.isFinishing) {
-            pop.finish()
+        try {
+            val pop = mActivityStack.pop()
+            if (!pop.isFinishing) {
+                pop.finish()
+            }
+        } catch (e: Exception) {
+            e.log()
         }
     }
 
@@ -119,6 +124,18 @@ class ActivityManager {
 
     fun getActivityStack(): Stack<Activity> {
         return mActivityStack
+    }
+
+    /**
+     * 获取栈顶的Activity
+     */
+    fun getTopActivity(): Activity? {
+        return try {
+            mActivityStack.pop()
+        } catch (e: Exception) {
+            e.log()
+            null
+        }
     }
 
     /**

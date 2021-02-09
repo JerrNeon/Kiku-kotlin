@@ -21,7 +21,7 @@ object FileIOUtils {
      * @param is       The input stream.
      * @return `true`: success<br></br>`false`: fail
      */
-    fun writeFileFromIS(filePath: String, `is`: InputStream): Boolean {
+    fun writeFileFromIS(filePath: String, `is`: InputStream?): Boolean {
         return writeFileFromIS(
             getFileByPath(
                 filePath
@@ -834,7 +834,7 @@ object FileIOUtils {
         return true
     }
 
-    private fun is2Bytes(`is`: InputStream?): ByteArray? {
+    fun is2Bytes(`is`: InputStream?): ByteArray? {
         if (`is` == null) return null
         var os: ByteArrayOutputStream? = null
         try {
