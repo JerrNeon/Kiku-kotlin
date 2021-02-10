@@ -65,9 +65,9 @@ class DensityManager {
 
             //添加字体变化的监听
             application.registerComponentCallbacks(object : ComponentCallbacks {
-                override fun onConfigurationChanged(newConfig: Configuration?) {
+                override fun onConfigurationChanged(newConfig: Configuration) {
                     //字体改变后,将appScaledDensity重新赋值
-                    if (newConfig != null && newConfig.fontScale > 0) {
+                    if (newConfig.fontScale > 0) {
                         appScaledDensity = application.resources.displayMetrics.scaledDensity
                     }
                 }

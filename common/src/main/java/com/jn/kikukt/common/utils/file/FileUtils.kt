@@ -150,17 +150,17 @@ object FileUtils {
                 outputFile.delete()
             }
             val out = FileOutputStream(outputFile)
-            bm!!.compress(Bitmap.CompressFormat.JPEG, quality, out)
+            bm?.compress(Bitmap.CompressFormat.JPEG, quality, out)
+            out.close()
         } catch (e: Exception) {
         }
-
         return outputFile.path
     }
 
     /**
      * 根据路径获得图片信息并按比例压缩，返回bitmap
      */
-    fun getSmallBitmap(filePath: String): Bitmap {
+    fun getSmallBitmap(filePath: String): Bitmap? {
         val options = BitmapFactory.Options()
         options.inJustDecodeBounds = true//只解析图片边沿，获取宽高
         BitmapFactory.decodeFile(filePath, options)

@@ -87,7 +87,7 @@ dependencies {
     api dep["jpush-core"]
     //umeng
     api dep["umeng-common"]
-    api dep["umeng-analytics"]
+    api dep["umeng-asms"]
     //Ping++
     implementation dep["pingpp"]
     //implementation dep["pingpp-wechat"]

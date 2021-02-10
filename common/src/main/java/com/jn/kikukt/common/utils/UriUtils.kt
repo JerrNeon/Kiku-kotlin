@@ -3,6 +3,7 @@ package com.jn.kikukt.common.utils
 import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.content.ContentUris
+import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
@@ -67,6 +68,40 @@ object UriUtils {
     }
 
     /**
+     * Android Q获取相册图片可访问Uri
+     */
+    fun getImageContentUri(path: String?): Uri? {
+        val cursor = context.contentResolver.query(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            arrayOf(MediaStore.Images.Media._ID), MediaStore.Images.Media.DATA + "=? ",
+            arrayOf(path), null
+        )
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                val id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
+                val baseUri = Uri.parse("content://media/external/images/media");
+                return Uri.withAppendedPath(baseUri, "" + id);
+            } else {
+                // 如果图片不在手机的共享图片数据库，就先把它插入。
+                return if (path?.isNotEmpty() == true && File(path).exists()) {
+                    val values = ContentValues()
+                    values.put(MediaStore.Images.Media.DATA, path);
+                    context.contentResolver.insert(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        values
+                    )
+                } else {
+                    null
+                }
+            }
+        } catch (e: Exception) {
+            return null
+        } finally {
+            cursor?.close()
+        }
+    }
+
+    /**
      * 手机相册中返回的Uri格式可能不是以.jpg/.png结尾的格式
      * 获取手机中uri的真实路径(选取手机相册返回的uri统一经过此方法获得图片路径)
      *
@@ -74,7 +109,10 @@ object UriUtils {
      */
     @SuppressLint("NewApi")
     fun getPathFromUri(uri: Uri): String? {
-        return uri2File(uri)?.absolutePath
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val imageContentUri = getImageContentUri(uri2File(uri)?.absolutePath)
+            uri2File(imageContentUri)?.absolutePath
+        } else uri2File(uri)?.absolutePath
     }
 
     /**

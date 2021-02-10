@@ -27,9 +27,9 @@ object DensityScreenUtils {
             sNonCompatDensity = appDisplayMetrics.density
             sNonCompatScaledDensity = appDisplayMetrics.scaledDensity
             application.registerComponentCallbacks(object : ComponentCallbacks {
-                override fun onConfigurationChanged(newConfig: Configuration?) {
+                override fun onConfigurationChanged(newConfig: Configuration) {
                     //用户修改了系统字体大小
-                    if (newConfig != null && newConfig.fontScale > 0) {
+                    if (newConfig.fontScale > 0) {
                         sNonCompatScaledDensity = application.resources.displayMetrics.scaledDensity
                     }
                 }

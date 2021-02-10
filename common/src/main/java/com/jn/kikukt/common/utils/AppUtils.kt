@@ -18,6 +18,7 @@ import android.os.PowerManager
 import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.telephony.TelephonyManager.*
+import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.view.WindowManager
 import com.jn.kikukt.common.utils.AppUtils.Companion.NET_2G
@@ -26,6 +27,8 @@ import com.jn.kikukt.common.utils.AppUtils.Companion.NET_4G
 import com.jn.kikukt.common.utils.AppUtils.Companion.NET_NO
 import com.jn.kikukt.common.utils.AppUtils.Companion.NET_UNKNOWN
 import com.jn.kikukt.common.utils.AppUtils.Companion.NET_WIFI
+import java.io.BufferedReader
+import java.io.FileReader
 import java.io.IOException
 import java.net.InetAddress
 import java.net.NetworkInterface
@@ -49,6 +52,33 @@ class AppUtils {
         const val NET_2G = 4
         const val NET_UNKNOWN = 5
         const val NET_NO = 6
+
+        /**
+         * 获取进程号对应的进程名
+         *
+         * @param pid 进程号
+         * @return 进程名
+         */
+        fun getProcessName(pid: Int): String? {
+            var reader: BufferedReader? = null
+            try {
+                reader = BufferedReader(FileReader("/proc/$pid/cmdline"))
+                var processName = reader.readLine()
+                if (!TextUtils.isEmpty(processName)) {
+                    processName = processName.trim { it <= ' ' }
+                }
+                return processName
+            } catch (throwable: Throwable) {
+                throwable.printStackTrace()
+            } finally {
+                try {
+                    reader?.close()
+                } catch (exception: IOException) {
+                    exception.printStackTrace()
+                }
+            }
+            return null
+        }
     }
 }
 
@@ -287,7 +317,7 @@ fun Context.isConnected(): Boolean {
  */
 fun Context.isWifi(): Boolean {
     val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    return cm.activeNetworkInfo.type == ConnectivityManager.TYPE_WIFI
+    return cm.activeNetworkInfo?.type == ConnectivityManager.TYPE_WIFI
 }
 
 /**
@@ -446,10 +476,10 @@ fun getIPAddress(useIPv4: Boolean): String? {
                     } else {
                         if (!isIPv4) {
                             val index = hostAddress.indexOf('%')
-                            return if (index < 0) hostAddress.toUpperCase() else hostAddress.substring(
+                            return if (index < 0) hostAddress.toUpperCase(Locale.getDefault()) else hostAddress.substring(
                                 0,
                                 index
-                            ).toUpperCase()
+                            ).toUpperCase(Locale.getDefault())
                         }
                     }
                 }
@@ -552,3 +582,4 @@ fun getDeviceId(): String? {
     // Finally, combine the values we have found by using the UUID class to create a unique identifier
     return UUID(devIDShort.hashCode().toLong(), serial.hashCode().toLong()).toString()
 }
+

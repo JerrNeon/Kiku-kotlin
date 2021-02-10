@@ -1,11 +1,11 @@
 ext {
 
-    compileSdkVersion = 29
-    buildToolsVersion = "29.0.2"
+    compileSdkVersion = 30
+    buildToolsVersion = "30.0.3"
 
     applicationId = "com.jn.examplekotlin"
     minSdkVersion = 21
-    targetSdkVersion = 28
+    targetSdkVersion = 29
     versionCode = 1
     versionName = "1.0"
     multiDexEnabled = true
@@ -150,12 +150,14 @@ ext {
 
             "zhugeio-integration"                : "com.zhuge.analysis:zhugeio:latest.integration",//诸葛ioSDK
             "mob_kefu"                           : 'com.hyphenate:kefu-easeui-android:latest.release', //环信客服SDK
-            "umeng-common"                       : "com.umeng.umsdk:common:2.0.0",//友盟统计的基础服务包
-            "umeng-analytics"                    : "com.umeng.umsdk:analytics:8.0.0",//友盟统计包
+            "umeng-common"                       : "com.umeng.umsdk:common:9.3.3",//版本号(必选)
+            "umeng-asms"                         : "com.umeng.umsdk:asms:1.1.4",//asms包依赖(必选)
             "mtj-sdk"                            : 'com.baidu.mobstat:mtj-sdk:latest.integration',//百度标准统计SDK
             "bugtags-debug"                      : 'com.bugtags.library:bugtags-lib:3.0.0',//Bugtags-Debug
             "bugtags-release"                    : 'com.bugtags.metrics:bugtags-lib:2.4.1',//Bugtags-release
             "bugly"                              : 'com.tencent.bugly:crashreport:3.1.0',//bugly
+            "imsdk-smart"                        : 'com.tencent.imsdk:imsdk-smart:5.1.21',//imsdk
+            "tuikit"                             : 'com.tencent.imsdk:tuikit:5.1.21',//tuikit
 
             "picasso"                            : "com.squareup.picasso:picasso:2.5.2",//图片加载
             "nineoldandroids"                    : "com.nineoldandroids:library:2.4.0",//动画(兼容Android 3.0以下)

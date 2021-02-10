@@ -1,13 +1,17 @@
 package com.jn.kikukt.common.utils
 
 import android.Manifest
+import android.content.ContentValues
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.os.Environment.DIRECTORY_PICTURES
 import android.provider.MediaStore
 import android.provider.Settings
 import androidx.annotation.RequiresApi
+import com.jn.kikukt.common.utils.file.FileUtils
 import java.io.File
+
 
 /**
  * Author：Stevie.Chen Time：2019/7/15
@@ -44,17 +48,42 @@ object IntentUtils {
     /**
      * 打开裁剪Intent
      */
-    fun getCropIntent(imgPath: String, targetPath: String) =
+    fun getCropIntent(
+        srcPath: String,
+        targetDirectoryName: String,
+        targetFileName: String,
+        resultBlock: ((uri: Uri?) -> Unit)? = null
+    ) =
         Intent("com.android.camera.action.CROP").apply {
-            val file = File(targetPath)
-            file.deleteOnExit()
-            val imgUri = UriUtils.getUri(imgPath)
-            val targetUri = Uri.fromFile(File(targetPath))
+            val context = ContextUtils.context
+            val srcUri = UriUtils.getUri(srcPath)
+            val targetUri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                // 通过 MediaStore API 插入file 为了拿到系统裁剪要保存到的uri
+                //（因为App没有权限不能访问公共存储空间，需要通过 MediaStore API来操作）
+                val values = ContentValues().apply {
+                    put(MediaStore.Images.Media.DISPLAY_NAME, targetFileName)
+                    put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        put(
+                            MediaStore.MediaColumns.RELATIVE_PATH, DIRECTORY_PICTURES
+                                    + File.separator + targetDirectoryName
+                        )
+                        put(MediaStore.MediaColumns.IS_PENDING, false)
+                    }
+                }
+                context.contentResolver
+                    .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+            } else {
+                val targetFile = File(FileUtils.getImagePath(targetFileName))
+                targetFile.deleteOnExit()
+                Uri.fromFile(targetFile)
+            }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                 putExtra("noFaceDetection", true)//去除默认的人脸识别，否则和剪裁匡重叠
             }
-            setDataAndType(imgUri, "image/*")
+            setDataAndType(srcUri, "image/*")
             putExtra("crop", "true")
             putExtra("aspectX", 1)
             putExtra("aspectY", 1)
@@ -63,6 +92,7 @@ object IntentUtils {
             putExtra("return-data", true)
             putExtra("outputFormat", "PNG")// 返回格式
             putExtra(MediaStore.EXTRA_OUTPUT, targetUri)//裁剪后的路径
+            resultBlock?.invoke(targetUri)
         }
 
     /**
