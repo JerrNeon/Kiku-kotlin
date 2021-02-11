@@ -1,6 +1,5 @@
 package com.jn.kikukt.common.utils
 
-import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.content.ContentUris
 import android.content.ContentValues
@@ -107,12 +106,8 @@ object UriUtils {
      *
      * @param uri     The Uri to query.
      */
-    @SuppressLint("NewApi")
     fun getPathFromUri(uri: Uri): String? {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val imageContentUri = getImageContentUri(uri2File(uri)?.absolutePath)
-            uri2File(imageContentUri)?.absolutePath
-        } else uri2File(uri)?.absolutePath
+        return uri2File(uri)?.absolutePath
     }
 
     /**
@@ -434,6 +429,53 @@ object UriUtils {
                     e.printStackTrace()
                 }
             }
+        }
+    }
+
+    /**
+     * 获取 文件MimeType
+     *
+     * @param uri     uri
+     * @return String MimeType
+     */
+    fun getMimeType(uri: Uri?): String? {
+        return if (uri == null) {
+            null
+        } else context.contentResolver.getType(uri)
+    }
+
+    /**
+     * 获取 Uri(根据mimeType)
+     *
+     * @param mimeType mimeType
+     * @return Uri
+     */
+    fun getContentUri(mimeType: String): Uri? {
+        return when {
+            mimeType.startsWith("image") -> {
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            }
+            mimeType.startsWith("video") -> {
+                MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+            }
+            mimeType.startsWith("audio") -> {
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+            }
+            else -> {
+                MediaStore.Files.getContentUri("external")
+            }
+        }
+    }
+
+    /**
+     * Android R只能通过uri删除图片
+     */
+    fun deleteUri(uri: Uri) {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                context.contentResolver.delete(uri, null)
+            }
+        } catch (e: Exception) {
         }
     }
 }

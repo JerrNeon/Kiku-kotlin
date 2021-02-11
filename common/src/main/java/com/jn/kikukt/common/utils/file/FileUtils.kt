@@ -6,14 +6,18 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Matrix
 import android.media.ExifInterface
+import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.widget.ScrollView
 import androidx.annotation.ColorInt
 import com.jn.kikukt.common.utils.ContextUtils
+import com.jn.kikukt.common.utils.UriUtils
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToInt
+
 
 /**
  * Author：Stevie.Chen Time：2019/7/15
@@ -141,8 +145,8 @@ object FileUtils {
         if (degree != 0) {//旋转照片角度，防止头像横着显示
             bm = rotateBitmap(bm, degree)
         }
-        val outputFile = File(targetPath)
-        try {
+        return try {
+            val outputFile = File(targetPath)
             if (!outputFile.exists()) {
                 outputFile.parentFile?.mkdirs()
                 //outputFile.createNewFile();
@@ -152,9 +156,43 @@ object FileUtils {
             val out = FileOutputStream(outputFile)
             bm?.compress(Bitmap.CompressFormat.JPEG, quality, out)
             out.close()
+            if (outputFile.exists()) outputFile.path else filePath
         } catch (e: Exception) {
+            filePath
         }
-        return outputFile.path
+    }
+
+    /**
+     * 压缩图片
+     *
+     * @param fileUri   原图片路径
+     * @param targetPath 目标图片路径
+     * @param quality    质量
+     */
+    fun compressImage(fileUri: Uri, targetPath: String, quality: Int = 80): String {
+        val filePath = UriUtils.getPathFromUri(fileUri) ?: ""
+        var bm: Bitmap? =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) getSmallBitmap(fileUri)
+            else getSmallBitmap(filePath)//获取一定尺寸的图片
+        val degree = readPictureDegree(filePath)//获取相片拍摄角度
+        if (degree != 0) {//旋转照片角度，防止头像横着显示
+            bm = rotateBitmap(bm, degree)
+        }
+        return try {
+            val outputFile = File(targetPath)
+            if (!outputFile.exists()) {
+                outputFile.parentFile?.mkdirs()
+                //outputFile.createNewFile();
+            } else {
+                outputFile.delete()
+            }
+            val out = FileOutputStream(outputFile)
+            bm?.compress(Bitmap.CompressFormat.JPEG, quality, out)
+            out.close()
+            if (outputFile.exists()) outputFile.path else filePath
+        } catch (e: Exception) {
+            filePath
+        }
     }
 
     /**
@@ -169,6 +207,21 @@ object FileUtils {
         // 完整解析图片返回bitmap
         options.inJustDecodeBounds = false
         return BitmapFactory.decodeFile(filePath, options)
+    }
+
+    /**
+     * 根据路径获得图片信息并按比例压缩，返回bitmap
+     */
+    fun getSmallBitmap(fileUri: Uri): Bitmap? {
+        val options = BitmapFactory.Options()
+        options.inJustDecodeBounds = true//只解析图片边沿，获取宽高
+        BitmapFactory.decodeFile(filePath, options)
+        // 计算缩放比
+        options.inSampleSize = calculateInSampleSize(options, 800, 800)
+        // 完整解析图片返回bitmap
+        options.inJustDecodeBounds = false
+        val inputStream = ContextUtils.context.contentResolver.openInputStream(fileUri)
+        return BitmapFactory.decodeStream(inputStream, null, options)
     }
 
     /**
@@ -449,5 +502,30 @@ object FileUtils {
      */
     fun getFileMimeType(filePath: String): String? {
         return MIME_TYPE_MAP[getFileSuffix(filePath).replace("", "")]
+    }
+
+    /**
+     * 删除
+     *
+     * 注意：
+     * 只适用于应用自身创建的媒体文件；
+     * 文档等其他类型文件无法删除，其他App的文件也无法删除成功，只能删除媒体库里的Uri数据，实际文件并没有删除。
+     * 操作其他App的数据需要用户授予权限，catch RecoverableSecurityException 异常，然后请求权限，具体见官方文档。
+     *
+     * 访问共享存储空间中的媒体文件：https://developer.android.com/training/data-storage/shared/media#remove-item
+     *
+     * @param context context
+     * @param uri     uri
+     * @return boolean
+     */
+    fun delete(uri: Uri, context: Context = ContextUtils.context): Boolean {
+        var delete = false
+        val contentResolver = context.contentResolver
+        try {
+            delete = contentResolver.delete(uri, null, null) > 0
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+        return delete
     }
 }
