@@ -13,6 +13,7 @@ import android.widget.ScrollView
 import androidx.annotation.ColorInt
 import com.jn.kikukt.common.utils.ContextUtils
 import com.jn.kikukt.common.utils.UriUtils
+import com.jn.kikukt.common.utils.log
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -172,8 +173,12 @@ object FileUtils {
     fun compressImage(fileUri: Uri, targetPath: String, quality: Int = 80): String {
         val filePath = UriUtils.getPathFromUri(fileUri) ?: ""
         var bm: Bitmap? =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) getSmallBitmap(fileUri)
-            else getSmallBitmap(filePath)//获取一定尺寸的图片
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                val usableUri = UriUtils.getUri(filePath)
+                if (usableUri != null) getSmallBitmap(usableUri) else null
+            } else {
+                getSmallBitmap(filePath)
+            }//获取一定尺寸的图片
         val degree = readPictureDegree(filePath)//获取相片拍摄角度
         if (degree != 0) {//旋转照片角度，防止头像横着显示
             bm = rotateBitmap(bm, degree)
@@ -199,29 +204,39 @@ object FileUtils {
      * 根据路径获得图片信息并按比例压缩，返回bitmap
      */
     fun getSmallBitmap(filePath: String): Bitmap? {
-        val options = BitmapFactory.Options()
-        options.inJustDecodeBounds = true//只解析图片边沿，获取宽高
-        BitmapFactory.decodeFile(filePath, options)
-        // 计算缩放比
-        options.inSampleSize = calculateInSampleSize(options, 800, 800)
-        // 完整解析图片返回bitmap
-        options.inJustDecodeBounds = false
-        return BitmapFactory.decodeFile(filePath, options)
+        return try {
+            val options = BitmapFactory.Options()
+            options.inJustDecodeBounds = true//只解析图片边沿，获取宽高
+            BitmapFactory.decodeFile(filePath, options)
+            // 计算缩放比
+            options.inSampleSize = calculateInSampleSize(options, 800, 800)
+            // 完整解析图片返回bitmap
+            options.inJustDecodeBounds = false
+            return BitmapFactory.decodeFile(filePath, options)
+        } catch (e: Exception) {
+            e.log()
+            null
+        }
     }
 
     /**
      * 根据路径获得图片信息并按比例压缩，返回bitmap
      */
     fun getSmallBitmap(fileUri: Uri): Bitmap? {
-        val options = BitmapFactory.Options()
-        options.inJustDecodeBounds = true//只解析图片边沿，获取宽高
-        BitmapFactory.decodeFile(filePath, options)
-        // 计算缩放比
-        options.inSampleSize = calculateInSampleSize(options, 800, 800)
-        // 完整解析图片返回bitmap
-        options.inJustDecodeBounds = false
-        val inputStream = ContextUtils.context.contentResolver.openInputStream(fileUri)
-        return BitmapFactory.decodeStream(inputStream, null, options)
+        return try {
+            val options = BitmapFactory.Options()
+            options.inJustDecodeBounds = true//只解析图片边沿，获取宽高
+            BitmapFactory.decodeFile(filePath, options)
+            // 计算缩放比
+            options.inSampleSize = calculateInSampleSize(options, 800, 800)
+            // 完整解析图片返回bitmap
+            options.inJustDecodeBounds = false
+            val inputStream = ContextUtils.context.contentResolver.openInputStream(fileUri)
+            BitmapFactory.decodeStream(inputStream, null, options)
+        } catch (e: Exception) {
+            e.log()
+            null
+        }
     }
 
     /**

@@ -58,7 +58,7 @@ object IntentUtils {
         Intent("com.android.camera.action.CROP").apply {
             val context = ContextUtils.context
             val srcUri = UriUtils.getUri(srcPath)
-            val targetUri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val targetUri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 // 通过 MediaStore API 插入file 为了拿到系统裁剪要保存到的uri
                 //（因为App没有权限不能访问公共存储空间，需要通过 MediaStore API来操作）
                 val values = ContentValues().apply {
@@ -104,56 +104,67 @@ object IntentUtils {
         resultBlock: ((uri: Uri?) -> Unit)? = null
     ) =
         Intent("com.android.camera.action.CROP").apply {
-            val context = ContextUtils.context
-            val srcRealUri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                val bm = BitmapFactory.decodeStream(context.contentResolver.openInputStream(srcUri))
-                val filePath = FileUtils.saveBitmap(bm, System.currentTimeMillis().toString()) ?: ""
-                UriUtils.getUri(filePath)
-            } else {
-                val path = UriUtils.getPathFromUri(srcUri)
-                if (path != null) {
-                    UriUtils.getUri(path)
+            try {
+                val context = ContextUtils.context
+                val srcPath = UriUtils.getPathFromUri(srcUri)
+                val srcRealUri = if (srcPath != null) {
+                    val usableUri = UriUtils.getUri(srcPath)
+                    if (usableUri != null) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                            val bm =
+                                BitmapFactory.decodeStream(
+                                    context.contentResolver.openInputStream(usableUri)
+                                )
+                            val filePath =
+                                FileUtils.saveBitmap(bm, System.currentTimeMillis().toString())
+                                    ?: ""
+                            UriUtils.getUri(filePath)
+                        } else {
+                            usableUri
+                        }
+                    } else null
+                } else null
+                val targetUri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    // 通过 MediaStore API 插入file 为了拿到系统裁剪要保存到的uri
+                    //（因为App没有权限不能访问公共存储空间，需要通过 MediaStore API来操作）
+                    val values = ContentValues().apply {
+                        put(MediaStore.Images.Media.DISPLAY_NAME, targetFileName)
+                        put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+                        put(
+                            MediaStore.MediaColumns.RELATIVE_PATH, DIRECTORY_PICTURES
+                                    + File.separator + targetDirectoryName
+                        )
+                        put(MediaStore.MediaColumns.IS_PENDING, false)
+                    }
+                    context.contentResolver
+                        .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
                 } else {
-                    null
+                    val targetFile = File(FileUtils.getImagePath(targetFileName))
+                    targetFile.deleteOnExit()
+                    Uri.fromFile(targetFile)
                 }
-            }
-            val targetUri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                // 通过 MediaStore API 插入file 为了拿到系统裁剪要保存到的uri
-                //（因为App没有权限不能访问公共存储空间，需要通过 MediaStore API来操作）
-                val values = ContentValues().apply {
-                    put(MediaStore.Images.Media.DISPLAY_NAME, targetFileName)
-                    put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-                    put(
-                        MediaStore.MediaColumns.RELATIVE_PATH, DIRECTORY_PICTURES
-                                + File.separator + targetDirectoryName
-                    )
-                    put(MediaStore.MediaColumns.IS_PENDING, false)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                    putExtra("noFaceDetection", true)//去除默认的人脸识别，否则和剪裁匡重叠
                 }
-                context.contentResolver
-                    .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-            } else {
-                val targetFile = File(FileUtils.getImagePath(targetFileName))
-                targetFile.deleteOnExit()
-                Uri.fromFile(targetFile)
-            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                putExtra("noFaceDetection", true)//去除默认的人脸识别，否则和剪裁匡重叠
-            }
-            if (srcRealUri != null) {
-                setDataAndType(srcRealUri, "image/*")
-                putExtra("crop", "true")
-                putExtra("aspectX", 1)
-                putExtra("aspectY", 1)
-                putExtra("outputX", 150)
-                putExtra("outputY", 150)
-                putExtra("return-data", true)
-                putExtra("outputFormat", "PNG")// 返回格式
-                putExtra(MediaStore.EXTRA_OUTPUT, targetUri)//裁剪后的路径
-                resultBlock?.invoke(targetUri)
-            } else {
+                if (srcRealUri != null) {
+                    setDataAndType(srcRealUri, "image/*")
+                    putExtra("crop", "true")
+                    putExtra("aspectX", 1)
+                    putExtra("aspectY", 1)
+                    putExtra("outputX", 150)
+                    putExtra("outputY", 150)
+                    putExtra("return-data", true)
+                    putExtra("outputFormat", "PNG")// 返回格式
+                    putExtra(MediaStore.EXTRA_OUTPUT, targetUri)//裁剪后的路径
+                    resultBlock?.invoke(targetUri)
+                } else {
+                    resultBlock?.invoke(null)
+                }
+            } catch (e: Exception) {
                 resultBlock?.invoke(null)
+                e.log()
             }
         }
 
