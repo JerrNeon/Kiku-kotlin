@@ -11,6 +11,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.jn.kikukt.R
 import com.jn.kikukt.common.leak.WeakHandler
+import com.jn.kikukt.common.utils.log
 import com.jn.kikukt.widget.imageview.SpinBlackView
 
 /**
@@ -87,10 +88,18 @@ class ProgressDialogFragment : DialogFragment() {
     }
 
     private fun showDialogAfterDelay(fm: FragmentManager, tag: String?) {
-        startedShowing = true
-        val ft = fm.beginTransaction()
-        ft.add(this, tag)
-        ft.commitAllowingStateLoss()
+        try {
+            startedShowing = true
+            val ft = fm.beginTransaction()
+            if (isAdded) {
+                ft.show(this)
+            } else {
+                ft.add(this, tag)
+            }
+            ft.commitAllowingStateLoss()
+        } catch (e: Exception) {
+            e.log()
+        }
     }
 
     fun cancel() {
