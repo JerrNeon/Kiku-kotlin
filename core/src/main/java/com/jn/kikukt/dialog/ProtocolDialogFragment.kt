@@ -15,7 +15,7 @@ import kotlin.system.exitProcess
  * Author：Stevie.Chen Time：2020/9/23
  * Class Comment：用户协议和隐私政策提示框
  */
-class ProtocolDialogFragment private constructor() : RootDialogFragment() {
+class ProtocolDialogFragment : RootDialogFragment() {
 
     override val layoutResId: Int
         get() = R.layout.dialog_protocol

@@ -17,7 +17,7 @@ import com.jn.kikukt.widget.imageview.SpinBlackView
  * Author：Stevie.Chen Time：2019/7/15
  * Class Comment：加载对话框
  */
-class ProgressDialogFragment private constructor() : DialogFragment() {
+class ProgressDialogFragment : DialogFragment() {
 
     private var spinBlackProgressView: SpinBlackView? = null//图标资源View
     private var startedShowing: Boolean = false
