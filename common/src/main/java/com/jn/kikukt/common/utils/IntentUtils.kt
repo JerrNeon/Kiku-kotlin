@@ -109,7 +109,14 @@ object IntentUtils {
                 val bm = BitmapFactory.decodeStream(context.contentResolver.openInputStream(srcUri))
                 val filePath = FileUtils.saveBitmap(bm, System.currentTimeMillis().toString()) ?: ""
                 UriUtils.getUri(filePath)
-            } else srcUri
+            } else {
+                val path = UriUtils.getPathFromUri(srcUri)
+                if (path != null) {
+                    UriUtils.getUri(path)
+                } else {
+                    null
+                }
+            }
             val targetUri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 // 通过 MediaStore API 插入file 为了拿到系统裁剪要保存到的uri
                 //（因为App没有权限不能访问公共存储空间，需要通过 MediaStore API来操作）
