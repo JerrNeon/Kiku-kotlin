@@ -280,6 +280,14 @@ class WeChatManage : DefaultLifecycleObserver {
         }
 
     /**
+     * 微信是否安装
+     */
+    fun isWXAppInstalled(activity: Activity): Boolean {
+        init(activity)
+        return mIWXAPI?.isWXAppInstalled ?: false
+    }
+
+    /**
      * 获取access_token
      */
     fun getAccessToken(baseResp: BaseResp) {
