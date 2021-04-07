@@ -16,9 +16,12 @@ interface IBaseView {
     /**
      * 显示加载框
      */
-    fun showProgressDialog(type: Int = ProgressDialogFragment.TYPE_BLACK) {
+    fun showProgressDialog(
+        type: Int = ProgressDialogFragment.TYPE_BLACK,
+        isCancelable: Boolean = true
+    ) {
         if (mProgressDialog == null)
-            mProgressDialog = ProgressDialogFragment.newInstance(type)
+            mProgressDialog = ProgressDialogFragment.newInstance(type, isCancelable)
         val appCompatActivity = when (this) {
             is AppCompatActivity -> this
             is Fragment -> this.activity as? AppCompatActivity

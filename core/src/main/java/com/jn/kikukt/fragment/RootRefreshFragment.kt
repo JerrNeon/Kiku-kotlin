@@ -37,9 +37,9 @@ abstract class RootRefreshFragment(open val itemLayoutResId: Int) :
         initRefreshView()
     }
 
-    override fun showProgressDialog(type: Int) {
+    override fun showProgressDialog(type: Int, isCancelable: Boolean) {
         if (mRefreshOperateType == ON_CREATE || mRefreshOperateType == ON_RELOAD)
-            super.showProgressDialog(type)
+            super.showProgressDialog(type, isCancelable)
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {

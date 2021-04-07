@@ -3,10 +3,7 @@ package com.jn.kikukt.dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.jn.kikukt.R
@@ -29,13 +26,19 @@ class ProgressDialogFragment : DialogFragment() {
         private const val DELAY_MILLISECOND = 450
         private const val SHOW_MIN_MILLISECOND = 300
         private const val KEY_TYPE = "type"
+        private const val KEY_IS_CANCELABLE = "key_is_cancelable"
         const val TYPE_BLACK = 0x01
         const val TYPE_WHITE = 0x02
+        const val TYPE_BLACK_WHITE = 0x03
 
-        fun newInstance(type: Int = TYPE_BLACK): ProgressDialogFragment {
+        fun newInstance(
+            type: Int = TYPE_BLACK,
+            isCancelable: Boolean = true
+        ): ProgressDialogFragment {
             return ProgressDialogFragment().apply {
                 val bundle = Bundle()
                 bundle.putInt(KEY_TYPE, type)
+                bundle.putBoolean(KEY_IS_CANCELABLE, isCancelable)
                 arguments = bundle
             }
         }
@@ -48,12 +51,26 @@ class ProgressDialogFragment : DialogFragment() {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         val type = arguments?.getInt(KEY_TYPE) ?: TYPE_BLACK
+        val isCancelable = arguments?.getBoolean(KEY_IS_CANCELABLE, true) ?: true
+        if (!isCancelable) {
+            dialog?.run {
+                setCanceledOnTouchOutside(false)
+                setOnKeyListener { _, keyCode, _ ->
+                    keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_SEARCH//不执行父类点击事件
+                }
+            }
+        }
         val view = LayoutInflater.from(context).inflate(
-            if (type == TYPE_BLACK) R.layout.dialog_progress else R.layout.dialog_progress_white,
+            if (type == TYPE_BLACK || type == TYPE_WHITE) R.layout.dialog_progress else R.layout.dialog_progress_white,
             container,
             false
         )
         spinBlackProgressView = view.findViewById(R.id.sbv_progressDialog)
+        if (type == TYPE_BLACK) {
+            spinBlackProgressView?.setImageResource(R.drawable.ic_kiku_progress)
+        } else {
+            spinBlackProgressView?.setImageResource(R.drawable.ic_kiku_progress_white)
+        }
         return view
     }
 

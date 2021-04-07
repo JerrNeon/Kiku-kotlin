@@ -64,6 +64,7 @@
         android:id="@+id/tv_versionUpdateSubmit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_16"
         android:background="@drawable/rectangle_goldbg_greyline_corner4"
         android:paddingLeft="@dimen/dp_10"
         android:paddingTop="@dimen/dp_6"
@@ -72,8 +73,8 @@
         android:text="@string/versionupdate_submit"
         android:textColor="@color/c_333333"
         android:textSize="@dimen/sp_13"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tv_versionUpdateCancel"
-        app:layout_constraintTop_toTopOf="@id/tv_versionUpdateCancel" />
+        app:layout_constraintStart_toEndOf="@id/tv_versionUpdateCancel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

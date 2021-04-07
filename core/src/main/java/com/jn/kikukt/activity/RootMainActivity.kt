@@ -132,7 +132,7 @@ abstract class RootMainActivity : RootActivity(R.layout.common_main_layout), IMa
             mVersionUpdateVO?.let { mVersionUpdateDialog = VersionUpdateDialog.newInstance(it) }
         }
         mVersionUpdateDialog?.show(supportFragmentManager, "") {
-            showProgressDialog(ProgressDialogFragment.TYPE_WHITE)
+            showProgressDialog(ProgressDialogFragment.TYPE_WHITE, false)
         }
     }
 

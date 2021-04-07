@@ -44,6 +44,8 @@ class VersionUpdateDialog : RootDialogFragment(), View.OnClickListener {
             width = (screenWidth * 0.8f).toInt()//宽度为屏幕宽度的80%
             height = (screenWidth * 0.8f).toInt()//高度为屏幕宽度的80%
         }
+    override val isCanceledOnTouchOutsideEnable: Boolean
+        get() = true
 
     override fun initView() {
         super.initView()
