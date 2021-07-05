@@ -34,6 +34,7 @@ class RangeSeekBar<T : Number> : AppCompatImageView {
      * Default color of a [RangeSeekBar], #FF33B5E5. This is also known as "Ice Cream Sandwich" blue.
      */
     val ACTIVE_COLOR = Color.argb(0xFF, 0x33, 0xB5, 0xE5)
+
     /**
      * An invalid pointer id.
      */
@@ -153,11 +154,19 @@ class RangeSeekBar<T : Number> : AppCompatImageView {
         init(context, attrs)
     }
 
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    ) {
         init(context, attrs)
     }
 
-    private fun extractNumericValueFromAttributes(a: TypedArray, attribute: Int, defaultValue: Int): T {
+    private fun extractNumericValueFromAttributes(
+        a: TypedArray,
+        attribute: Int,
+        defaultValue: Int
+    ): T {
         val tv = a.peekValue(attribute) ?: return Integer.valueOf(defaultValue) as T
 
         val type = tv.type
@@ -197,19 +206,38 @@ class RangeSeekBar<T : Number> : AppCompatImageView {
             val a = getContext().obtainStyledAttributes(attrs, R.styleable.RangeSeekBar, 0, 0)
             try {
                 setRangeValues(
-                    extractNumericValueFromAttributes(a, R.styleable.RangeSeekBar_absoluteMinValue, DEFAULT_MINIMUM),
-                    extractNumericValueFromAttributes(a, R.styleable.RangeSeekBar_absoluteMaxValue, DEFAULT_MAXIMUM),
-                    extractNumericValueFromAttributes(a, R.styleable.RangeSeekBar_step, DEFAULT_STEP)
+                    extractNumericValueFromAttributes(
+                        a,
+                        R.styleable.RangeSeekBar_absoluteMinValue,
+                        DEFAULT_MINIMUM
+                    ),
+                    extractNumericValueFromAttributes(
+                        a,
+                        R.styleable.RangeSeekBar_absoluteMaxValue,
+                        DEFAULT_MAXIMUM
+                    ),
+                    extractNumericValueFromAttributes(
+                        a,
+                        R.styleable.RangeSeekBar_step,
+                        DEFAULT_STEP
+                    )
                 )
                 showTextAboveThumbs = a.getBoolean(R.styleable.RangeSeekBar_valuesAboveThumbs, true)
-                textAboveThumbsColor = a.getColor(R.styleable.RangeSeekBar_textAboveThumbsColor, Color.WHITE)
+                textAboveThumbsColor =
+                    a.getColor(R.styleable.RangeSeekBar_textAboveThumbsColor, Color.WHITE)
                 singleThumb = a.getBoolean(R.styleable.RangeSeekBar_singleThumb, false)
                 showLabels = a.getBoolean(R.styleable.RangeSeekBar_showLabels, true)
                 internalPad =
-                    a.getDimensionPixelSize(R.styleable.RangeSeekBar_internalPadding, INITIAL_PADDING_IN_DP.toInt())
+                    a.getDimensionPixelSize(
+                        R.styleable.RangeSeekBar_internalPadding,
+                        INITIAL_PADDING_IN_DP.toInt()
+                    )
                         .toFloat()
                 barHeight =
-                    a.getDimensionPixelSize(R.styleable.RangeSeekBar_barHeight, LINE_HEIGHT_IN_DP.toInt()).toFloat()
+                    a.getDimensionPixelSize(
+                        R.styleable.RangeSeekBar_barHeight,
+                        LINE_HEIGHT_IN_DP.toInt()
+                    ).toFloat()
                 activeColor = a.getColor(R.styleable.RangeSeekBar_activeColor, ACTIVE_COLOR)
                 defaultColor = a.getColor(R.styleable.RangeSeekBar_defaultColor, Color.GRAY)
                 alwaysActive = a.getBoolean(R.styleable.RangeSeekBar_alwaysActive, false)
@@ -227,7 +255,8 @@ class RangeSeekBar<T : Number> : AppCompatImageView {
                     thumbPressedImage = drawableToBitmap(pressedDrawable)
                 }
                 thumbShadow = a.getBoolean(R.styleable.RangeSeekBar_thumbShadow, false)
-                thumbShadowColor = a.getColor(R.styleable.RangeSeekBar_thumbShadowColor, defaultShadowColor)
+                thumbShadowColor =
+                    a.getColor(R.styleable.RangeSeekBar_thumbShadowColor, defaultShadowColor)
                 thumbShadowXOffset =
                     a.getDimensionPixelSize(
                         R.styleable.RangeSeekBar_thumbShadowXOffset,
@@ -239,10 +268,14 @@ class RangeSeekBar<T : Number> : AppCompatImageView {
                         defaultShadowYOffset?.toInt() ?: 0
                     ).toFloat()
                 thumbShadowBlur =
-                    a.getDimensionPixelSize(R.styleable.RangeSeekBar_thumbShadowBlur, defaultShadowBlur?.toInt() ?: 0)
+                    a.getDimensionPixelSize(
+                        R.styleable.RangeSeekBar_thumbShadowBlur,
+                        defaultShadowBlur?.toInt() ?: 0
+                    )
                         .toFloat()
 
-                activateOnDefaultValues = a.getBoolean(R.styleable.RangeSeekBar_activateOnDefaultValues, false)
+                activateOnDefaultValues =
+                    a.getBoolean(R.styleable.RangeSeekBar_activateOnDefaultValues, false)
             } finally {
                 a.recycle()
             }
@@ -290,7 +323,8 @@ class RangeSeekBar<T : Number> : AppCompatImageView {
             // We need to remove hardware acceleration in order to blur the shadow
             setLayerType(View.LAYER_TYPE_SOFTWARE, null)
             shadowPaint.color = thumbShadowColor
-            shadowPaint.maskFilter = BlurMaskFilter(thumbShadowBlur ?: 0f, BlurMaskFilter.Blur.NORMAL)
+            shadowPaint.maskFilter =
+                BlurMaskFilter(thumbShadowBlur ?: 0f, BlurMaskFilter.Blur.NORMAL)
             thumbShadowPath = Path()
             thumbShadowPath!!.addCircle(
                 0f,
@@ -503,12 +537,20 @@ class RangeSeekBar<T : Number> : AppCompatImageView {
                 }
 
                 if (notifyWhileDragging && listener != null) {
-                    listener!!.onRangeSeekBarValuesChanged(this, getSelectedMinValue()!!, getSelectedMaxValue()!!)
+                    listener!!.onRangeSeekBarValuesChanged(
+                        this,
+                        getSelectedMinValue()!!,
+                        getSelectedMaxValue()!!
+                    )
                 }
                 if (notifyWhileDragging && mRateListener != null) {
                     val minValue = calculateRate(valueToString(getSelectedMinValue()!!))
                     val maxValue = calculateRate(valueToString(getSelectedMaxValue()!!))
-                    mRateListener!!.onRangeSeekBarValuesChanged(this, minValue.roundToLong(), maxValue.roundToLong())
+                    mRateListener!!.onRangeSeekBarValuesChanged(
+                        this,
+                        minValue.roundToLong(),
+                        maxValue.roundToLong()
+                    )
                 }
             }
             MotionEvent.ACTION_UP -> {
@@ -527,12 +569,20 @@ class RangeSeekBar<T : Number> : AppCompatImageView {
                 pressedThumb = null
                 invalidate()
                 if (listener != null) {
-                    listener!!.onRangeSeekBarValuesChanged(this, getSelectedMinValue()!!, getSelectedMaxValue()!!)
+                    listener!!.onRangeSeekBarValuesChanged(
+                        this,
+                        getSelectedMinValue()!!,
+                        getSelectedMaxValue()!!
+                    )
                 }
                 if (mRateListener != null) {
                     val minValue = calculateRate(valueToString(getSelectedMinValue()!!))
                     val maxValue = calculateRate(valueToString(getSelectedMaxValue()!!))
-                    mRateListener!!.onRangeSeekBarValuesChanged(this, Math.round(minValue), Math.round(maxValue))
+                    mRateListener!!.onRangeSeekBarValuesChanged(
+                        this,
+                        Math.round(minValue),
+                        Math.round(maxValue)
+                    )
                 }
             }
             MotionEvent.ACTION_POINTER_DOWN -> {
@@ -617,7 +667,8 @@ class RangeSeekBar<T : Number> : AppCompatImageView {
 
         var height = (thumbImage!!.height
                 + (if (!showTextAboveThumbs) 0 else context.dp2px(HEIGHT_IN_DP).toInt())
-                + (if (thumbShadow) thumbShadowYOffset?.plus(thumbShadowBlur!!)?.toInt() ?: 0 else 0))
+                + (if (thumbShadow) thumbShadowYOffset?.plus(thumbShadowBlur!!)?.toInt()
+            ?: 0 else 0))
         if (MeasureSpec.UNSPECIFIED != MeasureSpec.getMode(heightMeasureSpec)) {
             height = Math.min(height, MeasureSpec.getSize(heightMeasureSpec))
         }
@@ -676,7 +727,9 @@ class RangeSeekBar<T : Number> : AppCompatImageView {
                 drawThumbShadow(normalizedToScreen(normalizedMinValue.toDouble()), canvas)
             }
             drawThumb(
-                normalizedToScreen(normalizedMinValue.toDouble()), Thumb.MIN == pressedThumb, canvas,
+                normalizedToScreen(normalizedMinValue.toDouble()),
+                Thumb.MIN == pressedThumb,
+                canvas,
                 selectedValuesAreDefault
             )
         }
@@ -710,9 +763,15 @@ class RangeSeekBar<T : Number> : AppCompatImageView {
             val minTextWidth = paint.measureText(minText)
             val maxTextWidth = paint.measureText(maxText)
             // keep the position so that the labels don't get cut off
-            var minPosition = Math.max(0f, normalizedToScreen(normalizedMinValue.toDouble()) - minTextWidth * 0.5f)
+            var minPosition = Math.max(
+                0f,
+                normalizedToScreen(normalizedMinValue.toDouble()) - minTextWidth * 0.5f
+            )
             var maxPosition =
-                Math.min(width - maxTextWidth, normalizedToScreen(normalizedMaxValue.toDouble()) - maxTextWidth * 0.5f)
+                Math.min(
+                    width - maxTextWidth,
+                    normalizedToScreen(normalizedMaxValue.toDouble()) - maxTextWidth * 0.5f
+                )
 
             if (!singleThumb) {
                 // check if the labels overlap, or are too close to each other
@@ -775,7 +834,12 @@ class RangeSeekBar<T : Number> : AppCompatImageView {
      * @param pressed     Is the thumb currently in "pressed" state?
      * @param canvas      The canvas to draw upon.
      */
-    private fun drawThumb(screenCoord: Float, pressed: Boolean, canvas: Canvas, areSelectedValuesDefault: Boolean) {
+    private fun drawThumb(
+        screenCoord: Float,
+        pressed: Boolean,
+        canvas: Canvas,
+        areSelectedValuesDefault: Boolean
+    ) {
         val buttonToDraw: Bitmap?
         if (!activateOnDefaultValues && areSelectedValuesDefault) {
             buttonToDraw = thumbDisabledImage
@@ -928,8 +992,8 @@ class RangeSeekBar<T : Number> : AppCompatImageView {
                 DOUBLE -> return value
                 INTEGER -> return value.toInt()
                 FLOAT -> return value.toFloat()
-                SHORT -> return value.toShort()
-                BYTE -> return value.toByte()
+                SHORT -> return value.toInt().toShort()
+                BYTE -> return value.toInt().toByte()
                 BIG_DECIMAL -> return BigDecimal.valueOf(value)
             }
             throw InstantiationError("can't convert $this to a Number object")

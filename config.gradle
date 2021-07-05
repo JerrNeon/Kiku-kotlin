@@ -12,13 +12,13 @@ ext {
 
     android = [
             androidXSdkVersion                     : "1.2.1",
-            roomSdkVersion                         : "2.2.5",
+            roomSdkVersion                         : "2.3.0",
             lifecycleSdkVersion                    : "2.2.0",
 
             butterknifeSdkVersion                  : "10.1.0",
             retrofitSdkVersion                     : "2.9.0",
             okhttpSdkVersion                       : "2.5.0",
-            okhttp3SdkVersion                      : "4.8.1",
+            okhttp3SdkVersion                      : "4.9.0",
             eventbusSdkVersion                     : "3.2.0",
             gsonSdkVersion                         : "2.8.6",
             glideSdkVersion                        : "4.11.0",
@@ -32,17 +32,16 @@ ext {
             rxlifecycleSdkVersion                  : "2.2.1",
             dagger2SdkVersion                      : "2.8",
             espressoSdkVersion                     : "2.2.2",
-            kotlinxCoroutinesSdkVersion            : "1.3.9",
+            kotlinxCoroutinesSdkVersion            : "1.5.0",
     ]
-
     dep = [
-            "junit"                              : "junit:junit:4.13",
+            "junit"                              : "junit:junit:4.13.1",
             "support-v4"                         : "androidx.legacy:legacy-support-v4:1.0.0",
             "design"                             : "com.google.android.material:material:${android.androidXSdkVersion}",
             "recyclerview-v7"                    : "androidx.recyclerview:recyclerview:1.1.0",
             "cardview-v7"                        : "androidx.cardview:cardview:${android.androidXSdkVersion}",
             "appcompat-v7"                       : "androidx.appcompat:appcompat:1.2.0",
-            "constraint-layout"                  : 'androidx.constraintlayout:constraintlayout:2.0.1',
+            "constraint-layout"                  : 'androidx.constraintlayout:constraintlayout:2.0.2',
             "room"                               : "androidx.room:room-runtime:${android.roomSdkVersion}",
             "room-compiler"                      : "androidx.room:room-compiler:${android.roomSdkVersion}",
             "lifecycle"                          : "androidx.lifecycle:lifecycle-extensions:${android.lifecycleSdkVersion}",
@@ -104,6 +103,7 @@ ext {
             "base-rvadapter"                     : 'com.zhy:base-rvadapter:3.0.3',//RecyerView万能适配器
             "flowlayout"                         : "com.zhy:flowlayout-lib:1.0.3",//流式布局
             "percent-extends"                    : 'com.zhy:percent-support-extends:1.1.1',//百分比布局扩展
+            "ShadowLayout"                       : 'com.github.lihangleo2:ShadowLayout:3.1.4',//带阴影的Shape
 
             "alertview"                          : 'com.bigkoo:alertview:1.0.3',//对话框
             "pickerview"                         : 'com.bigkoo:pickerview:2.1.1',//日期时间选择、三级联动
@@ -150,8 +150,8 @@ ext {
 
             "zhugeio-integration"                : "com.zhuge.analysis:zhugeio:latest.integration",//诸葛ioSDK
             "mob_kefu"                           : 'com.hyphenate:kefu-easeui-android:latest.release', //环信客服SDK
-            "umeng-common"                       : "com.umeng.umsdk:common:9.3.3",//版本号(必选)
-            "umeng-asms"                         : "com.umeng.umsdk:asms:1.1.4",//asms包依赖(必选)
+            "umeng-common"                       : "com.umeng.umsdk:common:9.4.0",//版本号(必选)
+            "umeng-asms"                         : "com.umeng.umsdk:asms:1.2.3",//asms包依赖(必选)
             "mtj-sdk"                            : 'com.baidu.mobstat:mtj-sdk:latest.integration',//百度标准统计SDK
             "bugtags-debug"                      : 'com.bugtags.library:bugtags-lib:3.0.0',//Bugtags-Debug
             "bugtags-release"                    : 'com.bugtags.metrics:bugtags-lib:2.4.1',//Bugtags-release
@@ -165,6 +165,7 @@ ext {
             "otto"                               : "com.squareup:otto:1.3.8",//通信(与EventBus类似)
             "paginate"                           : "com.github.markomilos:paginate:0.5.1",//分页下拉加载库，
             "jsoup"                              : "org.jsoup:jsoup:1.13.1",//Html解析
+            "NewbieGuide"                        : "com.github.huburt-Hu:NewbieGuide:v2.4.0",//新手引导
 
             /*--------------------------------- test ---------------------------------*/
             "runner"                             : 'androidx.test:runner:1.3.0',
@@ -208,7 +209,7 @@ ext {
     ]
 
     depKt = [
-            "kotlin"                         : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.0",
+            "kotlin"                         : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.10",
             "kotlinx-serialization"          : "org.jetbrains.kotlinx:kotlinx-serialization-runtime:1.0-M1-1.4.0-rc",
             "kotlinx-coroutines-core"        : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${android.kotlinxCoroutinesSdkVersion}",
             "kotlinx-coroutines-android"     : "org.jetbrains.kotlinx:kotlinx-coroutines-android:${android.kotlinxCoroutinesSdkVersion}",
@@ -216,8 +217,8 @@ ext {
             // https://developer.android.google.cn/kotlin/ktx#core
             "core-ktx"                       : "androidx.core:core-ktx:1.3.0",
             "collection-ktx"                 : "androidx.collection:collection-ktx:1.1.0",
-            "activity-ktx"                   : "androidx.activity:activity-ktx:1.2.0-alpha08",
-            "fragment-ktx"                   : "androidx.fragment:fragment-ktx:1.3.0-alpha08",
+            "activity-ktx"                   : "androidx.activity:activity-ktx:1.2.0-beta01",
+            "fragment-ktx"                   : "androidx.fragment:fragment-ktx:1.3.0-beta01",
             "lifecycle-runtime-ktx"          : "androidx.lifecycle:lifecycle-runtime-ktx:${android.lifecycleSdkVersion}",
             "lifecycle-livedata-ktx"         : "androidx.lifecycle:lifecycle-livedata-ktx:${android.lifecycleSdkVersion}",
             "lifecycle-reactivestreams-ktx"  : "androidx.lifecycle:lifecycle-reactivestreams-ktx:${android.lifecycleSdkVersion}",
@@ -226,7 +227,7 @@ ext {
             "navigation-fragment-ktx"        : "androidx.navigation:navigation-fragment-ktx:2.3.0-rc01",
             "navigation-ui-ktx"              : "androidx.navigation:navigation-ui-ktx:2.3.0-rc01",
             "palette-ktx"                    : "androidx.palette:palette-ktx:1.0.0",
-            "room-ktx"                       : "androidx.room:room-ktx:2.2.5",
+            "room-ktx"                       : "androidx.room:room-ktx:${android.roomSdkVersion}",
             "sqlite-ktx"                     : "androidx.sqlite:sqlite-ktx:2.1.0",
             "work-runtime-ktx"               : "androidx.work:work-runtime-ktx:2.3.4",
 
