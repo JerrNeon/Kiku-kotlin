@@ -8,7 +8,9 @@ import android.os.Process
 import androidx.multidex.MultiDex
 import com.jn.common.BuildConfig
 import com.jn.kikukt.common.ActivityManager
+import com.jn.kikukt.common.utils.ContextUtils
 import com.jn.kikukt.common.utils.LogUtils
+import com.jn.kikukt.utils.WebViewUtils
 import com.jn.kikukt.utils.glide.GlideUtil.clearMemory
 import com.jn.kikukt.utils.glide.GlideUtil.trimMemory
 
@@ -72,6 +74,20 @@ open class RootApplication : Application() {
      */
     protected fun initActivityManager() {
         ActivityManager.instance.register(this)
+    }
+
+    /**
+     * 初始化ContextUtils
+     */
+    protected fun initContextUtils() {
+        ContextUtils.context = this.applicationContext
+    }
+
+    /**
+     * 初始化WebViewUtils
+     */
+    protected fun initWebViewUtils() {
+        WebViewUtils.initApplication(applicationContext)
     }
 
     /**

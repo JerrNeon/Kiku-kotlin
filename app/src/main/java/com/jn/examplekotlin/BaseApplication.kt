@@ -11,6 +11,8 @@ class BaseApplication : RootApplication() {
     override fun onCreate() {
         super.onCreate()
         initActivityManager()
+        initContextUtils()
+        initWebViewUtils()
         initLogUtils("kiku_kotlin")
     }
 }

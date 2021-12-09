@@ -16,6 +16,7 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ProgressBar
+import com.jn.kikukt.common.utils.getProcessName
 import com.jn.kikukt.common.utils.logI
 import com.tencent.smtt.export.external.TbsCoreSettings
 import com.tencent.smtt.sdk.QbSdk
@@ -29,6 +30,18 @@ import java.util.*
  * Class Comment：
  */
 object WebViewUtils {
+
+    /**
+     * 解决Android P 以及之后版本不支持同时从多个进程使用具有相同数据目录的WebView
+     */
+    fun initApplication(context: Context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            val processName = context.getProcessName()
+            if (context.applicationContext.packageName != processName) {
+                WebView.setDataDirectorySuffix(processName)
+            }
+        }
+    }
 
     @SuppressLint("SetJavaScriptEnabled")
     fun initWebView(activity: Activity, webView: Any) {

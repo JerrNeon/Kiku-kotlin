@@ -11,7 +11,7 @@ import com.jn.kikukt.common.utils.ContextUtils
 class CommonInitializer : Initializer<Unit> {
 
     override fun create(context: Context) {
-        ContextUtils.context = context
+        //ContextUtils.context = context
     }
 
     override fun dependencies(): MutableList<Class<out Initializer<*>>> {
