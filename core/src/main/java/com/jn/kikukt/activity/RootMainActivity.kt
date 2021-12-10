@@ -72,7 +72,7 @@ abstract class RootMainActivity : RootActivity(R.layout.common_main_layout), IMa
         menuFragments.let {
             if (position >= it.size)
                 throw ArrayIndexOutOfBoundsException("position is beyond total: ${it.size}")
-            supportFragmentManager.commit {
+            supportFragmentManager.commit(true) {
                 //隐藏当前显示的Fragment
                 supportFragmentManager.findFragmentByTag(mCurrPosition.toString())
                     ?.let { fragment -> hide(fragment) }
