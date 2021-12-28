@@ -1,5 +1,6 @@
 package com.jn.kikukt.common.utils
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ActivityManager
@@ -21,6 +22,7 @@ import android.telephony.TelephonyManager.*
 import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.view.WindowManager
+import androidx.core.app.ActivityCompat
 import com.jn.kikukt.common.utils.AppUtils.Companion.NET_2G
 import com.jn.kikukt.common.utils.AppUtils.Companion.NET_3G
 import com.jn.kikukt.common.utils.AppUtils.Companion.NET_4G
@@ -583,3 +585,90 @@ fun getDeviceId(): String? {
     return UUID(devIDShort.hashCode().toLong(), serial.hashCode().toLong()).toString()
 }
 
+/**
+ * 获取IMEI
+ * <p>
+ *  Android6之前可以获取到
+ *  Android6-9需要用户授权[Manifest.permission.READ_PHONE_STATE]才可获取到
+ *  Android10及之后获取不到
+ * </p>
+ */
+@SuppressLint("MissingPermission", "HardwareIds")
+fun Context?.getIMEI(): String {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        return ""
+    }
+    return try {
+        if (this != null && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_PHONE_STATE
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            val tm =
+                applicationContext.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                tm?.imei ?: ""
+            } else {
+                tm?.deviceId ?: ""
+            }
+        } else ""
+    } catch (e: Exception) {
+        e.log()
+        ""
+    }
+}
+
+/**
+ * 获取Mac地址
+ * <p>
+ *  Android6之前通过[WifiManager]获取
+ *  Android6-9通过[NetworkInterface]获取
+ *  Android10及之后获取不到
+ * </p>
+ */
+@SuppressLint("HardwareIds")
+fun Context?.getMacAddress(): String {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        return ""
+    }
+    return try {
+        if (this != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                var macAddress = ""
+                Collections.list(NetworkInterface.getNetworkInterfaces()).forEach {
+                    if ("wlan0".equals(it.name, true)) {
+                        val sb = StringBuilder()
+                        it.hardwareAddress.forEach { b ->
+                            sb.append(String.format("%02X:", b))
+                        }
+                        if (sb.isNotEmpty())
+                            sb.deleteCharAt(sb.length - 1)
+                        macAddress = sb.toString()
+                    }
+                }
+                macAddress
+            } else {
+                val wm = applicationContext.getSystemService(Context.WIFI_SERVICE) as? WifiManager
+                wm?.connectionInfo?.macAddress ?: ""
+            }
+        } else ""
+    } catch (e: Exception) {
+        e.log()
+        ""
+    }
+}
+
+/**
+ * 获取AndroidId
+ * <p>
+ *  不具有真正的唯一性，
+ *  ROOT、刷机、恢复出厂设置、不同签名的应用等都会导致获取的 Android ID 发生改变，
+ *  并且不同厂商定制的系统的BUG会导致不同的设备可能会产生相同的 Android ID。
+ * </p>
+ */
+fun Context?.getAndroidId(): String {
+    return if (this != null) Settings.System.getString(
+        contentResolver,
+        Settings.Secure.ANDROID_ID
+    ) else ""
+}
