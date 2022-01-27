@@ -131,7 +131,7 @@ class ActivityManager {
      */
     fun getTopActivity(): Activity? {
         return try {
-            mActivityStack.pop()
+            mActivityStack.lastElement()
         } catch (e: Exception) {
             e.log()
             null
